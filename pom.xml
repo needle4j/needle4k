@@ -186,67 +186,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Java EE, i.e. "javax.*" versions -->
-
-        <dependency>
-            <groupId>jakarta.inject</groupId>
-            <artifactId>jakarta.inject-api</artifactId>
-            <version>1.0.5</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.ejb</groupId>
-            <artifactId>jakarta.ejb-api</artifactId>
-            <version>3.2.6</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>2.2.3</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.enterprise</groupId>
-            <artifactId>jakarta.enterprise.cdi-api</artifactId>
-            <version>2.0.2</version>
-            <optional>true</optional>
-        </dependency>
-
-
-        <!-- Jakarta EE, i.e. "jakarta.*" versions -->
-
-        <dependency>
-            <groupId>jakarta.inject</groupId>
-            <artifactId>jakarta.inject-api</artifactId>
-            <version>2.0.1</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.ejb</groupId>
-            <artifactId>jakarta.ejb-api</artifactId>
-            <version>4.0.1</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>3.1.0</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.enterprise</groupId>
-            <artifactId>jakarta.enterprise.cdi-api</artifactId>
-            <version>4.0.1</version>
-            <optional>true</optional>
-        </dependency>
-
         <!-- For internal tests -->
 
         <dependency>
@@ -373,6 +312,82 @@
     </distributionManagement>
 
     <profiles>
+        <profile>
+            <id>jee</id>
+
+            <dependencies>
+                <!-- Java EE, i.e. "javax.*" versions -->
+
+                <dependency>
+                    <groupId>jakarta.inject</groupId>
+                    <artifactId>jakarta.inject-api</artifactId>
+                    <version>1.0.5</version>
+                    <optional>true</optional>
+                </dependency>
+
+                <dependency>
+                    <groupId>jakarta.ejb</groupId>
+                    <artifactId>jakarta.ejb-api</artifactId>
+                    <version>3.2.6</version>
+                    <optional>true</optional>
+                </dependency>
+
+                <dependency>
+                    <groupId>jakarta.persistence</groupId>
+                    <artifactId>jakarta.persistence-api</artifactId>
+                    <version>2.2.3</version>
+                    <optional>true</optional>
+                </dependency>
+
+                <dependency>
+                    <groupId>jakarta.enterprise</groupId>
+                    <artifactId>jakarta.enterprise.cdi-api</artifactId>
+                    <version>2.0.2</version>
+                    <optional>true</optional>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>jakarta-ee</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <dependencies>
+
+                <!-- Jakarta EE, i.e. "jakarta.*" versions -->
+
+                <dependency>
+                    <groupId>jakarta.inject</groupId>
+                    <artifactId>jakarta.inject-api</artifactId>
+                    <version>2.0.1</version>
+                    <optional>true</optional>
+                </dependency>
+
+                <dependency>
+                    <groupId>jakarta.ejb</groupId>
+                    <artifactId>jakarta.ejb-api</artifactId>
+                    <version>4.0.1</version>
+                    <optional>true</optional>
+                </dependency>
+
+                <dependency>
+                    <groupId>jakarta.persistence</groupId>
+                    <artifactId>jakarta.persistence-api</artifactId>
+                    <version>3.1.0</version>
+                    <optional>true</optional>
+                </dependency>
+
+                <dependency>
+                    <groupId>jakarta.enterprise</groupId>
+                    <artifactId>jakarta.enterprise.cdi-api</artifactId>
+                    <version>4.0.1</version>
+                    <optional>true</optional>
+                </dependency>
+            </dependencies>
+        </profile>
+
         <profile>
             <id>release</id>
 
