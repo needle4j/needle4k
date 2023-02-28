@@ -16,4 +16,3 @@ internal class ClassIterator(clazz: Class<*>) : Iterable<Class<*>> {
   }
 }
 
-internal fun Class<*>.toClassHierarchy() = ClassIterator(this)

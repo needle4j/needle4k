@@ -6,7 +6,6 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.util.*
 
-@Suppress("MemberVisibilityCanBePrivate")
 class ReflectionUtil(private val configuration: NeedleConfiguration) {
   fun getAllFieldsWithSupportedAnnotation(clazz: Class<*>) =
     clazz.allDeclaredFields().filter { configuration.annotationRegistry.isRegistered(*it.annotations) }
@@ -167,7 +166,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
   fun getMethod(clazz: Class<*>, methodName: String, vararg parameterTypes: Class<*>): Method =
     clazz.allDeclaredMethods().filter { it.name == methodName }.map {
       try {
-        clazz.getDeclaredMethod(methodName, *parameterTypes)
+        it.declaringClass.getDeclaredMethod(methodName, *parameterTypes)
       } catch (e: Exception) {
         null
       }
@@ -264,9 +263,11 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
 
   private fun checkPrimitiveArguments(parameterClass: Class<*>, argumentClass: Class<*>): Boolean {
     var result = false
+
     for ((key, value) in PRIMITIVES) {
       result = result || parameterClass == key && argumentClass == value
     }
+
     return result
   }
 
@@ -274,17 +275,18 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
     private val LOG = LoggerFactory.getLogger(ReflectionUtil::class.java)
 
     private val PRIMITIVES = mapOf(
-      Int::class.javaPrimitiveType to Int::class.java,
-      Double::class.javaPrimitiveType to Double::class.java,
-      Boolean::class.javaPrimitiveType to Boolean::class.java,
-      Long::class.javaPrimitiveType to Long::class.java,
-      Float::class.javaPrimitiveType to Float::class.java,
-      Char::class.javaPrimitiveType to Char::class.java,
-      Short::class.javaPrimitiveType to Short::class.java,
-      Byte::class.javaPrimitiveType to Byte::class.java
+      Int::class.javaPrimitiveType to java.lang.Integer::class.java,
+      Double::class.javaPrimitiveType to java.lang.Double::class.java,
+      Boolean::class.javaPrimitiveType to java.lang.Boolean::class.java,
+      Long::class.javaPrimitiveType to java.lang.Long::class.java,
+      Float::class.javaPrimitiveType to java.lang.Float::class.java,
+      Char::class.javaPrimitiveType to java.lang.Character::class.java,
+      Short::class.javaPrimitiveType to java.lang.Short::class.java,
+      Byte::class.javaPrimitiveType to java.lang.Byte::class.java
     )
   }
 
   private fun Class<*>.allDeclaredFields() = toClassHierarchy().toList().map { it.declaredFields.toList() }.flatten()
   private fun Class<*>.allDeclaredMethods() = toClassHierarchy().toList().map { it.declaredMethods.toList() }.flatten()
+  private fun Class<*>.toClassHierarchy() = ClassIterator(this)
 }

@@ -38,6 +38,11 @@ class AnnotationRegistryTest {
   fun `Check annotation classes`() {
     assertThrows(IllegalArgumentException::class.java) { objectUnderTest.addAnnotation(HashMap::class.java.name) }
     assertThrows(ClassNotFoundException::class.java) { objectUnderTest.addAnnotation("javax.inject.Inject") }
+
+    assertThat(configuration.reflectionHelper.getAllFieldsWithSupportedAnnotation(TestClass::class.java)).isEmpty()
+
+    objectUnderTest.addAnnotation(EJB::class.java)
+    assertThat(configuration.reflectionHelper.getAllFieldsWithSupportedAnnotation(TestClass::class.java)).hasSize(1)
   }
 
   private fun checkAnnotations() {
