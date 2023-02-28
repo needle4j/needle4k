@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class CollectionTest {
   @Test
-  fun `flatMap work as expected`() {
+  fun `groupBy work as expected`() {
     val numbers = listOf("one" to listOf(1, 2, 3), "two" to listOf(4, 3, 5), "three" to listOf(4))
     val allPairs = numbers.map { it.second.map { i -> it.first to i } }.flatten()
     val asMap = allPairs.groupBy({ pair -> pair.second }, { pair -> pair.first })

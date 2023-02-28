@@ -1,7 +1,9 @@
 package org.needle4k.configuration
 
+import org.needle4k.reflection.ReflectionUtil
 import org.needle4k.registries.AnnotationRegistry
 
-interface NeedleConfiguration {
-    val annotationRegistry: AnnotationRegistry
+class NeedleConfiguration {
+  val annotationRegistry = AnnotationRegistry(this)
+  val reflectionHelper = ReflectionUtil(this)
 }

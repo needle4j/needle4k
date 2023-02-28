@@ -7,7 +7,7 @@ import java.lang.reflect.Method
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate")
-class ReflectionUtil(val configuration: NeedleConfiguration) {
+class ReflectionUtil(private val configuration: NeedleConfiguration) {
   fun getAllFieldsWithSupportedAnnotation(clazz: Class<*>) =
     clazz.allDeclaredFields().filter { configuration.annotationRegistry.isRegistered(*it.annotations) }
 
@@ -18,7 +18,7 @@ class ReflectionUtil(val configuration: NeedleConfiguration) {
     clazz.allDeclaredMethods().filter { it.isAnnotationPresent(annotation) }
 
   fun getAllAnnotatedFields(clazz: Class<*>): Map<Class<out Annotation>, List<Field>> =
-     clazz.allDeclaredFields().map { it to it.annotations.map { a -> a.annotationClass.java }.toList() }
+    clazz.allDeclaredFields().map { it to it.annotations.map { a -> a.annotationClass.java }.toList() }
       .map { it.second.map { clazz -> it.first to clazz } }.flatten()
       .groupBy({ pair -> pair.second }, { pair -> pair.first })
 
@@ -173,27 +173,6 @@ class ReflectionUtil(val configuration: NeedleConfiguration) {
       }
     }.first() ?: throw NoSuchMethodException(methodName)
 
-  private fun checkArguments(parameterTypes: Array<Class<*>>, vararg arguments: Any?): Boolean {
-    for (i in arguments.indices) {
-      val parameterClass = parameterTypes[i]
-      val argumentClass = arguments[i]?.javaClass ?: parameterClass
-
-      if (!parameterClass.isAssignableFrom(argumentClass) && !checkPrimitiveArguments(parameterClass, argumentClass)) {
-        return false
-      }
-    }
-
-    return true
-  }
-
-  private fun checkPrimitiveArguments(parameterClass: Class<*>, argumentClass: Class<*>): Boolean {
-    var result = false
-    for ((key, value) in PRIMITIVES) {
-      result = result || parameterClass == key && argumentClass == value
-    }
-    return result
-  }
-
   /**
    * Invoke a given method with given arguments on a given object via
    * reflection.
@@ -241,6 +220,7 @@ class ReflectionUtil(val configuration: NeedleConfiguration) {
     setField(field, target, value)
   }
 
+  @Throws(Exception::class)
   fun getField(clazz: Class<*>, fieldName: String): Field = clazz.allDeclaredFields().first { it.name == fieldName }
 
   @Throws(Exception::class)
@@ -257,25 +237,52 @@ class ReflectionUtil(val configuration: NeedleConfiguration) {
    * @return class object
    * @throws ClassNotFoundException - ClassNotFoundException
    */
+  @Suppress("UNCHECKED_CAST")
   @Throws(ClassNotFoundException::class)
   fun <T> lookupClass(type: Class<T>, className: String): Class<T> {
-    return Class.forName(className) as Class<T>
+    val clazz = Class.forName(className) ?: throw ClassNotFoundException(className)
+
+    return if (type.isAssignableFrom(clazz)) {
+      clazz as Class<T>
+    } else {
+      throw IllegalArgumentException("$className cannot be assigned to $type")
+    }
+  }
+
+  private fun checkArguments(parameterTypes: Array<Class<*>>, vararg arguments: Any?): Boolean {
+    for (i in arguments.indices) {
+      val parameterClass = parameterTypes[i]
+      val argumentClass = arguments[i]?.javaClass ?: parameterClass
+
+      if (!parameterClass.isAssignableFrom(argumentClass) && !checkPrimitiveArguments(parameterClass, argumentClass)) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  private fun checkPrimitiveArguments(parameterClass: Class<*>, argumentClass: Class<*>): Boolean {
+    var result = false
+    for ((key, value) in PRIMITIVES) {
+      result = result || parameterClass == key && argumentClass == value
+    }
+    return result
   }
 
   companion object {
     private val LOG = LoggerFactory.getLogger(ReflectionUtil::class.java)
-    private val PRIMITIVES: MutableMap<Class<*>?, Class<*>> = HashMap()
 
-    init {
-      PRIMITIVES[Int::class.javaPrimitiveType] = Int::class.java
-      PRIMITIVES[Double::class.javaPrimitiveType] = Double::class.java
-      PRIMITIVES[Boolean::class.javaPrimitiveType] = Boolean::class.java
-      PRIMITIVES[Long::class.javaPrimitiveType] = Long::class.java
-      PRIMITIVES[Float::class.javaPrimitiveType] = Float::class.java
-      PRIMITIVES[Char::class.javaPrimitiveType] = Char::class.java
-      PRIMITIVES[Short::class.javaPrimitiveType] = Short::class.java
-      PRIMITIVES[Byte::class.javaPrimitiveType] = Byte::class.java
-    }
+    private val PRIMITIVES = mapOf(
+      Int::class.javaPrimitiveType to Int::class.java,
+      Double::class.javaPrimitiveType to Double::class.java,
+      Boolean::class.javaPrimitiveType to Boolean::class.java,
+      Long::class.javaPrimitiveType to Long::class.java,
+      Float::class.javaPrimitiveType to Float::class.java,
+      Char::class.javaPrimitiveType to Char::class.java,
+      Short::class.javaPrimitiveType to Short::class.java,
+      Byte::class.javaPrimitiveType to Byte::class.java
+    )
   }
 
   private fun Class<*>.allDeclaredFields() = toClassHierarchy().toList().map { it.declaredFields.toList() }.flatten()
