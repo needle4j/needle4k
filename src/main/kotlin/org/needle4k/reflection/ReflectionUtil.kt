@@ -8,7 +8,7 @@ import java.util.*
 
 class ReflectionUtil(private val configuration: NeedleConfiguration) {
   fun getAllFieldsWithSupportedAnnotation(clazz: Class<*>) =
-    clazz.allDeclaredFields().filter { configuration.annotationRegistry.isRegistered(*it.annotations) }
+    clazz.allDeclaredFields().filter { configuration.injectionAnnotationRegistry.isRegistered(*it.annotations) }
 
   fun getAllFieldsWithAnnotation(clazz: Class<*>, annotation: Class<out Annotation>) =
     clazz.allDeclaredFields().filter { it.isAnnotationPresent(annotation) }
@@ -236,14 +236,13 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
    * @throws ClassNotFoundException - ClassNotFoundException
    */
   @Suppress("UNCHECKED_CAST")
-  @Throws(ClassNotFoundException::class)
-  fun <T> lookupClass(type: Class<T>, className: String): Class<T> {
-    val clazz = forName(className) ?: throw ClassNotFoundException(className)
+  fun <T> lookupClass(type: Class<T>, className: String): Class<T>? {
+    val clazz = forName(className)
 
-    return if (type.isAssignableFrom(clazz)) {
-      clazz as Class<T>
-    } else {
-      throw IllegalArgumentException("$className cannot be assigned to $type")
+    return when {
+      clazz == null -> null
+      type.isAssignableFrom(clazz) -> clazz as Class<T>
+      else -> throw IllegalArgumentException("$className cannot be assigned to $type")
     }
   }
 

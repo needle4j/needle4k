@@ -7,9 +7,11 @@ import org.needle4k.reflection.ReflectionUtil
 import org.needle4k.registries.AnnotationRegistry
 
 class NeedleConfiguration(needleProperties: String = CUSTOM_CONFIGURATION_FILENAME) {
-  val annotationRegistry = AnnotationRegistry(this)
   val reflectionHelper = ReflectionUtil(this)
   val configurationProperties = ConfigurationLoader(needleProperties).configProperties
+
+  val injectionAnnotationRegistry = AnnotationRegistry(this)
+  val postconstructAnnotationRegistry = AnnotationRegistry(this)
 
   val customInjectionAnnotations: Set<Class<Annotation>>
     get() =
@@ -30,4 +32,21 @@ class NeedleConfiguration(needleProperties: String = CUSTOM_CONFIGURATION_FILENA
       configurationProperties[JDBC_URL_KEY]!!, configurationProperties[JDBC_USER_KEY]!!,
       configurationProperties[JDBC_PASSWORD_KEY]!!, configurationProperties[JDBC_DRIVER_KEY]!!
     )
+
+  init {
+    injectionAnnotationRegistry.addAnnotation("javax.ejb.EJB").addAnnotation("jakarta.ejb.EJB")
+      .addAnnotation("javax.annotation.Resource").addAnnotation("jakarta.annotation.Resource")
+      .addAnnotation("javax.inject.Inject").addAnnotation("jakarta.inject.Inject")
+      .addAnnotation("javax.persistence.PersistenceContext").addAnnotation("jakarta.persistence.PersistenceContext")
+      .addAnnotation("javax.persistence.PersistenceUnit").addAnnotation("jakarta.persistence.PersistenceUnit")
+      .addAnnotation("org.picocontainer.annotations.Inject")
+      .addAnnotation("org.springframework.beans.factory.annotation.Autowired")
+
+    postconstructAnnotationRegistry.addAnnotation("javax.annotation.PostConstruct")
+      .addAnnotation("jakarta.annotation.PostConstruct").addAnnotation("javax.inject.Inject")
+      .addAnnotation("jakarta.inject.Inject")
+
+    // TODO
+    //       .addAnnotation("javax.enterprise.inject.Instance").addAnnotation("jakarta.enterprise.inject.Instance")
+  }
 }

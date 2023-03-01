@@ -4,6 +4,7 @@ import jakarta.ejb.EJB
 import jakarta.inject.Inject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.assertThrows
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.needle4k.configuration.NeedleConfiguration
 import org.needle4k.registries.AnnotationRegistry
@@ -11,12 +12,17 @@ import org.needle4k.registries.AnnotationRegistry
 @Suppress("UsePropertyAccessSyntax")
 class AnnotationRegistryTest {
   private val configuration = NeedleConfiguration()
-  private val objectUnderTest = configuration.annotationRegistry
+  private val objectUnderTest = AnnotationRegistry(configuration)
   private val ejb = configuration.reflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, EJB::class.java).first()
     .getAnnotation(EJB::class.java)
   private val inject =
     configuration.reflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, Inject::class.java).first()
       .getAnnotation(Inject::class.java)
+
+  @BeforeEach
+  fun patchConfiguration() {
+    configuration.reflectionHelper.setFieldValue(configuration, "injectionAnnotationRegistry", objectUnderTest)
+  }
 
   @Test
   fun `Test AnnotationRegistry with classes`() {
@@ -37,7 +43,9 @@ class AnnotationRegistryTest {
   @Test
   fun `Check annotation classes`() {
     assertThrows(IllegalArgumentException::class.java) { objectUnderTest.addAnnotation(HashMap::class.java.name) }
-    assertThrows(ClassNotFoundException::class.java) { objectUnderTest.addAnnotation("javax.inject.Inject") }
+
+    objectUnderTest.addAnnotation("javax.inject.Inject")
+    assertThat(objectUnderTest.allAnnotations()).isEmpty()
 
     assertThat(configuration.reflectionHelper.getAllFieldsWithSupportedAnnotation(TestClass::class.java)).isEmpty()
 

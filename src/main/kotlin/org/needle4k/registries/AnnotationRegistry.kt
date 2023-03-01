@@ -8,16 +8,19 @@ class AnnotationRegistry(private val configuration: NeedleConfiguration) {
 
   fun allAnnotations() = registeredAnnotations.toList()
 
-  fun addAnnotation(className: String) {
+  fun addAnnotation(className: String) : AnnotationRegistry {
     val clazz = configuration.reflectionHelper.lookupClass(Annotation::class.java, className)
 
     if (clazz != null) {
       registeredAnnotations.add(clazz)
     }
+
+    return this
   }
 
-  fun addAnnotation(annotationClass: Class<out Annotation>) {
+  fun addAnnotation(annotationClass: Class<out Annotation>): AnnotationRegistry {
     registeredAnnotations.add(annotationClass)
+    return this
   }
 
   fun removeAnnotation(annotationClass: Class<out Annotation>) {
