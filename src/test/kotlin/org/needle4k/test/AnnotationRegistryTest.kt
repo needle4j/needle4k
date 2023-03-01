@@ -56,6 +56,7 @@ class AnnotationRegistryTest {
   private fun checkAnnotations() {
     assertThat(objectUnderTest.allAnnotations()).containsExactlyInAnyOrder(EJB::class.java, Inject::class.java)
     assertThat(objectUnderTest.isRegistered(ejb, inject)).isTrue()
+    assertThat(objectUnderTest.isRegistered(EJB::class.qualifiedName!!,  Inject::class.qualifiedName!!)).isTrue()
 
     objectUnderTest.removeAnnotation(Inject::class.java)
     assertThat(objectUnderTest.allAnnotations()).containsExactlyInAnyOrder(EJB::class.java)

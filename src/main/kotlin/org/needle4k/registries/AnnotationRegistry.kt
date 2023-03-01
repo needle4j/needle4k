@@ -1,14 +1,13 @@
 package org.needle4k.registries
 
 import org.needle4k.configuration.NeedleConfiguration
-import kotlin.collections.HashSet
 
 class AnnotationRegistry(private val configuration: NeedleConfiguration) {
   private val registeredAnnotations = HashSet<Class<out Annotation>>()
 
   fun allAnnotations() = registeredAnnotations.toList()
 
-  fun addAnnotation(className: String) : AnnotationRegistry {
+  fun addAnnotation(className: String): AnnotationRegistry {
     val clazz = configuration.reflectionHelper.lookupClass(Annotation::class.java, className)
 
     if (clazz != null) {
@@ -20,6 +19,7 @@ class AnnotationRegistry(private val configuration: NeedleConfiguration) {
 
   fun addAnnotation(annotationClass: Class<out Annotation>): AnnotationRegistry {
     registeredAnnotations.add(annotationClass)
+
     return this
   }
 
@@ -30,6 +30,12 @@ class AnnotationRegistry(private val configuration: NeedleConfiguration) {
   fun isRegistered(vararg annotations: Annotation): Boolean {
     val annotationClasses = annotations.map { it.annotationClass.java }.toSet()
 
+    return registeredAnnotations.intersect(annotationClasses).isNotEmpty()
+  }
+
+  fun isRegistered(vararg classNames: String): Boolean {
+    val annotationClasses =
+      classNames.mapNotNull { configuration.reflectionHelper.lookupClass(Annotation::class.java, it) }.toSet()
     return registeredAnnotations.intersect(annotationClasses).isNotEmpty()
   }
 }
