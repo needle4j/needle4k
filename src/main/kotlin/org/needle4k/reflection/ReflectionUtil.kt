@@ -187,8 +187,6 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
     return invokeMethod(instance, instance.javaClass, methodName, *arguments)
   }
 
-  fun getClasses(vararg classNames: String) = classNames.mapNotNull { forName(it) }
-
   /**
    * Returns the `Class` object associated with the class or
    * interface with the given string name.
@@ -200,6 +198,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
     return try {
       Class.forName(className)
     } catch (e: ClassNotFoundException) {
+      LOG.warn("Class $className not found")
       null
     }
   }
@@ -239,7 +238,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
   @Suppress("UNCHECKED_CAST")
   @Throws(ClassNotFoundException::class)
   fun <T> lookupClass(type: Class<T>, className: String): Class<T> {
-    val clazz = Class.forName(className) ?: throw ClassNotFoundException(className)
+    val clazz = forName(className) ?: throw ClassNotFoundException(className)
 
     return if (type.isAssignableFrom(clazz)) {
       clazz as Class<T>
