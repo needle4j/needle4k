@@ -1,6 +1,6 @@
 package org.needle4k.test
 
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class CollectionTest {
@@ -10,7 +10,7 @@ class CollectionTest {
     val allPairs = numbers.map { it.second.map { i -> it.first to i } }.flatten()
     val asMap = allPairs.groupBy({ pair -> pair.second }, { pair -> pair.first })
 
-    Assertions.assertThat(asMap).hasSize(5)
+    assertThat(asMap).hasSize(5)
       .containsEntry(1, listOf("one"))
       .containsEntry(2, listOf("one"))
       .containsEntry(3, listOf("one", "two"))
