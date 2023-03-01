@@ -6,9 +6,6 @@ import java.io.InputStream
 import java.util.*
 
 const val MOCK_PROVIDER_KEY = "mock.provider"
-const val CUSTOM_INJECTION_ANNOTATIONS_KEY = "custom.injection.annotations"
-const val CUSTOM_INJECTION_PROVIDER_CLASSES_KEY = "custom.injection.provider.classes"
-const val CUSTOM_INSTANCES_SUPPLIER_CLASSES_KEY = "custom.instances.supplier.classes"
 const val DB_OPERATION_KEY = "db.operation"
 const val PERSISTENCE_UNIT_NAME_KEY = "persistenceUnit.name"
 const val JDBC_URL_KEY = "jdbc.url"
@@ -16,7 +13,11 @@ const val JDBC_DRIVER_KEY = "jdbc.driver"
 const val JDBC_USER_KEY = "jdbc.user"
 const val JDBC_PASSWORD_KEY = "jdbc.password"
 const val POST_CONSTRUCT_EXECUTE_STRATEGY = "postconstruct.executestrategy"
+
 const val CUSTOM_CONFIGURATION_FILENAME = "needle"
+const val CUSTOM_INJECTION_ANNOTATIONS_KEY = "custom.injection.annotations"
+const val CUSTOM_INJECTION_PROVIDER_CLASSES_KEY = "custom.injection.provider.classes"
+const val CUSTOM_INSTANCES_SUPPLIER_CLASSES_KEY = "custom.instances.supplier.classes"
 
 internal class ConfigurationLoader(resourceName: String = CUSTOM_CONFIGURATION_FILENAME) {
   val configProperties = loadResourceAndDefault(resourceName)
@@ -28,7 +29,8 @@ internal class ConfigurationLoader(resourceName: String = CUSTOM_CONFIGURATION_F
     JDBC_URL_KEY to "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
     JDBC_DRIVER_KEY to "org.h2.Driver",
     JDBC_USER_KEY to "",
-    JDBC_PASSWORD_KEY to ""
+    JDBC_PASSWORD_KEY to "",
+    POST_CONSTRUCT_EXECUTE_STRATEGY to PostConstructExecuteStrategy.DEFAULT.name
   )
 
   private fun loadResourceAndDefault(name: String): Map<String, String> {
