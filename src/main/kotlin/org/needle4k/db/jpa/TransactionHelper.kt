@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.needle4k.configuration.db.transaction
+package org.needle4k.db.jpa
 
 import jakarta.persistence.EntityManager
 import java.util.*
