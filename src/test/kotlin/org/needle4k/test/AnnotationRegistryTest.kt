@@ -1,7 +1,7 @@
 package org.needle4k.test
 
-import jakarta.ejb.EJB
-import jakarta.inject.Inject
+import javax.ejb.EJB
+import javax.inject.Inject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -44,8 +44,8 @@ class AnnotationRegistryTest {
   fun `Check annotation classes`() {
     assertThrows(IllegalArgumentException::class.java) { objectUnderTest.addAnnotation(HashMap::class.java.name) }
 
-    objectUnderTest.addAnnotation("javax.inject.Inject")
-    assertThat(objectUnderTest.allAnnotations()).isEmpty()
+    objectUnderTest.addAnnotation("jakarta.inject.Inject")
+    assertThat(objectUnderTest.allAnnotations()).`as`("class not found").isEmpty()
 
     assertThat(configuration.reflectionHelper.getAllFieldsWithSupportedAnnotation(TestClass::class.java)).isEmpty()
 

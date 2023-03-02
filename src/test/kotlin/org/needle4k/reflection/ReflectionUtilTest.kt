@@ -1,6 +1,6 @@
 package org.needle4k.reflection
 
-import jakarta.annotation.Resource
+import javax.annotation.Resource
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert
 import org.junit.Assert.assertEquals

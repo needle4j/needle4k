@@ -1,8 +1,8 @@
 package org.needle4k.db.jpa
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.EntityManagerFactory
-import jakarta.persistence.spi.PersistenceUnitInfo
+import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
+import javax.persistence.spi.PersistenceUnitInfo
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl
 import org.hibernate.jpa.boot.internal.PersistenceUnitInfoDescriptor

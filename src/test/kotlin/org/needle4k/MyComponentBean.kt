@@ -1,13 +1,13 @@
 package org.needle4k
 
-import jakarta.annotation.Resource
-import jakarta.ejb.EJB
-import jakarta.ejb.SessionContext
-import jakarta.inject.Inject
+import javax.annotation.Resource
+import javax.ejb.EJB
+import javax.ejb.SessionContext
+import javax.inject.Inject
 import java.util.*
-import jakarta.persistence.EntityManager
-import jakarta.persistence.EntityManagerFactory
-import jakarta.persistence.PersistenceContext
+import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
+import javax.persistence.PersistenceContext
 
 open class MyComponentBean : MyComponent {
   @PersistenceContext

@@ -1,6 +1,6 @@
 package org.needle4k.db
 
-import jakarta.persistence.*
+import javax.persistence.*
 
 @Entity
 @Table(name = Address.TABLE_NAME, uniqueConstraints = [UniqueConstraint(columnNames = ["id", "zip"])])

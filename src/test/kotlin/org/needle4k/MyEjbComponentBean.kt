@@ -1,6 +1,6 @@
 package org.needle4k
 
-import jakarta.inject.Inject
+import javax.inject.Inject
 import java.util.*
 
 class MyEjbComponentBean : MyEjbComponent {

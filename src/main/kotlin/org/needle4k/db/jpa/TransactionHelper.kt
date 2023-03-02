@@ -2,7 +2,7 @@
 
 package org.needle4k.db.jpa
 
-import jakarta.persistence.EntityManager
+import javax.persistence.EntityManager
 import java.util.*
 
 /**
