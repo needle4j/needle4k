@@ -2,6 +2,7 @@
 
 package org.needle4k.db.jpa
 
+import jakarta.persistence.EntityManager
 import java.util.*
 
 /**
@@ -11,7 +12,7 @@ import java.util.*
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-abstract class AbstractTransactionHelper(val entityManager: IEntityManager) : ITransactionHelper {
+class TransactionHelper(val entityManager: EntityManager) {
   /**
    * Saves the given object in the database.
    *
@@ -21,8 +22,7 @@ abstract class AbstractTransactionHelper(val entityManager: IEntityManager) : IT
    * @throws Exception save objects failed
   </T> */
   @Throws(Exception::class)
-  override fun <T : Any> saveObject(obj: T): T =
-    executeInTransaction { entityManager -> persist(obj, entityManager) }
+  fun <T : Any> saveObject(obj: T): T = executeInTransaction { entityManager -> persist(obj, entityManager) }
 
   /**
    * Finds and returns the object of the given id in the persistence context.
@@ -34,7 +34,7 @@ abstract class AbstractTransactionHelper(val entityManager: IEntityManager) : IT
    * @throws Exception finding object failed
   </T> */
   @Throws(Exception::class)
-  override fun <T : Any> loadObject(clazz: Class<T>, id: Any): T =
+  fun <T : Any> loadObject(clazz: Class<T>, id: Any): T =
     executeInTransaction { entityManager -> loadObject(entityManager, clazz, id) }
 
   /**
@@ -47,9 +47,9 @@ abstract class AbstractTransactionHelper(val entityManager: IEntityManager) : IT
    * @throws Exception                loading objects failed
   </T> */
   @Throws(Exception::class)
-  override fun <T : Any> loadAllObjects(clazz: Class<T>): List<T> {
-    return executeInTransaction { entityManager -> entityManager.loadAllObjects(clazz) }
-  }
+  @Suppress("UNCHECKED_CAST")
+  fun <T : Any> loadAllObjects(clazz: Class<T>) =
+    executeInTransaction { it.createQuery("SELECT DISTINCT e FROM ${clazz.name} e").resultList as List<T> }
 
   /**
    * Encapsulates execution of runnable.run() in transactions.
@@ -62,7 +62,7 @@ abstract class AbstractTransactionHelper(val entityManager: IEntityManager) : IT
    * @throws Exception execution failed
   </T> */
   @Throws(Exception::class)
-  override fun <T> executeInTransaction(runnable: Runnable<T>, clearAfterCommit: Boolean): T {
+  fun <T> executeInTransaction(runnable: Runnable<T>, clearAfterCommit: Boolean): T {
     val result: T
 
     try {
@@ -92,22 +92,36 @@ abstract class AbstractTransactionHelper(val entityManager: IEntityManager) : IT
    * @throws Exception execution failed
   </T> */
   @Throws(Exception::class)
-  override fun <T> executeInTransaction(runnable: Runnable<T>): T {
+  fun <T> executeInTransaction(runnable: Runnable<T>): T {
     return executeInTransaction(runnable, true)
   }
 
-  override fun <T : Any> persist(obj: T): T {
+  fun <T : Any> persist(obj: T): T {
     return persist(obj, entityManager)
   }
 
-  fun <T : Any> persist(obj: T, entityManager: IEntityManager): T {
+  fun <T : Any> persist(obj: T, entityManager: EntityManager): T {
     entityManager.persist(obj)
     return obj
   }
 
-  fun <T : Any> loadObject(entityManager: IEntityManager, clazz: Class<T>, id: Any): T {
+  fun <T : Any> loadObject(entityManager: EntityManager, clazz: Class<T>, id: Any): T {
     return entityManager.find(clazz, id)
   }
 }
 
-typealias Runnable<T> = (entityManager: IEntityManager) -> T
+fun EntityManager.beginTransaction() {
+  transaction.begin()
+}
+
+fun EntityManager.commitTransaction() {
+  transaction.commit()
+}
+
+fun EntityManager.rollbackTransaction() {
+  transaction.rollback()
+}
+
+fun EntityManager.isTransactionActive() = transaction.isActive
+
+typealias Runnable<T> = (entityManager: EntityManager) -> T
