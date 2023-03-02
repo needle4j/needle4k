@@ -44,7 +44,8 @@ class AnnotationRegistryTest {
   fun `Check annotation classes`() {
     assertThrows(IllegalArgumentException::class.java) { objectUnderTest.addAnnotation(HashMap::class.java.name) }
 
-    objectUnderTest.addAnnotation("jakarta.inject.Inject")
+    val prefix = if(configuration.reflectionHelper.forName("jakarta.inject.Inject") == null) "jakarta" else "javax"
+    objectUnderTest.addAnnotation("$prefix.inject.Inject")
     assertThat(objectUnderTest.allAnnotations()).`as`("class not found").isEmpty()
 
     assertThat(configuration.reflectionHelper.getAllFieldsWithSupportedAnnotation(TestClass::class.java)).isEmpty()
