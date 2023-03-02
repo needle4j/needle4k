@@ -5,7 +5,7 @@ import org.needle4k.configuration.NeedleConfiguration
 class AnnotationRegistry(private val configuration: NeedleConfiguration) {
   private val registeredAnnotations = HashSet<Class<out Annotation>>()
 
-  fun allAnnotations() = registeredAnnotations.toList()
+  fun allAnnotations() = registeredAnnotations.toSet()
 
   fun addAnnotation(className: String): AnnotationRegistry {
     val clazz = configuration.reflectionHelper.lookupClass(Annotation::class.java, className)
@@ -27,15 +27,13 @@ class AnnotationRegistry(private val configuration: NeedleConfiguration) {
     registeredAnnotations.remove(annotationClass)
   }
 
-  fun isRegistered(vararg annotations: Annotation): Boolean {
-    val annotationClasses = annotations.map { it.annotationClass.java }.toSet()
+  fun isRegistered(vararg annotations: Annotation) =
+    annotations.map { it.annotationClass.java }.toSet().intersect(registeredAnnotations).isNotEmpty()
 
-    return registeredAnnotations.intersect(annotationClasses).isNotEmpty()
-  }
+  fun isRegistered(vararg annotationClasses: Class<out Annotation>) =
+    annotationClasses.toSet().intersect(registeredAnnotations).isNotEmpty()
 
-  fun isRegistered(vararg classNames: String): Boolean {
-    val annotationClasses =
-      classNames.mapNotNull { configuration.reflectionHelper.lookupClass(Annotation::class.java, it) }.toSet()
-    return registeredAnnotations.intersect(annotationClasses).isNotEmpty()
-  }
+  fun isRegistered(vararg classNames: String) =
+    classNames.mapNotNull { configuration.reflectionHelper.lookupClass(Annotation::class.java, it) }.toSet()
+      .intersect(registeredAnnotations).isNotEmpty()
 }

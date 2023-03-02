@@ -2,8 +2,7 @@ package org.needle4k.reflection
 
 import org.needle4k.configuration.NeedleConfiguration
 import org.slf4j.LoggerFactory
-import java.lang.reflect.Field
-import java.lang.reflect.Method
+import java.lang.reflect.*
 import java.util.*
 
 class ReflectionUtil(private val configuration: NeedleConfiguration) {
@@ -224,7 +223,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
   @Throws(Exception::class)
   fun <T> createInstance(clazz: Class<T>, vararg parameter: Any): T {
     val parameterTypes: Array<Class<*>> = parameter.map { it.javaClass }.toTypedArray()
-    val constructor = clazz.getConstructor(*parameterTypes)
+    val constructor = clazz.getDeclaredConstructor(*parameterTypes)
 
     return constructor.newInstance(*parameter)
   }
