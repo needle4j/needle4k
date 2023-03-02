@@ -83,12 +83,6 @@
             <version>${kotlin.version}</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.jetbrains.kotlin</groupId>-->
-<!--            <artifactId>kotlin-reflect</artifactId>-->
-<!--            <version>${kotlin.version}</version>-->
-<!--        </dependency>-->
-
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -170,22 +164,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JPA/Persistence -->
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.version}</version>
-            <optional>true</optional>
-        </dependency>
-
         <!-- For internal tests -->
 
         <dependency>
@@ -217,6 +195,27 @@
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.3.0</version>
+
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+
+                        <configuration>
+                            <sources>
+                                <source>src/main/${jee.sourceDirectory}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -313,10 +312,21 @@
 
     <profiles>
         <profile>
-            <id>jee</id>
+            <id>java-ee</id>
+
+            <properties>
+                <jee.sourceDirectory>java-ee</jee.sourceDirectory>
+            </properties>
 
             <dependencies>
                 <!-- Java EE, i.e. "javax.*" versions -->
+
+                <dependency>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                    <version>${hibernate.version}</version>
+                    <optional>true</optional>
+                </dependency>
 
                 <dependency>
                     <groupId>jakarta.inject</groupId>
@@ -350,11 +360,22 @@
 
         <profile>
             <id>jakarta-ee</id>
+
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
 
+            <properties>
+                <jee.sourceDirectory>jakarta-ee</jee.sourceDirectory>
+            </properties>
+
             <dependencies>
+                <dependency>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-core-jakarta</artifactId>
+                    <version>${hibernate.version}</version>
+                    <optional>true</optional>
+                </dependency>
 
                 <!-- Jakarta EE, i.e. "jakarta.*" versions -->
 

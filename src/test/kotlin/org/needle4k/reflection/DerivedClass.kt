@@ -1,6 +1,6 @@
 package org.needle4k.reflection
 
-@Suppress("unused", "RedundantOverride", "UNUSED_PARAMETER")
+@Suppress("unused", "RedundantOverride", "UNUSED_PARAMETER", "PLATFORM_CLASS_MAPPED_TO_KOTLIN", "RemoveRedundantQualifierName")
 class DerivedClass : SampleClass() {
   private val field: String = ""
   val booleanField: Boolean = false

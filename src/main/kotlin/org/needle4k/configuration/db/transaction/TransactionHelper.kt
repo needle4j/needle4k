@@ -2,9 +2,9 @@
 
 package org.needle4k.configuration.db.transaction
 
+import jakarta.persistence.EntityManager
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.EntityManager
+import jakarta.persistence.Entity
 
 /**
  * Utility class to manage transactions conveniently.
