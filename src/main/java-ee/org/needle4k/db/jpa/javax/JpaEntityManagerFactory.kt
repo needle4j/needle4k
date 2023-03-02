@@ -1,7 +1,5 @@
 package org.needle4k.db.jpa.javax
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.spi.PersistenceUnitInfo
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl
 import org.hibernate.jpa.boot.internal.PersistenceUnitInfoDescriptor
 import org.hibernate.tool.schema.Action.*
@@ -20,7 +18,7 @@ class JpaEntityManagerFactory(needleConfiguration: NeedleConfiguration, entityCl
   fun createEntityManager(): EntityManager = createEntityManagerFactory().createEntityManager()
 
   fun createEntityManagerFactory(): EntityManagerFactory {
-    if (entityManagerFactory == null || !entityManagerFactory.isOpen) {
+    if (!this::entityManagerFactory.isInitialized || !entityManagerFactory.isOpen) {
       val persistenceUnitInfo = getPersistenceUnitInfo(needleConfiguration.persistenceUnitName)
       val builder = EntityManagerFactoryBuilderImpl(PersistenceUnitInfoDescriptor(persistenceUnitInfo), properties)
       entityManagerFactory = builder.build()
@@ -30,7 +28,7 @@ class JpaEntityManagerFactory(needleConfiguration: NeedleConfiguration, entityCl
   }
 
   fun shutdown() {
-    if (entityManagerFactory != null) {
+    if (this::entityManagerFactory.isInitialized) {
       entityManagerFactory.close()
     }
   }

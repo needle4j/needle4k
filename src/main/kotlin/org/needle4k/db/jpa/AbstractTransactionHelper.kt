@@ -2,9 +2,7 @@
 
 package org.needle4k.db.jpa
 
-import jakarta.persistence.EntityManager
 import java.util.*
-import jakarta.persistence.Entity
 
 /**
  * Utility class to manage transactions conveniently.
@@ -13,8 +11,7 @@ import jakarta.persistence.Entity
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class TransactionHelper(val entityManager: EntityManager) {
-
+abstract class AbstractTransactionHelper(val entityManager: IEntityManager) : ITransactionHelper {
   /**
    * Saves the given object in the database.
    *
@@ -24,7 +21,7 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception save objects failed
   </T> */
   @Throws(Exception::class)
-  fun <T> saveObject(obj: T): T =
+  override fun <T : Any> saveObject(obj: T): T =
     executeInTransaction { entityManager -> persist(obj, entityManager) }
 
   /**
@@ -37,7 +34,7 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception finding object failed
   </T> */
   @Throws(Exception::class)
-  fun <T> loadObject(clazz: Class<T>, id: Any): T =
+  override fun <T : Any> loadObject(clazz: Class<T>, id: Any): T =
     executeInTransaction { entityManager -> loadObject(entityManager, clazz, id) }
 
   /**
@@ -50,16 +47,8 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception                loading objects failed
   </T> */
   @Throws(Exception::class)
-  fun <T> loadAllObjects(clazz: Class<T>): List<T> {
-    val entityAnnotation = clazz.getAnnotation(Entity::class.java)
-      ?: throw IllegalArgumentException("Unknown entity: " + clazz.name)
-
-    return executeInTransaction { entityManager ->
-      val fromEntity = entityAnnotation.name.ifEmpty { clazz.simpleName }
-
-      entityManager.createQuery("SELECT DISTINCT e FROM $fromEntity e")
-        .resultList as List<T>
-    }
+  override fun <T : Any> loadAllObjects(clazz: Class<T>): List<T> {
+    return executeInTransaction { entityManager -> entityManager.loadAllObjects(clazz) }
   }
 
   /**
@@ -73,21 +62,21 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception execution failed
   </T> */
   @Throws(Exception::class)
-  fun <T> executeInTransaction(runnable: Runnable<T>, clearAfterCommit: Boolean): T {
+  override fun <T> executeInTransaction(runnable: Runnable<T>, clearAfterCommit: Boolean): T {
     val result: T
 
     try {
-      entityManager.transaction.begin()
+      entityManager.beginTransaction()
       result = runnable(entityManager)
       entityManager.flush()
-      entityManager.transaction.commit()
+      entityManager.commitTransaction()
 
       if (clearAfterCommit) {
         entityManager.clear()
       }
     } finally {
-      if (entityManager.transaction.isActive) {
-        entityManager.transaction.rollback()
+      if (entityManager.isTransactionActive()) {
+        entityManager.rollbackTransaction()
       }
     }
 
@@ -103,22 +92,22 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception execution failed
   </T> */
   @Throws(Exception::class)
-  fun <T> executeInTransaction(runnable: Runnable<T>): T {
+  override fun <T> executeInTransaction(runnable: Runnable<T>): T {
     return executeInTransaction(runnable, true)
   }
 
-  fun <T> persist(obj: T, entityManager: EntityManager): T {
+  override fun <T : Any> persist(obj: T): T {
+    return persist(obj, entityManager)
+  }
+
+  fun <T : Any> persist(obj: T, entityManager: IEntityManager): T {
     entityManager.persist(obj)
     return obj
   }
 
-  fun <T> persist(obj: T): T {
-    return persist(obj, entityManager)
-  }
-
-  fun <T> loadObject(entityManager: EntityManager, clazz: Class<T>?, id: Any?): T {
+  fun <T : Any> loadObject(entityManager: IEntityManager, clazz: Class<T>, id: Any): T {
     return entityManager.find(clazz, id)
   }
 }
 
-typealias Runnable<T> = (entityManager: EntityManager) -> T
+typealias Runnable<T> = (entityManager: IEntityManager) -> T

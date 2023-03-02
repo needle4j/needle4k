@@ -1,8 +1,5 @@
 package org.needle4k.db.jpa.javax
 
-import jakarta.persistence.SharedCacheMode
-import jakarta.persistence.spi.PersistenceUnitInfo
-import jakarta.persistence.spi.PersistenceUnitTransactionType
 import org.needle4k.db.jpa.AbstractPersistenceUnitInfo
 import java.util.*
 import javax.persistence.SharedCacheMode
