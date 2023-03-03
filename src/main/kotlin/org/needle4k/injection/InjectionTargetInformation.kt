@@ -31,7 +31,7 @@ sealed class InjectionTargetInformation<T : AccessibleObject>(val fieldOrMethod:
    * present on this element, else false
    * @throws NullPointerException - if the given annotation class is null
    */
-  fun isAnnotationPresent(annotationClass: Class<out Annotation>) = getAnnotation<Any>(annotationClass) != null
+  fun isAnnotationPresent(annotationClass: Class<out Annotation>) = getAnnotation(annotationClass) != null
 
   /**
    * Returns the [Annotation] object if an annotation for the specified
@@ -48,7 +48,7 @@ sealed class InjectionTargetInformation<T : AccessibleObject>(val fieldOrMethod:
    * @throws NullPointerException - if the given annotation class is null
    */
   @Suppress("UNCHECKED_CAST")
-  open fun <T> getAnnotation(annotationClass: Class<out Annotation>): T? = fieldOrMethod.getAnnotation(annotationClass) as T?
+  open fun <T:Annotation> getAnnotation(annotationClass: Class<T>): T? = fieldOrMethod.getAnnotation(annotationClass)
 }
 
 class FieldTargetInformation(field: Field, override val injectionAnnotation: Annotation) :
@@ -73,8 +73,8 @@ sealed class ExecutableTargetInformation<T : Executable>(
     get() = parameter.parameterizedType
 
   @Suppress("UNCHECKED_CAST")
-  override fun <T> getAnnotation(annotationClass: Class<out Annotation>)=
-    super.getAnnotation(annotationClass) ?: parameter.getAnnotation(annotationClass) as T?
+  override fun <T:Annotation> getAnnotation(annotationClass: Class<T>): T? =
+    super.getAnnotation(annotationClass) ?: parameter.getAnnotation(annotationClass)
 }
 
 class ConstructorTargetInformation(constructor: Constructor<*>, parameter: Parameter, injectionAnnotation: Annotation) :

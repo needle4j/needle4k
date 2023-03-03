@@ -4,6 +4,7 @@ import org.needle4k.NeedleContext
 import org.needle4k.ObjectUnderTestInstantiationException
 import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.configuration.PostConstructExecuteStrategy
+import org.needle4k.injection.InjectionConfiguration
 import java.lang.reflect.Method
 
 /**
@@ -20,10 +21,9 @@ import java.lang.reflect.Method
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  * @author Heinz Wilming, akquinet AG (heinz.wilming@akquinet.de)
  */
-class PostConstructProcessor(
-  private val postConstructAnnotations: Set<Class<out Annotation>>,
-  private val postConstructExecuteStrategy: PostConstructExecuteStrategy
-) : NeedleProcessor {
+class PostConstructProcessor(private val configuration: InjectionConfiguration) : NeedleProcessor {
+  private val postConstructAnnotations get() = configuration.needleConfiguration.postconstructAnnotationRegistry.allAnnotations()
+  private val postConstructExecuteStrategy get() = configuration.needleConfiguration.postConstructExecuteStrategy
 
   /**
    * calls process(instance) for each object under test, only if field is
@@ -41,7 +41,9 @@ class PostConstructProcessor(
         if (postConstructExecuteStrategy === PostConstructExecuteStrategy.ALWAYS ||
           objectUnderTestAnnotation != null && objectUnderTestAnnotation.postConstruct
         ) {
-          process(context, context.getObjectUnderTest(objectUnderTestId))
+          val instance = context.getObjectUnderTest(objectUnderTestId)
+            ?: throw ObjectUnderTestInstantiationException("Could not resolve @ObjectUnderTest with id $objectUnderTestId")
+          process(context, instance)
         }
       }
     }
@@ -68,14 +70,18 @@ class PostConstructProcessor(
   }
 
   /**
-   * @param instance
    * @return all instance methods that are marked as postConstruction methods
    */
   fun getPostConstructMethods(context: NeedleContext, type: Class<*>): Set<Method> {
     val postConstructMethods: MutableSet<Method> = LinkedHashSet()
 
     for (postConstructAnnotation in postConstructAnnotations) {
-      postConstructMethods.addAll(context.needleConfiguration.reflectionHelper.getAllMethodsWithAnnotation(type, postConstructAnnotation))
+      postConstructMethods.addAll(
+        context.needleConfiguration.reflectionHelper.getAllMethodsWithAnnotation(
+          type,
+          postConstructAnnotation
+        )
+      )
     }
     return postConstructMethods
   }

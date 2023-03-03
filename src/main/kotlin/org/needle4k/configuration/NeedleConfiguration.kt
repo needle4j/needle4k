@@ -13,15 +13,12 @@ class NeedleConfiguration(needleProperties: String = CUSTOM_CONFIGURATION_FILENA
   val injectionAnnotationRegistry = AnnotationRegistry(this)
   val postconstructAnnotationRegistry = AnnotationRegistry(this)
 
-  val customInjectionAnnotations: Set<Class<Annotation>>
-    get() =
-      ClassListParser(this).lookup(CUSTOM_INJECTION_ANNOTATIONS_KEY)
+  val customInjectionAnnotations: Set<Class<out Annotation>>
+    get() = ClassListParser(this).lookup(CUSTOM_INJECTION_ANNOTATIONS_KEY)
   val customInjectionProviderClasses: Set<Class<InjectionProvider<*>>>
-    get() =
-      ClassListParser(this).lookup(CUSTOM_INJECTION_PROVIDER_CLASSES_KEY)
+    get() = ClassListParser(this).lookup(CUSTOM_INJECTION_PROVIDER_CLASSES_KEY)
   val customInjectionProviderInstancesSupplierClasses: Set<Class<InjectionProviderInstancesSupplier>>
-    get() =
-      ClassListParser(this).lookup(CUSTOM_INSTANCES_SUPPLIER_CLASSES_KEY)
+    get() = ClassListParser(this).lookup(CUSTOM_INSTANCES_SUPPLIER_CLASSES_KEY)
 
   val persistenceUnitName get() = configurationProperties[PERSISTENCE_UNIT_NAME_KEY]!!
   val mockProviderClassName get() = configurationProperties[MOCK_PROVIDER_KEY]!!
@@ -45,8 +42,5 @@ class NeedleConfiguration(needleProperties: String = CUSTOM_CONFIGURATION_FILENA
     postconstructAnnotationRegistry.addAnnotation("javax.annotation.PostConstruct")
       .addAnnotation("jakarta.annotation.PostConstruct").addAnnotation("javax.inject.Inject")
       .addAnnotation("jakarta.inject.Inject")
-
-    // TODO
-    //       .addAnnotation("javax.enterprise.inject.Instance").addAnnotation("jakarta.enterprise.inject.Instance")
   }
 }

@@ -10,7 +10,7 @@ interface InjectionProvider<T> {
    * @param injectionTargetType the type of the injection target.
    * @return instance of `T`
    */
-  fun <T : Any> getInjectedObject(injectionTargetType: Class<T>): T
+  fun <T> getInjectedObject(injectionTargetType: Class<T>): T
 
   /**
    * Returns a key object, which identifies the provided object.

@@ -15,16 +15,12 @@ class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration)
     return injectedObjects[key] as X?
   }
 
-  fun getInjectedObjects(): Collection<Any> {
-    return injectedObjects.values
-  }
-
   fun addInjectedObject(key: Any, instance: Any) {
     injectedObjects[key] = instance
   }
 
-  fun getObjectUnderTest(id: String): Any {
-    return objectsUnderTest[id]!!
+  fun getObjectUnderTest(id: String): Any? {
+    return objectsUnderTest[id]
   }
 
   fun getObjectUnderTestAnnotation(id: String): ObjectUnderTest? {
@@ -39,9 +35,7 @@ class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration)
     objectUnderTestAnnotations[id] = objectUnderTestAnnotation
   }
 
-  fun getObjectsUnderTest(): Collection<Any> {
-    return objectsUnderTest.values
-  }
+  fun objectsUnderTest()= objectsUnderTest.values
 
   val objectsUnderTestIds: Set<String>
     get() = objectsUnderTest.keys
