@@ -27,8 +27,10 @@ class AnnotationRegistry(private val configuration: NeedleConfiguration) {
     registeredAnnotations.remove(annotationClass)
   }
 
-  fun isRegistered(vararg annotations: Annotation) =
-    annotations.map { it.annotationClass.java }.toSet().intersect(registeredAnnotations).isNotEmpty()
+  fun isRegistered(vararg annotations: Annotation) = registeredAnnotation(*annotations) != null
+
+  fun registeredAnnotation(vararg annotations: Annotation): Annotation? = annotations.associateBy { it.annotationClass.java }
+    .filterKeys { registeredAnnotations.contains(it) }.values.firstOrNull()
 
   fun isRegistered(vararg annotationClasses: Class<out Annotation>) =
     annotationClasses.toSet().intersect(registeredAnnotations).isNotEmpty()

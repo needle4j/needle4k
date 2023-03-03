@@ -4,7 +4,7 @@ import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.configuration.NeedleConfiguration
 import java.lang.reflect.Field
 
-class NeedleContext(val test: Any, needleConfiguration: NeedleConfiguration) {
+class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration) {
   private val objectsUnderTest: MutableMap<String, Any> = HashMap()
   private val objectUnderTestAnnotations = HashMap<String, ObjectUnderTest>()
   private val injectedObjects: MutableMap<Any, Any> = HashMap()
@@ -23,8 +23,8 @@ class NeedleContext(val test: Any, needleConfiguration: NeedleConfiguration) {
     injectedObjects[key] = instance
   }
 
-  fun getObjectUnderTest(id: String): Any? {
-    return objectsUnderTest[id]
+  fun getObjectUnderTest(id: String): Any {
+    return objectsUnderTest[id]!!
   }
 
   fun getObjectUnderTestAnnotation(id: String): ObjectUnderTest? {

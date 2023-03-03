@@ -146,7 +146,7 @@ class ReflectionUtilTest {
     )
     assertEquals(true, resultPrimitives)
 
-    val resultObjects: Any = objectUnderTest.invokeMethod(
+    val resultObjects = objectUnderTest.invokeMethod(
       derivedClass, "testInvokeWithObjects", intValue,
       floatValue, charValue, booleanValue, longValue, byteValue, shortValue, doubleValue
     )
@@ -171,7 +171,7 @@ class ReflectionUtilTest {
     )
     assertEquals(true, resultPrimitives)
 
-    val resultObjects: Any = objectUnderTest.invokeMethod(
+    val resultObjects = objectUnderTest.invokeMethod(
       derivedClass, "testInvokeWithObjects", intValue,
       floatValue, charValue, booleanValue, longValue, byteValue, shortValue, doubleValue
     )

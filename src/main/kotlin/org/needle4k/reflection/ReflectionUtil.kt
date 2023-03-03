@@ -78,7 +78,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
    * @return -- the value of the represented field in object; primitive values
    * are wrapped in an appropriate object before being returned
    */
-  fun getFieldValue(instance: Any, clazz: Class<*>, fieldName: String): Any {
+  fun getFieldValue(instance: Any, clazz: Class<*>, fieldName: String): Any? {
     return try {
       val field = clazz.getDeclaredField(fieldName)
       getFieldValue(instance, field)
@@ -95,7 +95,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
    * @return -- the value of the represented field in object; primitive values
    * are wrapped in an appropriate object before being returned
    */
-  fun getFieldValue(instance: Any, field: Field): Any {
+  fun getFieldValue(instance: Any, field: Field): Any? {
     return try {
       if (!field.canAccess(instance)) {
         field.isAccessible = true
@@ -116,7 +116,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
    * are wrapped in an appropriate object before being returned
    */
   @Suppress("unused")
-  fun getFieldValue(`object`: Any, fieldName: String): Any {
+  fun getFieldValue(`object`: Any, fieldName: String): Any? {
     return getFieldValue(`object`, `object`.javaClass, fieldName)
   }
 
@@ -132,7 +132,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
    * @throws Exception - operation exception
    */
   @Throws(Exception::class)
-  private fun invokeMethod(instance: Any, clazz: Class<*>, methodName: String, vararg arguments: Any?): Any {
+  private fun invokeMethod(instance: Any, clazz: Class<*>, methodName: String, vararg arguments: Any?): Any? {
     val method = clazz.allDeclaredMethods().firstOrNull {
       val parameterTypes = it.parameterTypes
       it.name == methodName && parameterTypes.size == arguments.size && checkArguments(parameterTypes, *arguments)
@@ -142,7 +142,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
   }
 
   @Throws(Exception::class)
-  fun invokeMethod(method: Method, instance: Any, vararg arguments: Any?): Any {
+  fun invokeMethod(method: Method, instance: Any, vararg arguments: Any?): Any? {
     return try {
       if (!method.canAccess(instance)) {
         method.isAccessible = true
@@ -182,7 +182,7 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
    * @throws Exception - exception
    */
   @Throws(Exception::class)
-  fun invokeMethod(instance: Any, methodName: String, vararg arguments: Any?): Any {
+  fun invokeMethod(instance: Any, methodName: String, vararg arguments: Any?): Any? {
     return invokeMethod(instance, instance.javaClass, methodName, *arguments)
   }
 
