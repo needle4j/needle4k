@@ -6,12 +6,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.needle4k.configuration.NeedleConfiguration
+import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.registries.AnnotationRegistry
 
 @Suppress("UsePropertyAccessSyntax")
 class AnnotationRegistryTest {
-  private val configuration = NeedleConfiguration()
+  private val configuration = DefaultNeedleConfiguration.INSTANCE
   private val objectUnderTest = AnnotationRegistry(configuration)
   private val ejb = configuration.reflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, EJB::class.java).first()
     .getAnnotation(EJB::class.java)

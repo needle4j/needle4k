@@ -2,7 +2,6 @@ package org.needle4k
 
 import org.needle4k.annotation.InjectInto
 import org.needle4k.annotation.ObjectUnderTest
-import org.needle4k.configuration.NeedleConfiguration
 import org.needle4k.injection.*
 import org.needle4k.mock.SpyProvider
 import org.slf4j.LoggerFactory
@@ -35,27 +34,17 @@ import java.lang.reflect.*
  * @author Heinz Wilming, Alphonse Bendt, Markus Dahm Akquinet AG
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  */
-abstract class AbstractNeedleTestcase protected constructor(
+class NeedleInjector constructor(
   private val configuration: InjectionConfiguration,
   vararg injectionProviders: InjectionProvider<*>
 ) {
   private lateinit var context: NeedleContext
 
-  /**
-   * Create an instance of [AbstractNeedleTestcase] with optional additional
-   * injection provider.
-   *
-   * @param injectionProviders optional additional injection provider
-   * @see InjectionProvider
-   */
-  protected constructor(vararg injectionProviders: InjectionProvider<*>) :
-      this(InjectionConfiguration(NeedleConfiguration()), *injectionProviders)
-
   init {
     addInjectionProvider(*injectionProviders)
   }
 
-  protected fun addInjectionProvider(vararg injectionProvider: InjectionProvider<*>) {
+  fun addInjectionProvider(vararg injectionProvider: InjectionProvider<*>) {
     configuration.addInjectionProvider(*injectionProvider)
   }
 
@@ -63,14 +52,14 @@ abstract class AbstractNeedleTestcase protected constructor(
    * Initialize all fields annotated with [ObjectUnderTest]. Is an
    * object under test annotated field already initialized, only the injection
    * of dependencies will be executed. After initialization,
-   * [InjectIntoMany] and [InjectInto] annotations are processed
+   * [org.needle4k.annotation.InjectIntoMany] and [InjectInto] annotations are processed
    * for optional additional injections.
    *
    * @param test an instance of the test
    * @throws Exception thrown if an initialization error occurs.
    */
   @Throws(Exception::class)
-  protected fun initTestcase(test: Any) {
+  fun initTestInstance(test: Any) {
     LOG.info("Initializing testcase {}...", test)
     context = NeedleContext(test, configuration.needleConfiguration)
 
@@ -139,7 +128,7 @@ abstract class AbstractNeedleTestcase protected constructor(
   }
 
   @Throws(ObjectUnderTestInstantiationException::class)
-  protected fun getInstanceByConstructorInjection(implementation: Class<*>): Any? {
+  fun getInstanceByConstructorInjection(implementation: Class<*>): Any? {
     val registry = configuration.needleConfiguration.injectionAnnotationRegistry
     val constructors = implementation.constructors.filter { registry.isRegistered(*it.declaredAnnotations) }
 
@@ -200,7 +189,7 @@ abstract class AbstractNeedleTestcase protected constructor(
   private fun setInstanceIfNotNull(field: Field, objectUnderTestAnnotation: ObjectUnderTest, test: Any): Any {
     val reflectionUtil = configuration.needleConfiguration.reflectionHelper
     val spyProvider: SpyProvider = configuration.spyProvider
-    val id = if (objectUnderTestAnnotation.id.isNullOrBlank()) field.name else objectUnderTestAnnotation.id
+    val id = objectUnderTestAnnotation.id.ifBlank { field.name }
 
     // First try
     var instance: Any? = reflectionUtil.getFieldValue(test, field)
@@ -289,6 +278,6 @@ abstract class AbstractNeedleTestcase protected constructor(
   }
 
   companion object {
-    private val LOG = LoggerFactory.getLogger(AbstractNeedleTestcase::class.java)
+    private val LOG = LoggerFactory.getLogger(NeedleInjector::class.java)
   }
 }

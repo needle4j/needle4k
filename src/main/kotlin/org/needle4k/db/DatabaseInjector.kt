@@ -55,10 +55,10 @@ class DatabaseInjector(private val configuration: DatabaseInjectorConfiguration)
   }
 
   override fun <T> getInjectedObject(injectionTargetType: Class<T>): T =
-     getInjectionProvider(injectionTargetType).getInjectedObject(injectionTargetType)
+    getInjectionProvider(injectionTargetType).getInjectedObject(injectionTargetType)
 
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>): Any =
-     getInjectionProvider(injectionTargetInformation.injectedObjectType).getKey(injectionTargetInformation)
+    getInjectionProvider(injectionTargetInformation.injectedObjectType).getKey(injectionTargetInformation)
 
   private fun getInjectionProvider(type: Class<*>): InjectionProvider<*> = injectionProviderMap[type]!!
 }

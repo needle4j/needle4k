@@ -6,19 +6,16 @@ import org.needle4k.injection.InjectionProviderInstancesSupplier
 import org.needle4k.reflection.ReflectionUtil
 import org.needle4k.registries.AnnotationRegistry
 
-class NeedleConfiguration(needleProperties: String = CUSTOM_CONFIGURATION_FILENAME) {
-  val reflectionHelper = ReflectionUtil(this)
-  val configurationProperties = ConfigurationLoader(needleProperties).configProperties
+interface NeedleConfiguration {
+  val reflectionHelper: ReflectionUtil
+  val configurationProperties: Map<String, String>
 
-  val injectionAnnotationRegistry = AnnotationRegistry(this)
-  val postconstructAnnotationRegistry = AnnotationRegistry(this)
+  val injectionAnnotationRegistry: AnnotationRegistry
+  val postconstructAnnotationRegistry: AnnotationRegistry
 
   val customInjectionAnnotations: Set<Class<out Annotation>>
-    get() = ClassListParser(this).lookup(CUSTOM_INJECTION_ANNOTATIONS_KEY)
   val customInjectionProviderClasses: Set<Class<InjectionProvider<*>>>
-    get() = ClassListParser(this).lookup(CUSTOM_INJECTION_PROVIDER_CLASSES_KEY)
   val customInjectionProviderInstancesSupplierClasses: Set<Class<InjectionProviderInstancesSupplier>>
-    get() = ClassListParser(this).lookup(CUSTOM_INSTANCES_SUPPLIER_CLASSES_KEY)
 
   val persistenceUnitName get() = configurationProperties[PERSISTENCE_UNIT_NAME_KEY]!!
   val mockProviderClassName get() = configurationProperties[MOCK_PROVIDER_KEY]!!
@@ -29,18 +26,24 @@ class NeedleConfiguration(needleProperties: String = CUSTOM_CONFIGURATION_FILENA
       configurationProperties[JDBC_URL_KEY]!!, configurationProperties[JDBC_USER_KEY]!!,
       configurationProperties[JDBC_PASSWORD_KEY]!!, configurationProperties[JDBC_DRIVER_KEY]!!
     )
-
-  init {
-    injectionAnnotationRegistry.addAnnotation("javax.ejb.EJB").addAnnotation("jakarta.ejb.EJB")
-      .addAnnotation("javax.annotation.Resource").addAnnotation("jakarta.annotation.Resource")
-      .addAnnotation("javax.inject.Inject").addAnnotation("jakarta.inject.Inject")
-      .addAnnotation("javax.persistence.PersistenceContext").addAnnotation("jakarta.persistence.PersistenceContext")
-      .addAnnotation("javax.persistence.PersistenceUnit").addAnnotation("jakarta.persistence.PersistenceUnit")
-      .addAnnotation("org.picocontainer.annotations.Inject")
-      .addAnnotation("org.springframework.beans.factory.annotation.Autowired")
-
-    postconstructAnnotationRegistry.addAnnotation("javax.annotation.PostConstruct")
-      .addAnnotation("jakarta.annotation.PostConstruct").addAnnotation("javax.inject.Inject")
-      .addAnnotation("jakarta.inject.Inject")
-  }
 }
+
+val WELL_KNOWN_INJECTION_ANNOTATION_CLASSES = listOf(
+  "javax.ejb.EJB",
+  "jakarta.ejb.EJB",
+  "javax.annotation.Resource",
+  "jakarta.annotation.Resource",
+  "javax.inject.Inject",
+  "jakarta.inject.Inject",
+  "javax.persistence.PersistenceContext",
+  "jakarta.persistence.PersistenceContext",
+  "javax.persistence.PersistenceUnit",
+  "jakarta.persistence.PersistenceUnit",
+  "org.picocontainer.annotations.Inject",
+  "org.springframework.beans.factory.annotation.Autowired"
+)
+
+// Applies to methods and constructors
+val WELL_KNOWN_POSTCONSTRUCTION_ANNOTATION_CLASSES = listOf(
+  "javax.annotation.PostConstruct", "jakarta.annotation.PostConstruct", "javax.inject.Inject", "jakarta.inject.Inject"
+)

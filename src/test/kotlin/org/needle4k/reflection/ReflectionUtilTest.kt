@@ -7,14 +7,14 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.needle4k.MyComponentBean
-import org.needle4k.configuration.NeedleConfiguration
+import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.db.Address
 import org.needle4k.injection.InjectionTargetInformation
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 class ReflectionUtilTest {
-  private val configuration = NeedleConfiguration()
+  private val configuration = DefaultNeedleConfiguration.INSTANCE
   private val objectUnderTest = configuration.reflectionHelper
 
   @Test
