@@ -1,7 +1,6 @@
 package org.needle4k.db.operation
 
-import org.needle4k.configuration.NeedleConfiguration
-import org.slf4j.LoggerFactory
+import org.needle4k.db.DatabaseInjectorConfiguration
 import java.sql.SQLException
 
 /**
@@ -10,7 +9,7 @@ import java.sql.SQLException
  * @author Heinz Wilming, Alphonse Bendt, Markus Dahm Akquinet AG
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  */
-class ExecuteScriptOperation(needleConfiguration: NeedleConfiguration) : AbstractDBOperation(needleConfiguration) {
+class ExecuteScriptOperation(configuration: DatabaseInjectorConfiguration) : AbstractDBOperation(configuration) {
   /**
    * Execute <pre>before.sql</pre> script in test setup.
    *
@@ -33,27 +32,14 @@ class ExecuteScriptOperation(needleConfiguration: NeedleConfiguration) : Abstrac
 
   @Throws(SQLException::class)
   private fun execute(filename: String) {
-    try {
-      getConnection().use {
-        it.createStatement().use { statement ->
-          executeScript(filename, statement)
-          commit()
-        }
+    configuration.execute {
+      it.createStatement().use { statement ->
+        executeScript(filename, statement)
       }
-    } catch (e: SQLException) {
-      LOG.error(e.message, e)
-      try {
-        rollback()
-      } catch (e1: SQLException) {
-        LOG.error(e1.message, e1)
-      }
-      throw e
     }
   }
 
   companion object {
-    private val LOG = LoggerFactory.getLogger(ExecuteScriptOperation::class.java)
-
     private const val BEFORE_SCRIPT_NAME = "before.sql"
     private const val AFTER_SCRIPT_NAME = "after.sql"
   }

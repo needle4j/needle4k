@@ -1,8 +1,8 @@
 package org.needle4k.db.operation
 
-import org.needle4k.configuration.NeedleConfiguration
+import org.needle4k.db.DatabaseInjectorConfiguration
 
-class NoOperation(needleConfiguration: NeedleConfiguration) : AbstractDBOperation(needleConfiguration) {
+class NoOperation(configuration: DatabaseInjectorConfiguration) : AbstractDBOperation(configuration) {
   override fun setUpOperation() {
   }
 

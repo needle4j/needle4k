@@ -1,9 +1,12 @@
 package org.needle4k.db
 
+import org.hibernate.Session
+import org.hibernate.jdbc.ReturningWork
+import org.hibernate.jdbc.Work
 import org.needle4k.db.operation.DBOperation
-import org.needle4k.db.jpa.TransactionHelper
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionTargetInformation
+import org.slf4j.LoggerFactory
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.EntityTransaction
@@ -51,7 +54,7 @@ open class DatabaseInjector(val configuration: DatabaseInjectorConfiguration) : 
   override fun verify(injectionTargetInformation: InjectionTargetInformation<*>): Boolean {
     val injectionProvider = getInjectionProvider(injectionTargetInformation.injectedObjectType)
 
-    return injectionProvider?.verify(injectionTargetInformation) ?:false
+    return injectionProvider?.verify(injectionTargetInformation) ?: false
   }
 
   override fun <T> getInjectedObject(injectionTargetType: Class<T>): T =
@@ -63,4 +66,8 @@ open class DatabaseInjector(val configuration: DatabaseInjectorConfiguration) : 
       ?: throw IllegalStateException("getKey: $injectionTargetInformation")
 
   private fun getInjectionProvider(type: Class<*>) = injectionProviderMap[type]
+
+  companion object {
+    private val LOG = LoggerFactory.getLogger(DatabaseInjector::class.java)
+  }
 }

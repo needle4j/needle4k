@@ -1,6 +1,5 @@
 package org.needle4k.db
 
-import org.needle4k.db.jpa.TransactionHelper
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionTargetInformation
 

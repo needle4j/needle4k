@@ -1,6 +1,6 @@
 package org.needle4k.db.operation
 
-import org.needle4k.configuration.NeedleConfiguration
+import org.needle4k.db.DatabaseInjectorConfiguration
 import org.slf4j.LoggerFactory
 import java.sql.SQLException
 import java.sql.Statement
@@ -9,7 +9,8 @@ import java.sql.Statement
  * Delete everything from the DB: This cannot be done with the JPA, because the
  * order of deletion matters. Instead we directly use a JDBC connection.
  */
-abstract class AbstractDeleteOperation(needleConfiguration: NeedleConfiguration) : AbstractDBOperation(needleConfiguration) {
+abstract class AbstractDeleteOperation(configuration: DatabaseInjectorConfiguration) :
+  AbstractDBOperation(configuration) {
   /**
    * {@inheritDoc} No operation implementation.
    */
@@ -23,26 +24,14 @@ abstract class AbstractDeleteOperation(needleConfiguration: NeedleConfiguration)
    */
   @Throws(SQLException::class)
   override fun tearDownOperation() {
-    try {
-      getConnection().use {
-        it.createStatement().use { statement ->
-          val tableNames = getTableNames(it)
-          disableReferentialIntegrity(statement)
-          deleteContent(tableNames, statement)
-          enableReferentialIntegrity(statement)
-          commit()
-        }
-      }
-    } catch (e: SQLException) {
-      LOG.error(e.message, e)
+    configuration.execute {
+      it.createStatement().use { statement ->
+        val tableNames = getTableNames(it)
 
-      try {
-        rollback()
-      } catch (e1: SQLException) {
-        LOG.error(e1.message, e1)
+        disableReferentialIntegrity(statement)
+        deleteContent(tableNames, statement)
+        enableReferentialIntegrity(statement)
       }
-
-      throw e
     }
   }
 

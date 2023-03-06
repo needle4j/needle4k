@@ -1,7 +1,7 @@
 package org.needle4k.db.operation
 
 import org.needle4k.configuration.ConfigurationLoader
-import org.needle4k.configuration.NeedleConfiguration
+import org.needle4k.db.DatabaseInjectorConfiguration
 import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.IOException
@@ -12,45 +12,7 @@ import java.sql.*
  * An abstract implementation of [DBOperation] with common jdbc
  * operations.
  */
-abstract class AbstractDBOperation(private val needleConfiguration: NeedleConfiguration) : DBOperation {
-  private lateinit var conn: Connection
-
-  /**
-   * Close the connection to the database.
-   *
-   * @throws SQLException if a database access error occurs
-   */
-  @Throws(SQLException::class)
-  protected fun closeConnection() {
-    if (this::conn.isInitialized && !conn.isClosed) {
-      conn.close()
-    }
-  }
-
-  /**
-   * Commits the current transaction.
-   *
-   * @throws SQLException if a database access error occurs
-   */
-  @Throws(SQLException::class)
-  protected fun commit() {
-    if (this::conn.isInitialized && !conn.isClosed) {
-      conn.commit()
-    }
-  }
-
-  /**
-   * Revoke the current transaction.
-   *
-   * @throws SQLException if a database access error occurs
-   */
-  @Throws(SQLException::class)
-  protected fun rollback() {
-    if (this::conn.isInitialized && !conn.isClosed) {
-      conn.rollback()
-    }
-  }
-
+abstract class AbstractDBOperation(val configuration: DatabaseInjectorConfiguration) : DBOperation {
   /**
    * Returns the names of all tables in the database by using
    * [DatabaseMetaData].
@@ -142,27 +104,6 @@ abstract class AbstractDBOperation(private val needleConfiguration: NeedleConfig
       LOG.error(message, e)
       throw SQLException(message, e)
     }
-  }
-
-  /**
-   * Returns the sql connection object. If there is no connection a new connection is established.
-   *
-   * @return the sql connection object
-   * @throws SQLException if a database access error occurs
-   */
-  @Throws(SQLException::class)
-  protected fun getConnection(): Connection {
-    if (!this::conn.isInitialized || conn.isClosed) {
-      val configuration = needleConfiguration.jdbcConfiguration
-
-      needleConfiguration.reflectionHelper.lookupClass(Driver::class.java, configuration.jdbcDriver)
-        ?: throw IllegalStateException("JDBC driver ${configuration.jdbcDriver} not found")
-
-      conn = DriverManager.getConnection(configuration.jdbcUrl, configuration.jdbcUser, configuration.jdbcPassword)
-      conn.autoCommit = false
-    }
-
-    return conn
   }
 
   companion object {

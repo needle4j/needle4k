@@ -1,7 +1,8 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.needle4k.db.jpa
+package org.needle4k.db
 
+import java.sql.Connection
 import javax.persistence.EntityManager
 import java.util.*
 
@@ -125,3 +126,4 @@ fun EntityManager.rollbackTransaction() {
 fun EntityManager.isTransactionActive() = transaction.isActive
 
 typealias Runnable<T> = (entityManager: EntityManager) -> T
+typealias ConnectionRunnable<T> = (connection: Connection) -> T
