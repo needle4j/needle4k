@@ -92,7 +92,7 @@ class NeedleInjector constructor(
   /**
    * init mocks
    */
-  protected fun beforePostConstruct() {}
+  fun beforePostConstruct() {}
 
   /**
    * Inject dependencies into the given instance. First, all field injections
@@ -102,7 +102,7 @@ class NeedleInjector constructor(
    *
    * @param instance the instance to initialize.
    */
-  protected fun initInstance(instance: Any) {
+   fun initInstance(instance: Any) {
     injectIntoAnnotatedFields(instance)
     initMethodInjection(instance)
   }
@@ -195,7 +195,7 @@ class NeedleInjector constructor(
     var instance: Any? = reflectionUtil.getFieldValue(test, field)
 
     if (instance == null) {
-      val implementation = if (objectUnderTestAnnotation.implementation !== Void::class.java) objectUnderTestAnnotation
+      val implementation = if (objectUnderTestAnnotation.implementation !== Void::class) objectUnderTestAnnotation
         .implementation.java else field.type
 
       if (implementation.javaClass.isInterface) {
@@ -225,7 +225,7 @@ class NeedleInjector constructor(
   }
 
   @Throws(ObjectUnderTestInstantiationException::class)
-  private fun setField(field: Field, test: Any, instance: Any?) {
+  fun setField(field: Field, test: Any, instance: Any?) {
     val reflectionUtil = configuration.needleConfiguration.reflectionHelper
 
     try {
@@ -236,7 +236,7 @@ class NeedleInjector constructor(
   }
 
   @Throws(ObjectUnderTestInstantiationException::class)
-  protected fun createInstanceByNoArgConstructor(implementation: Class<*>): Any {
+  fun createInstanceByNoArgConstructor(implementation: Class<*>): Any {
     return try {
       implementation.getConstructor()
       implementation.getDeclaredConstructor().newInstance()
@@ -258,11 +258,9 @@ class NeedleInjector constructor(
    * [InjectionProvider.getKey]
    * @return the injected object or null
    */
-  fun <X> getInjectedObject(key: Any): X? {
-    return context.getInjectedObject<X>(key)
-  }
+  fun <X> getInjectedObject(key: Any): X? = context.getInjectedObject<X>(key)
 
-  private fun inject(injectionTargetInformation: InjectionTargetInformation<*>): Pair<Any, Any>? {
+  private fun inject(injectionTargetInformation: InjectionTargetInformation<*>): Pair<Any, Any?>? {
     val injection = configuration.handleInjectionProvider(configuration.allInjectionProvider, injectionTargetInformation)
 
     return if (injection != null) {
@@ -278,6 +276,6 @@ class NeedleInjector constructor(
   }
 
   companion object {
-    private val LOG = LoggerFactory.getLogger(NeedleInjector::class.java)
+    private val LOG = LoggerFactory.getLogger(NeedleInjector::class.java)!!
   }
 }

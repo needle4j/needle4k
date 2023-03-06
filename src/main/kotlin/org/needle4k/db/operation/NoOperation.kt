@@ -1,4 +1,4 @@
-package org.needle4k.configuration.db.operation
+package org.needle4k.db.operation
 
 import org.needle4k.configuration.NeedleConfiguration
 

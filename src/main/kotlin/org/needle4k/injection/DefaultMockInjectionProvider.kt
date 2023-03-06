@@ -13,7 +13,7 @@ open class DefaultMockInjectionProvider<T>
     injectionTargetInformation.injectionAnnotation.javaClass === annotationClass
         || annotationClass.isAnnotation && injectionTargetInformation.isAnnotationPresent(annotationClass)
 
-  override fun <T> getInjectedObject(injectionTargetType: Class<T>): T =
+  override fun <T> getInjectedObject(injectionTargetType: Class<T>): T? =
     injectionConfiguration.mockProvider.createMockComponent(injectionTargetType)
 
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>): Any =

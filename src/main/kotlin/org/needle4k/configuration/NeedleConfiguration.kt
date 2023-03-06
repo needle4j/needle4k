@@ -1,6 +1,6 @@
 package org.needle4k.configuration
 
-import org.needle4k.configuration.db.operation.JdbcConfiguration
+import org.needle4k.db.operation.JdbcConfiguration
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionProviderInstancesSupplier
 import org.needle4k.reflection.ReflectionUtil

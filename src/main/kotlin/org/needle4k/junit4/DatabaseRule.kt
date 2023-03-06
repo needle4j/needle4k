@@ -5,9 +5,10 @@ import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.configuration.NeedleConfiguration
-import org.needle4k.configuration.db.operation.DBOperation
+import org.needle4k.db.operation.DBOperation
 import org.needle4k.db.DatabaseInjector
 import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.injection.InjectionProvider
 
 /**
  * The [DatabaseRule] provides access to the configured Database and
@@ -33,9 +34,8 @@ import org.needle4k.db.DatabaseInjectorConfiguration
 class DatabaseRule
 @JvmOverloads constructor(
   needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration.INSTANCE,
-) : MethodRule {
-  private val databaseInjector = DatabaseInjector(DatabaseInjectorConfiguration(needleConfiguration))
-
+  private val databaseInjector: DatabaseInjector = DatabaseInjector(DatabaseInjectorConfiguration(needleConfiguration))
+) : MethodRule, InjectionProvider<Any> by databaseInjector {
   override fun apply(base: Statement, method: FrameworkMethod, target: Any): Statement {
     return object : Statement() {
       @Throws(Throwable::class)

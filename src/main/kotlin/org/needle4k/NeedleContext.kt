@@ -7,25 +7,19 @@ import java.lang.reflect.Field
 class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration) {
   private val objectsUnderTest: MutableMap<String, Any> = HashMap()
   private val objectUnderTestAnnotations = HashMap<String, ObjectUnderTest>()
-  private val injectedObjects: MutableMap<Any, Any> = HashMap()
+  private val injectedObjects: MutableMap<Any, Any?> = HashMap()
   private val annotatedTestcaseFieldMap = needleConfiguration.reflectionHelper.getAllAnnotatedFields(test.javaClass)
 
   @Suppress("UNCHECKED_CAST")
-  fun <X> getInjectedObject(key: Any): X? {
-    return injectedObjects[key] as X?
-  }
+  fun <X> getInjectedObject(key: Any): X? = injectedObjects[key] as X?
 
-  fun addInjectedObject(key: Any, instance: Any) {
+  fun addInjectedObject(key: Any, instance: Any?) {
     injectedObjects[key] = instance
   }
 
-  fun getObjectUnderTest(id: String): Any? {
-    return objectsUnderTest[id]
-  }
+  fun getObjectUnderTest(id: String) = objectsUnderTest[id]
 
-  fun getObjectUnderTestAnnotation(id: String): ObjectUnderTest? {
-    return objectUnderTestAnnotations[id]
-  }
+  fun getObjectUnderTestAnnotation(id: String): ObjectUnderTest? = objectUnderTestAnnotations[id]
 
   fun addObjectUnderTest(
     id: String, instance: Any,
@@ -35,7 +29,7 @@ class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration)
     objectUnderTestAnnotations[id] = objectUnderTestAnnotation
   }
 
-  fun objectsUnderTest()= objectsUnderTest.values
+  fun objectsUnderTest() = objectsUnderTest.values
 
   val objectsUnderTestIds: Set<String>
     get() = objectsUnderTest.keys

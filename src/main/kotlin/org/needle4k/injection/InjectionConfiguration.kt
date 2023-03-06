@@ -125,13 +125,13 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
   fun handleInjectionProvider(
     injectionProviders: Collection<InjectionProvider<*>>,
     injectionTargetInformation: InjectionTargetInformation<*>
-  ): Pair<Any, Any>? {
+  ): Pair<Any, Any?>? {
     for (provider in injectionProviders) {
       if (provider.verify(injectionTargetInformation)) {
-        val `object`: Any = provider.getInjectedObject(injectionTargetInformation.injectedObjectType)
+        val injectedObject = provider.getInjectedObject(injectionTargetInformation.injectedObjectType)
         val key = provider.getKey(injectionTargetInformation)
 
-        return key to `object`
+        return key to injectedObject
       }
     }
 

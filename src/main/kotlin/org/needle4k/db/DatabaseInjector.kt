@@ -1,6 +1,6 @@
 package org.needle4k.db
 
-import org.needle4k.configuration.db.operation.DBOperation
+import org.needle4k.db.operation.DBOperation
 import org.needle4k.db.jpa.TransactionHelper
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionTargetInformation
@@ -19,7 +19,7 @@ import javax.persistence.EntityTransaction
  *
  * @see DBOperation
  */
-class DatabaseInjector(private val configuration: DatabaseInjectorConfiguration) : InjectionProvider<Any> {
+open class DatabaseInjector(private val configuration: DatabaseInjectorConfiguration) : InjectionProvider<Any> {
   private val injectionProviderMap: Map<Class<*>, InjectionProvider<*>> = mapOf(
     EntityManager::class.java to EntityManagerProvider(configuration.entityManager),
     EntityManagerFactory::class.java to EntityManagerFactoryProvider(configuration.entityManagerFactory),
@@ -49,16 +49,18 @@ class DatabaseInjector(private val configuration: DatabaseInjectorConfiguration)
   }
 
   override fun verify(injectionTargetInformation: InjectionTargetInformation<*>): Boolean {
-    val injectionProvider: InjectionProvider<*> = getInjectionProvider(injectionTargetInformation.injectedObjectType)
+    val injectionProvider = getInjectionProvider(injectionTargetInformation.injectedObjectType)
 
-    return injectionProvider.verify(injectionTargetInformation)
+    return injectionProvider?.verify(injectionTargetInformation) ?:false
   }
 
   override fun <T> getInjectedObject(injectionTargetType: Class<T>): T =
-    getInjectionProvider(injectionTargetType).getInjectedObject(injectionTargetType)
+    getInjectionProvider(injectionTargetType)?.getInjectedObject(injectionTargetType)
+      ?: throw IllegalStateException("getInjectedObject: $injectionTargetType")
 
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>): Any =
-    getInjectionProvider(injectionTargetInformation.injectedObjectType).getKey(injectionTargetInformation)
+    getInjectionProvider(injectionTargetInformation.injectedObjectType)?.getKey(injectionTargetInformation)
+      ?: throw IllegalStateException("getKey: $injectionTargetInformation")
 
-  private fun getInjectionProvider(type: Class<*>): InjectionProvider<*> = injectionProviderMap[type]!!
+  private fun getInjectionProvider(type: Class<*>) = injectionProviderMap[type]
 }

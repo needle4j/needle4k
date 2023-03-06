@@ -5,13 +5,12 @@ import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
 import org.needle4k.NeedleInjector
 import org.needle4k.configuration.DefaultNeedleConfiguration
-import org.needle4k.configuration.NeedleConfiguration
 import org.needle4k.injection.InjectionConfiguration
 import org.needle4k.injection.InjectionProvider
 
 /**
  * JUnit [MethodRule] for the initialization of the test. The Rule
- * processes and initializes all fields annotated with [ObjectUnderTest].
+ * processes and initializes all fields annotated with [org.needle4k.annotation.ObjectUnderTest].
  *
  * <pre>
  * Example:
@@ -36,12 +35,18 @@ import org.needle4k.injection.InjectionProvider
  *
  * @see NeedleInjector
  */
-class NeedleRule @JvmOverloads constructor(
-  needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration.INSTANCE,
+class NeedleRule constructor(
+  private val needleInjector: NeedleInjector,
   vararg injectionProviders: InjectionProvider<*>
 ) : MethodRule {
   private val methodRuleChain = ArrayList<MethodRule>()
-  private val needleInjector = NeedleInjector(InjectionConfiguration(needleConfiguration), *injectionProviders)
+
+  constructor(vararg injectionProviders: InjectionProvider<*>)
+      : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)), *injectionProviders)
+
+  init {
+    needleInjector.addInjectionProvider(*injectionProviders)
+  }
 
   /**
    * {@inheritDoc} Before evaluation of the base statement, the test instance will be initialized.
@@ -55,6 +60,10 @@ class NeedleRule @JvmOverloads constructor(
 
     return statement(appliedStatement, target)
   }
+
+  fun <X> getInjectedObject(key: Any): X? = needleInjector.getInjectedObject<X>(key)
+
+  fun <X> getInjectedObject(key:Class<X>): X? = needleInjector.getInjectedObject<X>(key)
 
   private fun statement(base: Statement, target: Any): Statement {
     return object : Statement() {

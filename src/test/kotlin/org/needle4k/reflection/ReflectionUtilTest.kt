@@ -120,7 +120,7 @@ class ReflectionUtilTest {
   @Test
   fun testCreateInstance() {
     assertNotNull(objectUnderTest.createInstance(HashMap::class.java))
-    assertEquals("Hello", objectUnderTest.createInstance(String::class.java, "Hello"))
+    assertEquals("Hello", objectUnderTest.createInstance(String::class.java, String::class.java to "Hello"))
   }
 
   @Test(expected = Exception::class)

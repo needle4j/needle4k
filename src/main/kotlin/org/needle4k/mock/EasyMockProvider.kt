@@ -1,9 +1,6 @@
 package org.needle4k.mock
 
-import org.easymock.EasyMock
 import org.easymock.EasyMockSupport
-import org.slf4j.LoggerFactory
-import java.lang.reflect.Modifier
 
 /**
  * An EasyMock specific [MockProvider] implementation. For details, see
@@ -38,5 +35,5 @@ class EasyMockProvider : EasyMockSupport(), MockProvider {
    *
    * @return the mock object or null, if the type is final or primitive.
    */
-  override fun <T> createMockComponent(type: Class<T>): T = createNiceMock(type)
+  override fun <T> doCreateMockComponent(type: Class<T>): T = createNiceMock(type)
 }

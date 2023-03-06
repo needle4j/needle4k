@@ -193,13 +193,11 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
    * @param className the fully qualified name of the desired class.
    * @return `Class` or null
    */
-  fun forName(className: String): Class<*>? {
-    return try {
-      Class.forName(className)
-    } catch (e: ClassNotFoundException) {
-      LOG.warn("Class $className not found")
-      null
-    }
+  fun forName(className: String): Class<*>? = try {
+    Class.forName(className)
+  } catch (e: ClassNotFoundException) {
+    LOG.warn("Class $className not found")
+    null
   }
 
   @Throws(Exception::class)
@@ -221,11 +219,12 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
   fun getField(clazz: Class<*>, fieldName: String): Field = clazz.allDeclaredFields().first { it.name == fieldName }
 
   @Throws(Exception::class)
-  fun <T> createInstance(clazz: Class<T>, vararg parameter: Any): T {
-    val parameterTypes: Array<Class<*>> = parameter.map { it.javaClass }.toTypedArray()
+  fun <T> createInstance(clazz: Class<T>, vararg parameter: Pair<Class<*>, Any>): T {
+    val parameterTypes = parameter.map { it.first }.toTypedArray()
+    val arguments = parameter.map { it.second }.toTypedArray()
     val constructor = clazz.getDeclaredConstructor(*parameterTypes)
 
-    return constructor.newInstance(*parameter)
+    return constructor.newInstance(*arguments)
   }
 
   /**

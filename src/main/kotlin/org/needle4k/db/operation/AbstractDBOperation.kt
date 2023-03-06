@@ -1,4 +1,4 @@
-package org.needle4k.configuration.db.operation
+package org.needle4k.db.operation
 
 import org.needle4k.configuration.ConfigurationLoader
 import org.needle4k.configuration.NeedleConfiguration
@@ -152,7 +152,7 @@ abstract class AbstractDBOperation(private val needleConfiguration: NeedleConfig
    */
   @Throws(SQLException::class)
   protected fun getConnection(): Connection {
-    if (this::conn.isInitialized || conn.isClosed) {
+    if (!this::conn.isInitialized || conn.isClosed) {
       val configuration = needleConfiguration.jdbcConfiguration
 
       needleConfiguration.reflectionHelper.lookupClass(Driver::class.java, configuration.jdbcDriver)

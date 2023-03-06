@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity(name = "personEntity")
 @Table(name = Person.TABLE_NAME)
-open class Person {
+class Person {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   open val id: Long = 0

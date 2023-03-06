@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = Address.TABLE_NAME, uniqueConstraints = [UniqueConstraint(columnNames = ["id", "zip"])])
-open class Address {
+class Address {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   open val id: Long = 0
