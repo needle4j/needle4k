@@ -36,6 +36,8 @@ class DatabaseRule
   needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration.INSTANCE,
   private val databaseInjector: DatabaseInjector = DatabaseInjector(DatabaseInjectorConfiguration(needleConfiguration))
 ) : MethodRule, InjectionProvider<Any> by databaseInjector {
+  val configuration: DatabaseInjectorConfiguration get() = databaseInjector.configuration
+
   override fun apply(base: Statement, method: FrameworkMethod, target: Any): Statement {
     return object : Statement() {
       @Throws(Throwable::class)

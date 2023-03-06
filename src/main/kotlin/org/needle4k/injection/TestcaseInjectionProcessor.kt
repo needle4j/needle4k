@@ -30,7 +30,7 @@ class TestcaseInjectionProcessor(configuration: InjectionConfiguration) : Abstra
     val reflectionUtil = needleConfiguration.reflectionHelper
     val annotation = registry.registeredAnnotation(*field.declaredAnnotations)!!
     val injectionTargetInformation: InjectionTargetInformation<*> = FieldTargetInformation(field, annotation)
-    val injection = configuration.handleInjectionProvider(configuration.allInjectionProvider, injectionTargetInformation)
+    val injection = configuration.handleInjectionProvider(configuration.allInjectionProviders, injectionTargetInformation)
 
     if (injection != null) {
       val injectedObject = context.getInjectedObject<Any>(injection.first) ?: injection.second

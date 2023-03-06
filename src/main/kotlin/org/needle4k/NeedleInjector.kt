@@ -35,7 +35,7 @@ import java.lang.reflect.*
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  */
 class NeedleInjector constructor(
-  private val configuration: InjectionConfiguration,
+  val configuration: InjectionConfiguration,
   vararg injectionProviders: InjectionProvider<*>
 ) {
   private lateinit var context: NeedleContext
@@ -261,7 +261,7 @@ class NeedleInjector constructor(
   fun <X> getInjectedObject(key: Any): X? = context.getInjectedObject<X>(key)
 
   private fun inject(injectionTargetInformation: InjectionTargetInformation<*>): Pair<Any, Any?>? {
-    val injection = configuration.handleInjectionProvider(configuration.allInjectionProvider, injectionTargetInformation)
+    val injection = configuration.handleInjectionProvider(configuration.allInjectionProviders, injectionTargetInformation)
 
     return if (injection != null) {
       val injectionKey = injection.first

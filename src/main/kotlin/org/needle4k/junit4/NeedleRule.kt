@@ -36,7 +36,7 @@ import org.needle4k.injection.InjectionProvider
  * @see NeedleInjector
  */
 class NeedleRule constructor(
-  private val needleInjector: NeedleInjector,
+  val needleInjector: NeedleInjector,
   vararg injectionProviders: InjectionProvider<*>
 ) : MethodRule {
   private val methodRuleChain = ArrayList<MethodRule>()
