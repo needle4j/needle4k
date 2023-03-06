@@ -195,8 +195,8 @@ class NeedleInjector constructor(
     var instance: Any? = reflectionUtil.getFieldValue(test, field)
 
     if (instance == null) {
-      val implementation = if (objectUnderTestAnnotation.implementation !== Void::class) objectUnderTestAnnotation
-        .implementation.java else field.type
+      val implementation = if (objectUnderTestAnnotation.implementation.java !== Void::class.java)
+        objectUnderTestAnnotation.implementation.java else field.type
 
       if (implementation.javaClass.isInterface) {
         throw ObjectUnderTestInstantiationException(

@@ -16,27 +16,23 @@ class ObjectUnderTestInstantiationTest {
   @ObjectUnderTest
   private lateinit var noArgsConstructorClass: NoArgsConstructorClass
 
-  private val configuration = DefaultNeedleConfiguration.INSTANCE
+  private val configuration = DefaultNeedleConfiguration()
 
   @Test(expected = ObjectUnderTestInstantiationException::class)
-  @Throws(Exception::class)
   fun testInterfaceInstantiation() {
     setInstanceIfNotNull("ejbComponent")
   }
 
   @Test(expected = ObjectUnderTestInstantiationException::class)
-  @Throws(Exception::class)
   fun testNoArgConstructorInstantiation() {
     setInstanceIfNotNull("noArgsConstructorClass")
   }
 
   @Test(expected = ObjectUnderTestInstantiationException::class)
-  @Throws(Exception::class)
   fun testNoPublicConstructorInstantiation() {
     setInstanceIfNotNull("privateConstructorClass")
   }
 
-  @Throws(Exception::class)
   private fun setInstanceIfNotNull(fieldName: String) {
     val needleTestcase = NeedleInjector(InjectionConfiguration(configuration))
     val field = ObjectUnderTestInstantiationTest::class.java.getDeclaredField(fieldName)

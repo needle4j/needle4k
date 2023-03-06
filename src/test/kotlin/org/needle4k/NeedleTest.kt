@@ -1,9 +1,11 @@
 package org.needle4k
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.mockingDetails
 import org.needle4k.annotation.InjectIntoMany
 import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.junit4.DatabaseRule
@@ -38,8 +40,17 @@ class NeedleTest {
     assertNotNull(componentBean.entityManager)
     assertNotNull(componentBean.myEjbComponent)
 
+    assertThat(mockingDetails(componentBean.entityManager).isMock).isFalse
+    assertThat(mockingDetails(componentBean.sessionContext).isMock).isTrue
+//    assertThat(mockingDetails(mock).isMock).isFalse
+//    assertThat(mock).isSameAs(componentBean.myEjbComponent)
+    assertThat(mockingDetails(componentBean.myEjbComponent).isMock).isFalse
+
     val mock = needle.getInjectedObject(MyEjbComponent::class.java)
+
     assertNotNull(mock)
+
+// TODO: Fixme
   }
 
   @Test
