@@ -15,13 +15,9 @@ class JpaPersistenceUnitInfo(
   private val managedClassNames: Set<String>,
   private val properties: Properties
 ) : PersistenceUnitInfo {
-  override fun getPersistenceUnitName(): String {
-    return persistenceUnitName
-  }
+  override fun getPersistenceUnitName() = persistenceUnitName
 
-  override fun getPersistenceProviderClassName(): String {
-    return HibernatePersistenceProvider::class.java.name
-  }
+  override fun getPersistenceProviderClassName() = HibernatePersistenceProvider::class.java.name
 
   override fun getJtaDataSource(): DataSource {
     throw UnsupportedOperationException()
@@ -31,41 +27,25 @@ class JpaPersistenceUnitInfo(
     throw UnsupportedOperationException()
   }
 
-  override fun getMappingFileNames(): List<String> {
-    return emptyList()
-  }
+  override fun getMappingFileNames() = emptyList<String>()
 
-  override fun getJarFileUrls(): List<URL> {
-    return emptyList()
-  }
+  override fun getJarFileUrls() = emptyList<URL>()
 
   override fun getPersistenceUnitRootUrl(): URL {
     throw UnsupportedOperationException()
   }
 
-  override fun getManagedClassNames(): List<String> {
-    return managedClassNames.toList()
-  }
+  override fun getManagedClassNames() = managedClassNames.toList()
 
-  override fun excludeUnlistedClasses(): Boolean {
-    return true
-  }
+  override fun excludeUnlistedClasses() = true
 
-  override fun getProperties(): Properties {
-    return properties
-  }
+  override fun getProperties() = properties
 
-  override fun getPersistenceXMLSchemaVersion(): String {
-    return JPA_VERSION
-  }
+  override fun getPersistenceXMLSchemaVersion() = "2.1"
 
-  override fun getClassLoader(): ClassLoader {
-    return ClassLoader.getSystemClassLoader()
-  }
+  override fun getClassLoader() = ClassLoader.getSystemClassLoader()
 
-  override fun getNewTempClassLoader(): ClassLoader {
-    return classLoader
-  }
+  override fun getNewTempClassLoader() = classLoader
 
   override fun getTransactionType() = PersistenceUnitTransactionType.RESOURCE_LOCAL
 
@@ -75,9 +55,5 @@ class JpaPersistenceUnitInfo(
 
   override fun addTransformer(transformer: ClassTransformer) {
     throw UnsupportedOperationException()
-  }
-
-  companion object {
-    const val JPA_VERSION = "2.1"
   }
 }

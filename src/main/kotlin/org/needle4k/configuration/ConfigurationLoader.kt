@@ -21,11 +21,10 @@ const val CUSTOM_INSTANCES_SUPPLIER_CLASSES_KEY = "custom.instances.supplier.cla
 
 internal class ConfigurationLoader(resourceName: String = CUSTOM_CONFIGURATION_FILENAME) {
   val configProperties = loadResourceAndDefault(resourceName)
-
   private fun loadDefaults() = mutableMapOf(
     PERSISTENCE_UNIT_NAME_KEY to "TestDataModel",
-    MOCK_PROVIDER_KEY to "MockitoProvider", // TODO
-    DB_OPERATION_KEY to "H2DeleteOperation", // TODO
+    MOCK_PROVIDER_KEY to "org.needle4k.mock.MockitoProvider",
+    DB_OPERATION_KEY to "org.needle4k.configuration.db.operation.h2.H2DeleteOperation",
     JDBC_URL_KEY to "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
     JDBC_DRIVER_KEY to "org.h2.Driver",
     JDBC_USER_KEY to "",
