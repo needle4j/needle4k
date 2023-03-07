@@ -24,8 +24,12 @@ class DatabaseInjectorConfiguration(val needleConfiguration: NeedleConfiguration
   fun execute(runnable: Work) {
     hibernateSession.doWork {
       it.autoCommit = false
+
       runnable.execute(it)
-      it.commit()
+
+      if (!it.isClosed) {
+        it.commit()
+      }
     }
   }
 
@@ -33,14 +37,21 @@ class DatabaseInjectorConfiguration(val needleConfiguration: NeedleConfiguration
     return hibernateSession.doReturningWork {
       it.autoCommit = false
       val result: T? = runnable.execute(it)
-      it.commit()
+
+      if (!it.isClosed) {
+        it.commit()
+      }
+
       result
     }
   }
 
   private fun createDBOperation(dbOperationClass: Class<out AbstractDBOperation>): DBOperation {
     try {
-      return needleConfiguration.reflectionHelper.createInstance(dbOperationClass, DatabaseInjectorConfiguration::class.java to this)
+      return needleConfiguration.reflectionHelper.createInstance(
+        dbOperationClass,
+        DatabaseInjectorConfiguration::class.java to this
+      )
     } catch (e: Exception) {
       throw IllegalArgumentException("Could not create a new instance of configured DB operation $dbOperationClass", e)
     }

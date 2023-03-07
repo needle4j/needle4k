@@ -22,7 +22,7 @@ abstract class AbstractDBOperation(val configuration: DatabaseInjectorConfigurat
    * @throws SQLException if a database access error occurs
    */
   @Throws(SQLException::class)
-  protected fun getTableNames(connection: Connection): List<String> {
+  fun getTableNames(connection: Connection): List<String> {
     val tables: MutableList<String> = ArrayList()
 
     connection.metaData.getTables(null, null, "%", arrayOf("TABLE")).use {
@@ -46,19 +46,19 @@ abstract class AbstractDBOperation(val configuration: DatabaseInjectorConfigurat
   private fun executeScript(script: BufferedReader, statement: Statement) {
     var lineNo: Long = 0
     val sql = StringBuilder()
-    var line: String
+    var line: String?
 
     try {
       while (script.readLine().also { line = it } != null) {
         lineNo++
 
-        val trimmedLine = line.trim { it <= ' ' }
+        val trimmedLine = line!!.trim { it <= ' ' }
 
         if (trimmedLine.isNotEmpty() && !trimmedLine.startsWith("--") && !trimmedLine.startsWith("//")) {
           if (trimmedLine.startsWith("/*")) {
             while (script.readLine().also { line = it } != null) {
-              if (line.trim { it <= ' ' }.endsWith("*/")) {
-                LOG.debug("ignore $line")
+              if (line!!.trim { it <= ' ' }.endsWith("*/")) {
+                LOG.debug("Ignoring $line")
                 break
               }
             }
@@ -66,8 +66,7 @@ abstract class AbstractDBOperation(val configuration: DatabaseInjectorConfigurat
             sql.append(trimmedLine)
 
             if (trimmedLine.endsWith(";")) {
-              var sqlStatement = sql.toString()
-              sqlStatement = sqlStatement.substring(0, sqlStatement.length - 1)
+              val sqlStatement = sql.toString()
 
               LOG.info(sqlStatement)
               statement.execute(sqlStatement)
@@ -90,7 +89,7 @@ abstract class AbstractDBOperation(val configuration: DatabaseInjectorConfigurat
    * @throws SQLException if a database access error occurs
    */
   @Throws(SQLException::class)
-  protected fun executeScript(filename: String, statement: Statement) {
+  fun executeScript(filename: String, statement: Statement) {
     val message = "Executing sql script: $filename"
     LOG.info(message)
 
@@ -99,7 +98,7 @@ abstract class AbstractDBOperation(val configuration: DatabaseInjectorConfigurat
         BufferedReader(InputStreamReader(it)).use { reader ->
           executeScript(reader, statement)
         }
-      }
+      }?: LOG.warn("File $filename not found")
     } catch (e: IOException) {
       LOG.error(message, e)
       throw SQLException(message, e)
