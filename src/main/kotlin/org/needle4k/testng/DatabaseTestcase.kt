@@ -8,12 +8,14 @@ import org.needle4k.injection.InjectionProvider
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeMethod
 import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
 
 open class DatabaseTestcase @JvmOverloads constructor(
   needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration.INSTANCE,
   private val databaseInjector: DatabaseInjector = DatabaseInjector(DatabaseInjectorConfiguration(needleConfiguration))
 ) : InjectionProvider<Any> by databaseInjector {
   val entityManager: EntityManager get() = databaseInjector.configuration.entityManager
+  val entityManagerFactory: EntityManagerFactory get() = databaseInjector.configuration.entityManagerFactory
 
   /**
    * {@inheritDoc}
