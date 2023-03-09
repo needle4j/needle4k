@@ -67,7 +67,7 @@ abstract class AbstractDeleteOperation(configuration: DatabaseInjectorConfigurat
    * @throws SQLException - if a database access error occurs
    */
   @Throws(SQLException::class)
-  protected fun deleteContent(tables: List<String>, statement: Statement) {
+  open fun deleteContent(tables: List<String>, statement: Statement) {
     val tempTables = ArrayList(tables)
 
     // Loop until all data is deleted: we don't know the correct DROP

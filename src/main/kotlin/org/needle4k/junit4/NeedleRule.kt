@@ -35,10 +35,7 @@ import org.needle4k.injection.InjectionProvider
  *
  * @see NeedleInjector
  */
-class NeedleRule constructor(
-  val needleInjector: NeedleInjector,
-  vararg injectionProviders: InjectionProvider<*>
-) : MethodRule {
+class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) : MethodRule {
   private val methodRuleChain = ArrayList<MethodRule>()
 
   constructor(vararg injectionProviders: InjectionProvider<*>)
@@ -63,7 +60,7 @@ class NeedleRule constructor(
 
   fun <X> getInjectedObject(key: Any): X? = needleInjector.getInjectedObject<X>(key)
 
-  fun <X> getInjectedObject(key:Class<X>): X? = needleInjector.getInjectedObject<X>(key)
+  fun <X> getInjectedObject(key: Class<X>): X? = needleInjector.getInjectedObject<X>(key)
 
   private fun statement(base: Statement, target: Any): Statement {
     return object : Statement() {

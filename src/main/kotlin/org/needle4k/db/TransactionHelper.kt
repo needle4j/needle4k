@@ -2,9 +2,8 @@
 
 package org.needle4k.db
 
-import java.sql.Connection
-import javax.persistence.EntityManager
 import java.util.*
+import javax.persistence.EntityManager
 
 /**
  * Utility class to manage transactions conveniently.
@@ -126,4 +125,3 @@ fun EntityManager.rollbackTransaction() {
 fun EntityManager.isTransactionActive() = transaction.isActive
 
 typealias Runnable<T> = (entityManager: EntityManager) -> T
-typealias ConnectionRunnable<T> = (connection: Connection) -> T

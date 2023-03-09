@@ -9,7 +9,7 @@ import java.sql.Statement
  * Delete everything from the DB: This cannot be done with the JPA, because the
  * order of deletion matters. Instead, we directly use a JDBC connection.
  */
-class HSQLDeleteOperation constructor(configuration: DatabaseInjectorConfiguration) : AbstractDeleteOperation(configuration) {
+open class HSQLDeleteOperation constructor(configuration: DatabaseInjectorConfiguration) : AbstractDeleteOperation(configuration) {
   @Throws(SQLException::class)
   override fun setReferentialIntegrity(enable: Boolean, statement: Statement) {
     val databaseMajorVersion = statement.connection.metaData.databaseMajorVersion
