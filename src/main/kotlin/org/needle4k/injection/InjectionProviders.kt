@@ -19,6 +19,7 @@ import javax.inject.Qualifier
  * @author Heinz Wilming, Alphonse Bendt, Markus Dahm Akquinet AG
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  */
+@Suppress("unused")
 object InjectionProviders {
   /**
    * InjectionProvider that provides a singleton instance of type T whenever
@@ -70,11 +71,11 @@ object InjectionProviders {
    * @return new supplier
    */
   @JvmStatic
-  fun supplierForInjectionProviders(vararg providers: InjectionProvider<*>): InjectionProviderInstancesSupplier =
+  fun supplierForInjectionProviders(vararg providers: InjectionProvider<*>) =
     supplierForInjectionProviders(newProviderSet(*providers))
 
   @JvmStatic
-  fun supplierForInjectionProviders(providers: Set<InjectionProvider<*>>): InjectionProviderInstancesSupplier =
+  fun supplierForInjectionProviders(providers: Set<InjectionProvider<*>>) =
     object : InjectionProviderInstancesSupplier {
       override fun get() = providers
     }
@@ -85,7 +86,7 @@ object InjectionProviders {
    * @param suppliers vararg array of existing suppliers
    * @return new instance containing all providers
    */
-  private fun mergeSuppliers(vararg suppliers: InjectionProviderInstancesSupplier): InjectionProviderInstancesSupplier =
+  private fun mergeSuppliers(vararg suppliers: InjectionProviderInstancesSupplier) =
     object : InjectionProviderInstancesSupplier {
       override fun get() = suppliers.map { it.get() }.flatten().toSet()
     }
@@ -97,7 +98,7 @@ object InjectionProviders {
    * @return array of providers for use with vararg method
    */
   @JvmStatic
-  fun providersForInstancesSuppliers(vararg suppliers: InjectionProviderInstancesSupplier): Array<InjectionProvider<*>> =
+  fun providersForInstancesSuppliers(vararg suppliers: InjectionProviderInstancesSupplier) =
     mergeSuppliers(*suppliers).get().toTypedArray()
 
   @JvmStatic

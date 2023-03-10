@@ -47,7 +47,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
     initGlobalInjectionAnnotations()
     initGlobalInjectionProviders()
 
-    defaultInjectionProviders.add(0, MockProviderInjectionProvider(mockProvider))
+    defaultInjectionProviders.add(0, MockProviderInjectionProvider { mockProvider })
   }
 
   private fun addCdiInstance() {

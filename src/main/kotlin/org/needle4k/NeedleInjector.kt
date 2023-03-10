@@ -120,9 +120,9 @@ class NeedleInjector constructor(
       val arguments = createArguments(parameterInfos)
 
       try {
-        reflectionUtil.invokeMethod(method, instance, arguments)
+        reflectionUtil.invokeMethod(method, instance, *arguments)
       } catch (e: Exception) {
-        LOG.warn("could not invoke method", e)
+        LOG.warn("Could not invoke method", e)
       }
     }
   }
@@ -150,8 +150,8 @@ class NeedleInjector constructor(
 
   private fun <T : Executable> createParameterInformation(
     method: T,
-    creator: (method: T, parameter: Parameter, injectionAnnotation: Annotation) -> InjectionTargetInformation<*>
-  ): List<InjectionTargetInformation<*>> {
+    creator: (method: T, parameter: Parameter, injectionAnnotation: Annotation) -> ExecutableTargetInformation<*>
+  ): List<ExecutableTargetInformation<*>> {
     val registry = configuration.needleConfiguration.injectionAnnotationRegistry
     val methodAnnotation = registry.registeredAnnotation(*method.declaredAnnotations)!!
 
@@ -163,7 +163,7 @@ class NeedleInjector constructor(
   }
 
   private fun createArguments(parameters: List<InjectionTargetInformation<*>>): Array<Any?> =
-    parameters.map { inject(it) }.toTypedArray()
+    parameters.map { inject(it)?.second }.toTypedArray()
 
   private fun injectIntoAnnotatedFields(instance: Any) {
     val needleConfiguration = configuration.needleConfiguration
