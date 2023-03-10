@@ -38,6 +38,8 @@ import org.needle4k.injection.InjectionProvider
 class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) : MethodRule {
   private val methodRuleChain = ArrayList<MethodRule>()
 
+  val needleConfiguration get() = needleInjector.configuration.needleConfiguration
+
   constructor(vararg injectionProviders: InjectionProvider<*>)
       : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)), *injectionProviders)
 

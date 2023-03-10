@@ -1,6 +1,5 @@
 package org.needle4k.configuration
 
-import org.needle4k.db.operation.JdbcConfiguration
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionProviderInstancesSupplier
 import org.needle4k.reflection.ReflectionUtil
@@ -8,7 +7,7 @@ import org.needle4k.registries.AnnotationRegistry
 
 interface NeedleConfiguration {
   val reflectionHelper: ReflectionUtil
-  val configurationProperties: Map<String, String>
+  val configurationProperties: MutableMap<String, String>
 
   val injectionAnnotationRegistry: AnnotationRegistry
   val postconstructAnnotationRegistry: AnnotationRegistry
@@ -21,11 +20,6 @@ interface NeedleConfiguration {
   val mockProviderClassName get() = configurationProperties[MOCK_PROVIDER_KEY]!!
   val dbOperationClassName get() = configurationProperties[DB_OPERATION_KEY]!!
   val postConstructExecuteStrategy get() = PostConstructExecuteStrategy.valueOf(configurationProperties[POST_CONSTRUCT_EXECUTE_STRATEGY]!!)
-  val jdbcConfiguration
-    get() = JdbcConfiguration(
-      configurationProperties[JDBC_URL_KEY]!!, configurationProperties[JDBC_USER_KEY]!!,
-      configurationProperties[JDBC_PASSWORD_KEY]!!, configurationProperties[JDBC_DRIVER_KEY]!!
-    )
 }
 
 val WELL_KNOWN_INJECTION_ANNOTATION_CLASSES = listOf(

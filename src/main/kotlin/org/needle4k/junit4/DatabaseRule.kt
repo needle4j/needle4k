@@ -39,6 +39,7 @@ class DatabaseRule
 ) : MethodRule, InjectionProvider<Any> by databaseInjector {
   val configuration: DatabaseInjectorConfiguration get() = databaseInjector.configuration
   val entityManager: EntityManager get() = configuration.entityManager
+  val needleConfiguration get() = databaseInjector.configuration.needleConfiguration
 
   override fun apply(base: Statement, method: FrameworkMethod, target: Any): Statement {
     return object : Statement() {

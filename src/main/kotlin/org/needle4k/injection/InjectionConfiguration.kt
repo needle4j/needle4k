@@ -141,7 +141,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
     return null
   }
 
-  private fun createMockProvider(): MockProvider {
+  internal fun createMockProvider(): MockProvider {
     val className = needleConfiguration.mockProviderClassName
     val helper = needleConfiguration.reflectionHelper
     val mockProviderClass = helper.lookupClass(MockProvider::class.java, className)

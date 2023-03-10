@@ -5,7 +5,7 @@ import java.util.*
 
 class MyEjbComponentBean : MyEjbComponent {
   @Inject
-  private lateinit var  testInjection: String
+  lateinit var  testInjection: String
 
   val queue: Queue<*>? = null
 

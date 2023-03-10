@@ -33,7 +33,7 @@ internal class ConfigurationLoader(resourceName: String = CUSTOM_CONFIGURATION_F
     POST_CONSTRUCT_EXECUTE_STRATEGY to PostConstructExecuteStrategy.DEFAULT.name
   )
 
-  private fun loadResourceAndDefault(name: String): Map<String, String> {
+  private fun loadResourceAndDefault(name: String): MutableMap<String, String> {
     val result = loadDefaults()
     val properties = Properties()
     val resource = "/$name.properties"
