@@ -1,6 +1,5 @@
 package org.needle4k.injection
 
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Rule
 import org.junit.Test
