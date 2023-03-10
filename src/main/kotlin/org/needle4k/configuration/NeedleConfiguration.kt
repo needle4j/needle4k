@@ -39,5 +39,5 @@ val WELL_KNOWN_INJECTION_ANNOTATION_CLASSES = listOf(
 
 // Applies to methods and constructors
 val WELL_KNOWN_POSTCONSTRUCTION_ANNOTATION_CLASSES = listOf(
-  "javax.annotation.PostConstruct", "jakarta.annotation.PostConstruct", "javax.inject.Inject", "jakarta.inject.Inject"
+  "javax.annotation.PostConstruct", "jakarta.annotation.PostConstruct"
 )
