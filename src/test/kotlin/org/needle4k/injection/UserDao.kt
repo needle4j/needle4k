@@ -4,7 +4,7 @@ import org.needle4k.db.User
 import java.util.*
 import javax.inject.Inject
 
-class UserDao {
+open class UserDao {
   @Inject
   @field:CurrentUser
   lateinit var currentUser: User

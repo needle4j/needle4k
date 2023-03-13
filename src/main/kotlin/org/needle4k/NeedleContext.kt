@@ -21,10 +21,7 @@ class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration)
 
   fun getObjectUnderTestAnnotation(id: String): ObjectUnderTest? = objectUnderTestAnnotations[id]
 
-  fun addObjectUnderTest(
-    id: String, instance: Any,
-    objectUnderTestAnnotation: ObjectUnderTest
-  ) {
+  fun addObjectUnderTest(id: String, instance: Any, objectUnderTestAnnotation: ObjectUnderTest) {
     objectsUnderTest[id] = instance
     objectUnderTestAnnotations[id] = objectUnderTestAnnotation
   }
@@ -36,4 +33,10 @@ class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration)
 
   fun getAnnotatedTestcaseFields(annotationClass: Class<out Annotation>): List<Field> =
     annotatedTestcaseFieldMap[annotationClass] ?: ArrayList()
+
+  fun reset() {
+    objectsUnderTest.clear()
+    objectUnderTestAnnotations.clear()
+    injectedObjects.clear()
+  }
 }

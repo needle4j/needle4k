@@ -27,6 +27,8 @@ interface MockProvider {
     }
   }
 
+  fun reset()
+
   companion object {
     private val LOG = LoggerFactory.getLogger(MockProvider::class.java)
   }

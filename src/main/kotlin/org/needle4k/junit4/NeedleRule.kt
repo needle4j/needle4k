@@ -68,8 +68,13 @@ class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: 
     return object : Statement() {
       @Throws(Throwable::class)
       override fun evaluate() {
-        needleInjector.initTestInstance(target)
-        base.evaluate()
+        try {
+          needleInjector.before()
+          needleInjector.initTestInstance(target)
+          base.evaluate()
+        } finally {
+          needleInjector.after()
+        }
       }
     }
   }

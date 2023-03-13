@@ -28,6 +28,6 @@ class MockAnnotationProcessor(configuration: InjectionConfiguration) : AbstractN
   }
 
   companion object {
-    private val LOG = LoggerFactory.getLogger(MockAnnotationProcessor::class.java)
+    private val LOG = LoggerFactory.getLogger(MockAnnotationProcessor::class.java)!!
   }
 }

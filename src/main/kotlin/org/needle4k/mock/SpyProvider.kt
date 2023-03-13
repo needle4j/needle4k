@@ -1,7 +1,6 @@
 package org.needle4k.mock
 
 import java.lang.reflect.Field
-import java.lang.reflect.Modifier
 
 /**
  * Interface to abstract the creation of spy() instances, if the used framework
@@ -14,7 +13,7 @@ interface SpyProvider {
    * @param instance
    * @return Spy of instance (spy(instance) for Mockito)
    */
-  fun <T> createSpyComponent(instance: T): T
+  fun <T : Any> createSpyComponent(instance: T): T
 
   /**
    * @return the Annotation used to trigger the spy creation.
@@ -24,7 +23,7 @@ interface SpyProvider {
 
   fun isSpyRequested(field: Field): Boolean
 
-  fun isSpyPossible(field: Field) = !(field.type.isPrimitive || Modifier.isFinal(field.type.modifiers))
+  fun isSpyPossible(field: Field) = !field.type.isPrimitive
 
   companion object {
     /**
@@ -32,7 +31,7 @@ interface SpyProvider {
      * mockProvider does not support spies.
      */
     val FAKE: SpyProvider = object : SpyProvider {
-      override fun <T> createSpyComponent(instance: T): T {
+      override fun <T : Any> createSpyComponent(instance: T): T {
         return instance
       }
 

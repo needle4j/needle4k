@@ -15,7 +15,7 @@ import javax.inject.Inject
 class PostConstructAfterInjectionTest {
   @Rule
   @JvmField
-  var needleRule: NeedleRule = NeedleRule().apply {
+  val needleRule = NeedleRule().apply {
     needleConfiguration.configurationProperties[MOCK_PROVIDER_KEY] = EasyMockProvider::class.qualifiedName!!
   }
 

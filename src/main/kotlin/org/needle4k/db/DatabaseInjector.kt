@@ -27,24 +27,23 @@ open class DatabaseInjector(val configuration: DatabaseInjectorConfiguration) : 
   )
 
   /**
-   * Execute tear down database operation, if configured.
-   *
-   * @throws Exception thrown if an error occurs
-   */
-  @Throws(Exception::class)
-  fun after() {
-    configuration.dbOperation.tearDownOperation()
-    configuration.entityManager.clear()
-  }
-
-  /**
    * Execute setup database operation, if configured.
    *
    * @throws Exception thrown if an error occurs
    */
-  @Throws(Exception::class)
   fun before() {
     configuration.dbOperation.setUpOperation()
+  }
+
+  /**
+   * Execute tear down database operation, if configured.
+   *
+   * @throws Exception thrown if an error occurs
+   */
+  fun after() {
+    configuration.dbOperation.tearDownOperation()
+    configuration.entityManager.clear()
+    configuration.needleConfiguration
   }
 
   override fun verify(injectionTargetInformation: InjectionTargetInformation<*>): Boolean {

@@ -102,7 +102,7 @@ class NeedleInjector constructor(
    *
    * @param instance the instance to initialize.
    */
-   fun initInstance(instance: Any) {
+  fun initInstance(instance: Any) {
     injectIntoAnnotatedFields(instance)
     initMethodInjection(instance)
   }
@@ -273,6 +273,14 @@ class NeedleInjector constructor(
     } else {
       null
     }
+  }
+
+  fun before() {
+  }
+
+  fun after() {
+    context.reset()
+    configuration.reset()
   }
 
   companion object {

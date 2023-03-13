@@ -43,7 +43,6 @@ class DatabaseRule
 
   override fun apply(base: Statement, method: FrameworkMethod, target: Any): Statement {
     return object : Statement() {
-      @Throws(Throwable::class)
       override fun evaluate() {
         try {
           databaseInjector.before()
