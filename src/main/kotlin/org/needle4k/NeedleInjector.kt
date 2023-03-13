@@ -34,7 +34,7 @@ import java.lang.reflect.*
  * @author Heinz Wilming, Alphonse Bendt, Markus Dahm Akquinet AG
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  */
-class NeedleInjector constructor(
+open class NeedleInjector constructor(
   val configuration: InjectionConfiguration,
   vararg injectionProviders: InjectionProvider<*>
 ) {
@@ -59,7 +59,7 @@ class NeedleInjector constructor(
    * @throws Exception thrown if an initialization error occurs.
    */
   @Throws(Exception::class)
-  fun initTestInstance(test: Any) {
+  open fun initTestInstance(test: Any) {
     LOG.info("Initializing testcase {}...", test)
     context = NeedleContext(test, configuration.needleConfiguration)
 
@@ -92,7 +92,7 @@ class NeedleInjector constructor(
   /**
    * init mocks
    */
-  fun beforePostConstruct() {}
+  open fun beforePostConstruct() {}
 
   /**
    * Inject dependencies into the given instance. First, all field injections
@@ -102,7 +102,7 @@ class NeedleInjector constructor(
    *
    * @param instance the instance to initialize.
    */
-  fun initInstance(instance: Any) {
+  open fun initInstance(instance: Any) {
     injectIntoAnnotatedFields(instance)
     initMethodInjection(instance)
   }
