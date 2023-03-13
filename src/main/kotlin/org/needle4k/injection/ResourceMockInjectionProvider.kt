@@ -1,15 +1,18 @@
 package org.needle4k.injection
 
-import javax.annotation.Resource
-
-class ResourceMockInjectionProvider(injectionConfiguration: InjectionConfiguration) : DefaultMockInjectionProvider<Any>(
-  Resource::class.java, injectionConfiguration
-) {
+class ResourceMockInjectionProvider(
+  annotationClass: Class<out Annotation>,
+  injectionConfiguration: InjectionConfiguration
+) : DefaultMockInjectionProvider<Any>(annotationClass, injectionConfiguration) {
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>): Any {
-    val annotation = injectionTargetInformation.getAnnotation(Resource::class.java)
+    val annotation = injectionTargetInformation.getAnnotation(annotationClass)!!
+    val reflectionHelper = injectionConfiguration.needleConfiguration.reflectionHelper
+    val mappedName = reflectionHelper.invokeMethod(annotation, "mappedName")?.toString()
 
-    return if (annotation != null && annotation.mappedName.isNotBlank()) {
-      annotation.mappedName
-    } else super.getKey(injectionTargetInformation)
+    return if (mappedName.isNullOrBlank()) {
+      super.getKey(injectionTargetInformation)
+    } else {
+      mappedName
+    }
   }
 }

@@ -64,7 +64,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
     // Special handling
     if (clazz.name.endsWith(".annotation.Resource")) {
-      defaultInjectionProviders.add(ResourceMockInjectionProvider(this))
+      defaultInjectionProviders.add(ResourceMockInjectionProvider(clazz, this))
     } else {
       defaultInjectionProviders.add(DefaultMockInjectionProvider<T>(clazz, this))
     }
