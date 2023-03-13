@@ -1,4 +1,4 @@
-package org.needle4k.injection.constructor
+package org.needle4k.injection.method
 
 import org.needle4k.db.User
 import org.needle4k.injection.CurrentUser

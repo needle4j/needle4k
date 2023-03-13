@@ -1,10 +1,10 @@
-package org.needle4k.injection.constructor
+package org.needle4k.injection.method
 
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.needle4k.annotation.ObjectUnderTest
-import org.needle4k.injection.constructor.CurrentUserProvider.currentUser
+import org.needle4k.injection.method.CurrentUserProvider.currentUser
 import org.needle4k.junit4.NeedleRule
 
 class MethodInjectionTest {
