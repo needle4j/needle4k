@@ -41,7 +41,7 @@ open class NeedleRule(needleInjector: NeedleInjector, vararg injectionProviders:
   private val methodRuleChain = ArrayList<MethodRule>()
 
   constructor(vararg injectionProviders: InjectionProvider<*>)
-      : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)), *injectionProviders)
+      : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())), *injectionProviders)
 
   override fun withJPAInjection(): NeedleRule = super.withJPAInjection() as NeedleRule
 

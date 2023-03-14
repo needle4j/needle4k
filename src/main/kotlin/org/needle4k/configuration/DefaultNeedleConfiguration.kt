@@ -5,7 +5,7 @@ import org.needle4k.injection.InjectionProviderInstancesSupplier
 import org.needle4k.reflection.ReflectionUtil
 import org.needle4k.registries.AnnotationRegistry
 
-class DefaultNeedleConfiguration(private val needlePropertiesFile: String = CUSTOM_CONFIGURATION_FILENAME) : NeedleConfiguration {
+class DefaultNeedleConfiguration(needlePropertiesFile: String = CUSTOM_CONFIGURATION_FILENAME) : NeedleConfiguration {
   override val reflectionHelper = ReflectionUtil(this)
   override var configurationProperties = ConfigurationLoader(needlePropertiesFile).configProperties
 
@@ -22,13 +22,5 @@ class DefaultNeedleConfiguration(private val needlePropertiesFile: String = CUST
   init {
     WELL_KNOWN_INJECTION_ANNOTATION_CLASSES.forEach { injectionAnnotationRegistry.addAnnotation(it) }
     WELL_KNOWN_POSTCONSTRUCTION_ANNOTATION_CLASSES.forEach { postconstructAnnotationRegistry.addAnnotation(it) }
-  }
-
-  override fun reset() {
-    configurationProperties = ConfigurationLoader(needlePropertiesFile).configProperties
-  }
-
-  companion object {
-    val INSTANCE: NeedleConfiguration = DefaultNeedleConfiguration()
   }
 }

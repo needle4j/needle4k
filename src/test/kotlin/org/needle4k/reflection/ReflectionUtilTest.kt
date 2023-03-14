@@ -14,7 +14,7 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 class ReflectionUtilTest {
-  private val configuration = DefaultNeedleConfiguration.INSTANCE
+  private val configuration = DefaultNeedleConfiguration()
   private val objectUnderTest = configuration.reflectionHelper
 
   @Test
@@ -196,10 +196,10 @@ class ReflectionUtilTest {
   }
 
   @Suppress("unused")
-  private fun test()= "Hello World"
+  private fun test() = "Hello World"
 
   @Suppress("unused", "UNUSED_PARAMETER")
-  private fun test(value: Int)=""
+  private fun test(value: Int) = ""
 
   @Suppress("unused")
   private fun testException() {

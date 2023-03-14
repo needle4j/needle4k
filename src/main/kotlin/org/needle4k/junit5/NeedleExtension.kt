@@ -10,10 +10,14 @@ import org.needle4k.injection.InjectionConfiguration
 import org.needle4k.injection.InjectionProvider
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-open class NeedleExtension @JvmOverloads constructor(
-  needleInjector: NeedleInjector = NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)),
-  vararg injectionProviders: InjectionProvider<*>
-) : AbstractNeedleRule(needleInjector, *injectionProviders), AfterEachCallback, BeforeEachCallback {
+open class NeedleExtension(needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) :
+  AbstractNeedleRule(needleInjector, *injectionProviders), AfterEachCallback, BeforeEachCallback {
+
+  constructor(vararg injectionProviders: InjectionProvider<*>)
+      : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())), *injectionProviders)
+
+  constructor() : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())))
+
   override fun beforeEach(context: ExtensionContext) {
     runBeforeTest(context.requiredTestInstance)
   }

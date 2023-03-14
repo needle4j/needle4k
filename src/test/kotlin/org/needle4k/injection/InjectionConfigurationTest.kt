@@ -9,7 +9,7 @@ import org.needle4k.mock.MockitoProvider
 class InjectionConfigurationTest {
   @Test
   fun testCreateMockProvider() {
-    val injectionConfiguration = InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)
+    val injectionConfiguration = InjectionConfiguration(DefaultNeedleConfiguration())
     val mockProvider: MockProvider = injectionConfiguration.createMockProvider()
 
     Assert.assertTrue(mockProvider is MockitoProvider)

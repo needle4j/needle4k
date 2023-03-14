@@ -10,7 +10,7 @@ import org.needle4k.db.JPAInjectorConfiguration
 import javax.persistence.EntityManager
 
 class JPATestRule @JvmOverloads constructor(
-  needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration.INSTANCE,
+  needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration(),
 ) : TestRule {
   private val jpaInjector = JPAInjector(JPAInjectorConfiguration(needleConfiguration))
 

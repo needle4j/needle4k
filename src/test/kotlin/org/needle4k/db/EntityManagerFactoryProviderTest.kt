@@ -9,7 +9,7 @@ import javax.persistence.EntityManagerFactory
 
 @Suppress("unused")
 class EntityManagerFactoryProviderTest {
-  private val needleConfiguration = DefaultNeedleConfiguration.INSTANCE
+  private val needleConfiguration = DefaultNeedleConfiguration()
   private val entityManagerFactoryProvider = EntityManagerFactoryProvider(
     JPAInjectorConfiguration(needleConfiguration).entityManagerFactory
   )

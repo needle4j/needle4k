@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeMethod
 
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class AbstractNeedleTestcase @JvmOverloads constructor(
-  needleInjector: NeedleInjector = NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)),
+  needleInjector: NeedleInjector = NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())),
   vararg injectionProviders: InjectionProvider<*>
 ) : AbstractNeedleRule(needleInjector, *injectionProviders) {
   @BeforeMethod

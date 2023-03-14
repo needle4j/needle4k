@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class ClassListParserTest {
-  private val configuration = DefaultNeedleConfiguration.INSTANCE
+  private val configuration = DefaultNeedleConfiguration()
 
   @Test
   fun shouldLoadInjectionProviders() {

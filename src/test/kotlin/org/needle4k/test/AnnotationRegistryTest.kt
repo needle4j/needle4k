@@ -11,7 +11,7 @@ import org.needle4k.registries.AnnotationRegistry
 
 @Suppress("UsePropertyAccessSyntax")
 class AnnotationRegistryTest {
-  private val configuration = DefaultNeedleConfiguration.INSTANCE
+  private val configuration = DefaultNeedleConfiguration()
   private val objectUnderTest = AnnotationRegistry(configuration)
   private val ejb = configuration.reflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, EJB::class.java).first()
     .getAnnotation(EJB::class.java)
@@ -67,6 +67,7 @@ class AnnotationRegistryTest {
   }
 }
 
+@Suppress("unused")
 private class TestClass {
   @EJB
   private lateinit var jens: AnnotationRegistry

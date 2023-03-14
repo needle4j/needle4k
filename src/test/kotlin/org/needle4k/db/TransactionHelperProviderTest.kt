@@ -10,7 +10,7 @@ import javax.persistence.EntityManager
 
 @Suppress("unused")
 class TransactionHelperProviderTest {
-  private val configuration = DefaultNeedleConfiguration.INSTANCE
+  private val configuration = DefaultNeedleConfiguration()
   private val provider = TransactionHelperProvider(TransactionHelper(Mockito.mock(EntityManager::class.java)))
 
   @Inject

@@ -5,7 +5,7 @@ import org.testng.Assert
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
-class TestNG_JPATest : AbstractNeedleTestcase() {
+class JPATestNGTest : AbstractNeedleTestcase() {
   @BeforeMethod
   fun init() {
     withJPAInjection()

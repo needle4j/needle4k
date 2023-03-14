@@ -20,8 +20,6 @@ interface NeedleConfiguration {
   val mockProviderClassName get() = configurationProperties[MOCK_PROVIDER_KEY]!!
   val dbOperationClassName get() = configurationProperties[DB_OPERATION_KEY]!!
   val postConstructExecuteStrategy get() = PostConstructExecuteStrategy.valueOf(configurationProperties[POST_CONSTRUCT_EXECUTE_STRATEGY]!!)
-
-  fun reset()
 }
 
 val WELL_KNOWN_INJECTION_ANNOTATION_CLASSES = listOf(

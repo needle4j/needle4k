@@ -154,11 +154,10 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
     val mockProviderClass = helper.lookupClass(MockProvider::class.java, className)
       ?: throw IllegalStateException("Could not load mock provider class: '$className'")
 
-    return helper.createInstance(mockProviderClass)
+    return helper.createInstance(mockProviderClass, NeedleConfiguration::class.java to needleConfiguration)
   }
 
   fun reset() {
-    needleConfiguration.reset()
     testInjectionProviders.clear()
     mockProvider.reset()
   }

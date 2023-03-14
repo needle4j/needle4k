@@ -9,7 +9,7 @@ import org.needle4k.db.Person
 import org.needle4k.db.User
 
 class TransactionHelperTest {
-  private val configuration = JPAInjectorConfiguration(DefaultNeedleConfiguration.INSTANCE)
+  private val configuration = JPAInjectorConfiguration(DefaultNeedleConfiguration())
   private val objectUnderTest = configuration.transactionHelper
   
   @Test

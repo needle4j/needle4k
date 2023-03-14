@@ -2,9 +2,9 @@ package org.needle4k.db.operation
 
 import org.hibernate.exception.ConstraintViolationException
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.db.Address
 import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.db.operation.hsql.HSQLDeleteOperation
@@ -20,7 +20,12 @@ class HSQLDeleteOperationTest {
   @Inject
   private lateinit var configuration: JPAInjectorConfiguration
 
-  private val hsqlDeleteOperation = HSQLDeleteOperation(JPAInjectorConfiguration(DefaultNeedleConfiguration.INSTANCE))
+  private lateinit var hsqlDeleteOperation : HSQLDeleteOperation
+
+  @Before
+  fun init() {
+    hsqlDeleteOperation = HSQLDeleteOperation(configuration)
+  }
 
   @Test
   fun testDisableReferentialIntegrity() {

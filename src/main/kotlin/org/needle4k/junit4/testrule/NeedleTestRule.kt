@@ -12,7 +12,7 @@ import org.needle4k.injection.InjectionProvider
 /**
  *
  * JUnit [TestRule] for the initialization of the test. The Rule processes
- * and initializes all fields annotated with [ObjectUnderTest].
+ * and initializes all fields annotated with [org.needle4k.annotation.ObjectUnderTest].
  *
  *
  *
@@ -22,7 +22,7 @@ import org.needle4k.injection.InjectionProvider
  * new junit api does not pass the caller to the statement execution.
  *
  *
- * Using this Rule enables the [RuleChain]s feature of JUnit 4.
+ * Using this Rule enables the [org.junit.rules.RuleChain]s feature of JUnit 4.
  *
  * <pre>
  * Example:
@@ -47,13 +47,13 @@ import org.needle4k.injection.InjectionProvider
  *
  * @author Heinz Wilming, Alphonse Bendt, Markus Dahm - Akquinet AG
  * @author Jan Galinski - Holisticon AG (jan.galinski@holisticon.de)
- * @see NeedleRule
+ * @see org.needle4k.junit4.NeedleRule
  *
  * @see NeedleInjector
  */
 class NeedleTestRule @JvmOverloads constructor(
   private val testInstance: Any,
-  needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration.INSTANCE,
+  needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration(),
   vararg injectionProviders: InjectionProvider<*>
 ) : TestRule {
   private val needleInjector = NeedleInjector(InjectionConfiguration(needleConfiguration), *injectionProviders)

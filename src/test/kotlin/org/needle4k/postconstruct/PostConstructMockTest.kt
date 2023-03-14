@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @Suppress("unused")
 class PostConstructMockTest {
-  private val needleInjector = object : NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)) {
+  private val needleInjector = object : NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())) {
     override fun beforePostConstruct() {
       dependentComponent.count()
     }
