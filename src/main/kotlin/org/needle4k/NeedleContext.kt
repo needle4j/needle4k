@@ -8,7 +8,7 @@ class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration)
   private val objectsUnderTest: MutableMap<String, Any> = HashMap()
   private val objectUnderTestAnnotations = HashMap<String, ObjectUnderTest>()
   private val injectedObjects: MutableMap<Any, Any?> = HashMap()
-  private val annotatedTestcaseFieldMap = needleConfiguration.reflectionHelper.getAllAnnotatedFields(test.javaClass)
+  private val annotatedTestcaseFieldMap = needleConfiguration.reflectionUtil.getAllAnnotatedFields(test.javaClass)
 
   @Suppress("UNCHECKED_CAST")
   fun <X> getInjectedObject(key: Any): X? = injectedObjects[key] as X?

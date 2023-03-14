@@ -27,7 +27,7 @@ class TestcaseInjectionProcessor(configuration: InjectionConfiguration) : Abstra
   private fun processField(context: NeedleContext, configuration: InjectionConfiguration, field: Field) {
     val needleConfiguration = context.needleConfiguration
     val registry = needleConfiguration.injectionAnnotationRegistry
-    val reflectionUtil = needleConfiguration.reflectionHelper
+    val reflectionUtil = needleConfiguration.reflectionUtil
     val annotation = registry.registeredAnnotation(*field.declaredAnnotations)!!
     val injectionTargetInformation: InjectionTargetInformation<*> = FieldTargetInformation(field, annotation)
     val injection = configuration.handleInjectionProvider(configuration.allInjectionProviders, injectionTargetInformation)

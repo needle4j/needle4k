@@ -6,7 +6,7 @@ class ResourceMockInjectionProvider(
 ) : DefaultMockInjectionProvider<Any>(annotationClass, injectionConfiguration) {
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>): Any {
     val annotation = injectionTargetInformation.getAnnotation(annotationClass)!!
-    val reflectionHelper = injectionConfiguration.needleConfiguration.reflectionHelper
+    val reflectionHelper = injectionConfiguration.needleConfiguration.reflectionUtil
     val mappedName = reflectionHelper.invokeMethod(annotation, "mappedName")?.toString()
 
     return if (mappedName.isNullOrBlank()) {

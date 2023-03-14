@@ -15,7 +15,7 @@ import java.lang.reflect.Method
 
 class ReflectionUtilTest {
   private val configuration = DefaultNeedleConfiguration()
-  private val objectUnderTest = configuration.reflectionHelper
+  private val objectUnderTest = configuration.reflectionUtil
 
   @Test
   fun testCanLookupPrivateFieldFromSuperclass() {

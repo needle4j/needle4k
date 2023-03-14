@@ -51,8 +51,8 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
   }
 
   private fun addCdiInstance() {
-    val instanceClass = needleConfiguration.reflectionHelper.forName("javax.enterprise.inject.Instance")
-      ?: needleConfiguration.reflectionHelper.forName("jakarta.enterprise.inject.Instance")
+    val instanceClass = needleConfiguration.reflectionUtil.forName("javax.enterprise.inject.Instance")
+      ?: needleConfiguration.reflectionUtil.forName("jakarta.enterprise.inject.Instance")
 
     if (instanceClass != null) {
       defaultInjectionProviders.add(CDIInstanceInjectionProvider(instanceClass, this))
@@ -88,7 +88,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
   private fun initGlobalInjectionProviders() {
     val customInjectionProviders: Set<Class<InjectionProvider<*>>> = needleConfiguration.customInjectionProviderClasses
-    val reflectionUtil = needleConfiguration.reflectionHelper
+    val reflectionUtil = needleConfiguration.reflectionUtil
 
     for (injectionProviderClass in customInjectionProviders) {
       try {
@@ -150,7 +150,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
   internal fun createMockProvider(): MockProvider {
     val className = needleConfiguration.mockProviderClassName
-    val helper = needleConfiguration.reflectionHelper
+    val helper = needleConfiguration.reflectionUtil
     val mockProviderClass = helper.lookupClass(MockProvider::class.java, className)
       ?: throw IllegalStateException("Could not load mock provider class: '$className'")
 

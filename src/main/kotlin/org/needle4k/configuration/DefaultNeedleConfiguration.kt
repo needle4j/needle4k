@@ -6,7 +6,7 @@ import org.needle4k.reflection.ReflectionUtil
 import org.needle4k.registries.AnnotationRegistry
 
 class DefaultNeedleConfiguration(needlePropertiesFile: String = CUSTOM_CONFIGURATION_FILENAME) : NeedleConfiguration {
-  override val reflectionHelper = ReflectionUtil(this)
+  override val reflectionUtil = ReflectionUtil(this)
   override var configurationProperties = ConfigurationLoader(needlePropertiesFile).configProperties
 
   override val injectionAnnotationRegistry = AnnotationRegistry(this)

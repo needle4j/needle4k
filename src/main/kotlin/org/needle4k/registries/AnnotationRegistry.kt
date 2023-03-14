@@ -8,7 +8,7 @@ class AnnotationRegistry(private val configuration: NeedleConfiguration) {
   fun allAnnotations() = registeredAnnotations.toSet()
 
   fun addAnnotation(className: String): AnnotationRegistry {
-    val clazz = configuration.reflectionHelper.lookupClass(Annotation::class.java, className)
+    val clazz = configuration.reflectionUtil.lookupClass(Annotation::class.java, className)
 
     if (clazz != null) {
       registeredAnnotations.add(clazz)
@@ -36,6 +36,6 @@ class AnnotationRegistry(private val configuration: NeedleConfiguration) {
     annotationClasses.toSet().intersect(registeredAnnotations).isNotEmpty()
 
   fun isRegistered(vararg classNames: String) =
-    classNames.mapNotNull { configuration.reflectionHelper.lookupClass(Annotation::class.java, it) }.toSet()
+    classNames.mapNotNull { configuration.reflectionUtil.lookupClass(Annotation::class.java, it) }.toSet()
       .intersect(registeredAnnotations).isNotEmpty()
 }

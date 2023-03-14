@@ -6,7 +6,7 @@ import org.needle4k.reflection.ReflectionUtil
 import org.needle4k.registries.AnnotationRegistry
 
 interface NeedleConfiguration {
-  val reflectionHelper: ReflectionUtil
+  val reflectionUtil: ReflectionUtil
   val configurationProperties: MutableMap<String, String>
 
   val injectionAnnotationRegistry: AnnotationRegistry

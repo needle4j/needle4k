@@ -60,7 +60,7 @@ class PostConstructProcessor(private val configuration: InjectionConfiguration) 
 
     for (method in postConstructMethods) {
       try {
-        context.needleConfiguration.reflectionHelper.invokeMethod(method, instance)
+        context.needleConfiguration.reflectionUtil.invokeMethod(method, instance)
       } catch (e: Exception) {
         throw ObjectUnderTestInstantiationException(
           "Error executing postConstruction method '${method.name}'", e
@@ -77,7 +77,7 @@ class PostConstructProcessor(private val configuration: InjectionConfiguration) 
 
     for (postConstructAnnotation in postConstructAnnotations) {
       postConstructMethods.addAll(
-        context.needleConfiguration.reflectionHelper.getAllMethodsWithAnnotation(
+        context.needleConfiguration.reflectionUtil.getAllMethodsWithAnnotation(
           type,
           postConstructAnnotation
         )

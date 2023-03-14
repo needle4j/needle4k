@@ -48,7 +48,7 @@ class JPAInjectorConfiguration(val needleConfiguration: NeedleConfiguration) {
 
   private fun createDBOperation(dbOperationClass: Class<out AbstractDBOperation>): DBOperation {
     try {
-      return needleConfiguration.reflectionHelper.createInstance(
+      return needleConfiguration.reflectionUtil.createInstance(
         dbOperationClass,
         JPAInjectorConfiguration::class.java to this
       )
@@ -58,7 +58,7 @@ class JPAInjectorConfiguration(val needleConfiguration: NeedleConfiguration) {
   }
 
   private fun lookupDBOperationClass(dbOperation: String): Class<out AbstractDBOperation> = try {
-    needleConfiguration.reflectionHelper.lookupClass(AbstractDBOperation::class.java, dbOperation)
+    needleConfiguration.reflectionUtil.lookupClass(AbstractDBOperation::class.java, dbOperation)
       ?: NoOperation::class.java
   } catch (e: Exception) {
     LOG.warn("Error while loading db operation class {}, {}", dbOperation, e.message)

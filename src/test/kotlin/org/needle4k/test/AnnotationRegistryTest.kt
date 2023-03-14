@@ -13,15 +13,15 @@ import org.needle4k.registries.AnnotationRegistry
 class AnnotationRegistryTest {
   private val configuration = DefaultNeedleConfiguration()
   private val objectUnderTest = AnnotationRegistry(configuration)
-  private val ejb = configuration.reflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, EJB::class.java).first()
+  private val ejb = configuration.reflectionUtil.getAllFieldsWithAnnotation(TestClass::class.java, EJB::class.java).first()
     .getAnnotation(EJB::class.java)
   private val inject =
-    configuration.reflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, Inject::class.java).first()
+    configuration.reflectionUtil.getAllFieldsWithAnnotation(TestClass::class.java, Inject::class.java).first()
       .getAnnotation(Inject::class.java)
 
   @BeforeEach
   fun patchConfiguration() {
-    configuration.reflectionHelper.setFieldValue(configuration, "injectionAnnotationRegistry", objectUnderTest)
+    configuration.reflectionUtil.setFieldValue(configuration, "injectionAnnotationRegistry", objectUnderTest)
   }
 
   @Test
@@ -44,14 +44,14 @@ class AnnotationRegistryTest {
   fun `Check annotation classes`() {
     assertThrows(IllegalArgumentException::class.java) { objectUnderTest.addAnnotation(HashMap::class.java.name) }
 
-    val prefix = if(configuration.reflectionHelper.forName("jakarta.inject.Inject") == null) "jakarta" else "javax"
+    val prefix = if(configuration.reflectionUtil.forName("jakarta.inject.Inject") == null) "jakarta" else "javax"
     objectUnderTest.addAnnotation("$prefix.inject.Inject")
     assertThat(objectUnderTest.allAnnotations()).`as`("class not found").isEmpty()
 
-    assertThat(configuration.reflectionHelper.getAllFieldsWithSupportedAnnotation(TestClass::class.java)).isEmpty()
+    assertThat(configuration.reflectionUtil.getAllFieldsWithSupportedAnnotation(TestClass::class.java)).isEmpty()
 
     objectUnderTest.addAnnotation(EJB::class.java)
-    assertThat(configuration.reflectionHelper.getAllFieldsWithSupportedAnnotation(TestClass::class.java)).hasSize(1)
+    assertThat(configuration.reflectionUtil.getAllFieldsWithSupportedAnnotation(TestClass::class.java)).hasSize(1)
   }
 
   private fun checkAnnotations() {
