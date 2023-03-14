@@ -11,7 +11,7 @@ import javax.persistence.EntityManagerFactory
 class EntityManagerFactoryProviderTest {
   private val needleConfiguration = DefaultNeedleConfiguration.INSTANCE
   private val entityManagerFactoryProvider = EntityManagerFactoryProvider(
-    DatabaseInjectorConfiguration(needleConfiguration).entityManagerFactory
+    JPAInjectorConfiguration(needleConfiguration).entityManagerFactory
   )
 
   @Resource

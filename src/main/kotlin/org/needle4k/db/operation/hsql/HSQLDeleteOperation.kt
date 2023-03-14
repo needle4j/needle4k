@@ -1,6 +1,6 @@
 package org.needle4k.db.operation.hsql
 
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.db.operation.AbstractDeleteOperation
 import java.sql.SQLException
 import java.sql.Statement
@@ -9,7 +9,7 @@ import java.sql.Statement
  * Delete everything from the DB: This cannot be done with the JPA, because the
  * order of deletion matters. Instead, we directly use a JDBC connection.
  */
-open class HSQLDeleteOperation constructor(configuration: DatabaseInjectorConfiguration) : AbstractDeleteOperation(configuration) {
+open class HSQLDeleteOperation constructor(configuration: JPAInjectorConfiguration) : AbstractDeleteOperation(configuration) {
   @Throws(SQLException::class)
   override fun setReferentialIntegrity(enable: Boolean, statement: Statement) {
     val databaseMajorVersion = statement.connection.metaData.databaseMajorVersion

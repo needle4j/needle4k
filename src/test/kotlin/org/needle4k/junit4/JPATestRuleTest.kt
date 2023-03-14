@@ -3,12 +3,12 @@ package org.needle4k.junit4
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
-import org.needle4k.junit4.testrule.DatabaseTestRule
+import org.needle4k.junit4.testrule.JPATestRule
 
-class DatabaseTestRuleTest {
+class JPATestRuleTest {
   @Rule
   @JvmField
-  val databaseTestRule = DatabaseTestRule()
+  val databaseTestRule = JPATestRule()
 
   @Test
   fun testEntityManager() {

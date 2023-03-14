@@ -6,7 +6,7 @@ import org.junit.runners.model.Statement
 import org.needle4k.NeedleInjector
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.db.JPAInjector
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.injection.InjectionConfiguration
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.LazyInjectionProvider
@@ -44,9 +44,10 @@ open class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProvid
 
   val needleConfiguration get() = needleInjector.configuration.needleConfiguration
   val jpaInjector: JPAInjector? get() = needleInjector.configuration.getInjectionProvider(JPAInjector::class.java)
-  val configuration: DatabaseInjectorConfiguration get() = jpaInjector?.configuration
-    ?: throw IllegalStateException("NeedleRule was not configured with JPA injection provider")
-  val entityManager: EntityManager get() = configuration.entityManager
+  val jpaInjectorConfiguration: JPAInjectorConfiguration
+    get() = jpaInjector?.configuration
+      ?: throw IllegalStateException("NeedleRule was not configured with JPA injection provider")
+  val entityManager: EntityManager get() = jpaInjectorConfiguration.entityManager
 
   constructor(vararg injectionProviders: InjectionProvider<*>)
       : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)), *injectionProviders)
@@ -54,11 +55,16 @@ open class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProvid
   init {
     needleInjector.addInjectionProvider(*injectionProviders)
     needleInjector.addInjectionProvider(LazyInjectionProvider(NeedleInjector::class.java) { needleInjector })
+    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjector::class.java) {
+      jpaInjector
+        ?: throw IllegalStateException("NeedleRule was not configured with JPA injection provider")
+    })
+    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
   }
 
   fun withJPAInjection(): NeedleRule {
     if (!needleInjector.configuration.hasInjectionProvider(JPAInjector::class.java)) {
-      needleInjector.addInjectionProvider(JPAInjector(DatabaseInjectorConfiguration(needleConfiguration)))
+      needleInjector.addInjectionProvider(JPAInjector(JPAInjectorConfiguration(needleConfiguration)))
     }
 
     return this

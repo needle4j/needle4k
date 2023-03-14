@@ -1,6 +1,6 @@
 package org.needle4k.db.operation
 
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 import org.slf4j.LoggerFactory
 import java.sql.SQLException
 import java.sql.Statement
@@ -9,7 +9,7 @@ import java.sql.Statement
  * Delete everything from the DB: This cannot be done with the JPA, because the
  * order of deletion matters. Instead we directly use a JDBC connection.
  */
-abstract class AbstractDeleteOperation(configuration: DatabaseInjectorConfiguration) :
+abstract class AbstractDeleteOperation(configuration: JPAInjectorConfiguration) :
   AbstractDBOperation(configuration) {
   /**
    * {@inheritDoc} No operation implementation.

@@ -1,7 +1,7 @@
 package org.needle4k.db.operation
 
 import org.needle4k.configuration.ConfigurationLoader
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.IOException
@@ -12,7 +12,7 @@ import java.sql.*
  * An abstract implementation of [DBOperation] with common jdbc
  * operations.
  */
-abstract class AbstractDBOperation(val configuration: DatabaseInjectorConfiguration) : DBOperation {
+abstract class AbstractDBOperation(val configuration: JPAInjectorConfiguration) : DBOperation {
   /**
    * Returns the names of all tables in the database by using
    * [DatabaseMetaData].

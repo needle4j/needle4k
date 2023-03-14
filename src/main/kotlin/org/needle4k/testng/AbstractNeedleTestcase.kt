@@ -1,6 +1,8 @@
 package org.needle4k.testng
 
 import org.needle4k.NeedleInjector
+import org.needle4k.db.JPAInjector
+import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.LazyInjectionProvider
 import org.testng.annotations.AfterMethod
@@ -20,6 +22,8 @@ abstract class AbstractNeedleTestcase(
   init {
     needleInjector.addInjectionProvider(*injectionProviders)
     needleInjector.addInjectionProvider(LazyInjectionProvider(NeedleInjector::class.java) { needleInjector })
+    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjector::class.java) { databaseTestcase.jpaInjector })
+    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { databaseTestcase.jpaInjector.configuration })
   }
 
   @BeforeMethod

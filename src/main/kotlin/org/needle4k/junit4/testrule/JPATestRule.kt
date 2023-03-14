@@ -6,13 +6,13 @@ import org.junit.runners.model.Statement
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.configuration.NeedleConfiguration
 import org.needle4k.db.JPAInjector
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 import javax.persistence.EntityManager
 
-class DatabaseTestRule @JvmOverloads constructor(
+class JPATestRule @JvmOverloads constructor(
   needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration.INSTANCE,
 ) : TestRule {
-  private val jpaInjector = JPAInjector(DatabaseInjectorConfiguration(needleConfiguration))
+  private val jpaInjector = JPAInjector(JPAInjectorConfiguration(needleConfiguration))
 
   val entityManager: EntityManager get() = jpaInjector.configuration.entityManager
 

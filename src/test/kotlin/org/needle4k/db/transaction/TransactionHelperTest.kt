@@ -4,12 +4,12 @@ import org.junit.Assert
 import org.junit.Test
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.db.Address
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.db.Person
 import org.needle4k.db.User
 
 class TransactionHelperTest {
-  private val configuration = DatabaseInjectorConfiguration(DefaultNeedleConfiguration.INSTANCE)
+  private val configuration = JPAInjectorConfiguration(DefaultNeedleConfiguration.INSTANCE)
   private val objectUnderTest = configuration.transactionHelper
   
   @Test

@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.persistence.EntityTransaction
 
-class DatabaseRuleEntityTransactionInjectionTest {
+class EntityTransactionInjectionTest {
   @Rule
   @JvmField
   var needleRule: NeedleRule = NeedleRule().withJPAInjection()

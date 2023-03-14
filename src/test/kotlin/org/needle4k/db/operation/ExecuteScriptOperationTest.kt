@@ -3,10 +3,10 @@ package org.needle4k.db.operation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.needle4k.configuration.DefaultNeedleConfiguration
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 
 class ExecuteScriptOperationTest {
-  val configuration = DatabaseInjectorConfiguration(DefaultNeedleConfiguration())
+  val configuration = JPAInjectorConfiguration(DefaultNeedleConfiguration())
   private val executeScriptOperation = ExecuteScriptOperation(configuration)
 
   @Test

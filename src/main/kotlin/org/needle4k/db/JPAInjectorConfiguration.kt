@@ -12,7 +12,7 @@ import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 
-class DatabaseInjectorConfiguration(val needleConfiguration: NeedleConfiguration) {
+class JPAInjectorConfiguration(val needleConfiguration: NeedleConfiguration) {
   val entityManagerFactory: EntityManagerFactory =
     Persistence.createEntityManagerFactory(needleConfiguration.persistenceUnitName)
   val dbOperation = createDBOperation(lookupDBOperationClass(needleConfiguration.dbOperationClassName))
@@ -50,7 +50,7 @@ class DatabaseInjectorConfiguration(val needleConfiguration: NeedleConfiguration
     try {
       return needleConfiguration.reflectionHelper.createInstance(
         dbOperationClass,
-        DatabaseInjectorConfiguration::class.java to this
+        JPAInjectorConfiguration::class.java to this
       )
     } catch (e: Exception) {
       throw IllegalArgumentException("Could not create a new instance of configured DB operation $dbOperationClass", e)
@@ -66,6 +66,6 @@ class DatabaseInjectorConfiguration(val needleConfiguration: NeedleConfiguration
   }
 
   companion object {
-    private val LOG = LoggerFactory.getLogger(DatabaseInjectorConfiguration::class.java)
+    private val LOG = LoggerFactory.getLogger(JPAInjectorConfiguration::class.java)
   }
 }

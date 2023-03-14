@@ -5,10 +5,10 @@ import org.hibernate.JDBCException
 import org.junit.Assert
 import org.junit.Test
 import org.needle4k.configuration.DefaultNeedleConfiguration
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 
 class DBOperationTest {
-  val configuration = DatabaseInjectorConfiguration(DefaultNeedleConfiguration())
+  val configuration = JPAInjectorConfiguration(DefaultNeedleConfiguration())
   private val dbOperation: AbstractDBOperation = object : AbstractDBOperation(configuration) {
     override fun tearDownOperation() {}
     override fun setUpOperation() {}

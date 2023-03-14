@@ -1,6 +1,6 @@
 package org.needle4k.db.operation
 
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 import java.sql.SQLException
 
 /**
@@ -9,7 +9,7 @@ import java.sql.SQLException
  * @author Heinz Wilming, Alphonse Bendt, Markus Dahm Akquinet AG
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  */
-class ExecuteScriptOperation(configuration: DatabaseInjectorConfiguration) : AbstractDBOperation(configuration) {
+class ExecuteScriptOperation(configuration: JPAInjectorConfiguration) : AbstractDBOperation(configuration) {
   /**
    * Execute <pre>before.sql</pre> script in test setup.
    *

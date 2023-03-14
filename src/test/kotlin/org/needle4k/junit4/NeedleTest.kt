@@ -17,11 +17,7 @@ import javax.persistence.EntityManagerFactory
 class NeedleTest {
   @Rule
   @JvmField
-  var databaseRule = DatabaseRule()
-
-  @Rule
-  @JvmField
-  var needle = NeedleRule(databaseRule)
+  var needle = NeedleRule().withJPAInjection()
 
   @ObjectUnderTest
   private lateinit var componentBean: MyComponentBean
@@ -43,15 +39,11 @@ class NeedleTest {
 
     assertThat(mockingDetails(componentBean.entityManager).isMock).isFalse
     assertThat(mockingDetails(componentBean.sessionContext).isMock).isTrue
-//    assertThat(mockingDetails(mock).isMock).isFalse
-//    assertThat(mock).isSameAs(componentBean.myEjbComponent)
     assertThat(mockingDetails(componentBean.myEjbComponent).isMock).isFalse
 
     val mock = needle.getInjectedObject(MyEjbComponent::class.java)
 
     assertNotNull(mock)
-
-// TODO: Fixme
   }
 
   @Test

@@ -6,21 +6,25 @@ import org.junit.Rule
 import org.junit.Test
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.db.Address
-import org.needle4k.db.DatabaseInjectorConfiguration
+import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.db.operation.hsql.HSQLDeleteOperation
-import org.needle4k.junit4.DatabaseRule
+import org.needle4k.junit4.NeedleRule
 import java.sql.Statement
+import javax.inject.Inject
 
 class HSQLDeleteOperationTest {
   @JvmField
   @Rule
-  var databaseRule: DatabaseRule = DatabaseRule()
+  val needleRule = NeedleRule().withJPAInjection()
 
-  private val hsqlDeleteOperation = HSQLDeleteOperation(DatabaseInjectorConfiguration(DefaultNeedleConfiguration.INSTANCE))
+  @Inject
+  private lateinit var configuration: JPAInjectorConfiguration
+
+  private val hsqlDeleteOperation = HSQLDeleteOperation(JPAInjectorConfiguration(DefaultNeedleConfiguration.INSTANCE))
 
   @Test
   fun testDisableReferentialIntegrity() {
-    databaseRule.configuration.execute {
+    configuration.execute {
       it.createStatement().use { statement ->
         hsqlDeleteOperation.disableReferentialIntegrity(statement)
         insertAddressWithInvalidFk(statement)
@@ -30,7 +34,7 @@ class HSQLDeleteOperationTest {
 
   @Test(expected = ConstraintViolationException::class)
   fun testEnableReferentialIntegrity() {
-    databaseRule.configuration.execute {
+    configuration.execute {
       it.createStatement().use { statement ->
         hsqlDeleteOperation.enableReferentialIntegrity(statement)
         insertAddressWithInvalidFk(statement)
@@ -40,7 +44,7 @@ class HSQLDeleteOperationTest {
 
   private fun insertAddressWithInvalidFk(statement: Statement) {
     val address = Address()
-    databaseRule.configuration.transactionHelper.executeInTransaction {
+    needleRule.jpaInjectorConfiguration.transactionHelper.executeInTransaction {
       it.persist(address)
       it.flush()
     }
@@ -51,9 +55,9 @@ class HSQLDeleteOperationTest {
   @Test
   @Throws(Exception::class)
   fun testDeleteContent() {
-    databaseRule.configuration.execute {
+    configuration.execute {
       it.createStatement().use { statement ->
-        databaseRule.configuration.transactionHelper.executeInTransaction { em -> em.persist(Address()) }
+        configuration.transactionHelper.executeInTransaction { em -> em.persist(Address()) }
 
         val rs = statement.executeQuery("SELECT * FROM " + Address.TABLE_NAME)
         Assert.assertTrue(rs.next())
@@ -61,7 +65,7 @@ class HSQLDeleteOperationTest {
         tableNames.add(Address.TABLE_NAME)
 
         hsqlDeleteOperation.deleteContent(tableNames, statement)
-        statement.executeQuery("select * from " + Address.TABLE_NAME)
+        statement.executeQuery("SELECT * FROM " + Address.TABLE_NAME)
         Assert.assertFalse(rs.next())
         rs.close()
         statement.close()
