@@ -4,6 +4,7 @@ import org.needle4k.NeedleInjector
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.injection.InjectionConfiguration
 import org.needle4k.injection.InjectionProvider
+import org.needle4k.injection.LazyInjectionProvider
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 open class JPANeedleExtension(needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) :
@@ -12,6 +13,7 @@ open class JPANeedleExtension(needleInjector: NeedleInjector, vararg injectionPr
   constructor() : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())))
 
   init {
-    withJPAInjection()
+    addJPAInjectionProvider()
+    needleInjector.addInjectionProvider(LazyInjectionProvider(JPANeedleExtension::class.java) { this })
   }
 }

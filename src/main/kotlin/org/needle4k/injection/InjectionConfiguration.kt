@@ -157,11 +157,6 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
     return helper.createInstance(mockProviderClass, NeedleConfiguration::class.java to needleConfiguration)
   }
 
-  fun reset() {
-    testInjectionProviders.clear()
-    mockProvider.reset()
-  }
-
   companion object {
     private val LOG = LoggerFactory.getLogger(InjectionConfiguration::class.java)
   }

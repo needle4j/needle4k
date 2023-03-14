@@ -279,8 +279,6 @@ open class NeedleInjector constructor(
   }
 
   fun after() {
-    context.reset()
-    configuration.reset()
   }
 
   companion object {

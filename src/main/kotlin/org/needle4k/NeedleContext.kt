@@ -33,10 +33,4 @@ class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration)
 
   fun getAnnotatedTestcaseFields(annotationClass: Class<out Annotation>): List<Field> =
     annotatedTestcaseFieldMap[annotationClass] ?: ArrayList()
-
-  fun reset() {
-    objectsUnderTest.clear()
-    objectUnderTestAnnotations.clear()
-    injectedObjects.clear()
-  }
 }

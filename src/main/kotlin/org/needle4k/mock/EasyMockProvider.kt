@@ -95,6 +95,4 @@ class EasyMockProvider(needleConfiguration: NeedleConfiguration) : EasyMockSuppo
     EasyMock.resetToDefault(mock)
     return mock
   }
-
-  override fun reset() {}
 }

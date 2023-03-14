@@ -44,8 +44,6 @@ class MockitoProvider(needleConfiguration: NeedleConfiguration) :
 
   override fun isSpyRequested(field: Field) = field.isAnnotationPresent(spyAnnotation)
 
-  override fun reset() {}
-
   companion object {
     const val SPY_ANNOTATION_FQN = "org.mockito.Spy"
 

@@ -1,23 +1,24 @@
 package org.needle4k.junit5
 
-import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Disabled
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.needle4k.db.AbstractJPAEntityManagerTest
+import org.needle4k.db.JPAInjector
 import javax.inject.Inject
 
 @ExtendWith(value = [JPANeedleExtension::class])
-@Disabled
 class JPAEntityManagerJUnit5Test : AbstractJPAEntityManagerTest(){
   @Inject
-  private lateinit var needle: NeedleExtension
+  private lateinit var needle: JPANeedleExtension
 
-  @Test
-  fun `test same entity manager`() {
-    val entityManager = needle.jpaInjector?.configuration?.entityManager
-    Assertions.assertThat(entityManager).isSameAs(this.entityManager)
-  }
+  @Inject
+  private lateinit var jpaInjector: JPAInjector
+
+//  @BeforeEach
+//  fun init() {
+//    needle.withJPAInjection()
+//  }
 
   @Test
   override fun `test with real entity manager`() {
@@ -27,5 +28,11 @@ class JPAEntityManagerJUnit5Test : AbstractJPAEntityManagerTest(){
   @Test
   override fun testTransactions() {
     super.testTransactions()
+  }
+
+  @Test
+  fun `test same entity manager`() {
+    assertThat(needle.jpaInjector.configuration.entityManager).isSameAs(this.entityManager)
+    assertThat(needle.jpaInjector).isSameAs(this.jpaInjector)
   }
 }

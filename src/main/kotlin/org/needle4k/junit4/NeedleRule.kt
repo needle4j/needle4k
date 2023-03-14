@@ -43,7 +43,10 @@ open class NeedleRule(needleInjector: NeedleInjector, vararg injectionProviders:
   constructor(vararg injectionProviders: InjectionProvider<*>)
       : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())), *injectionProviders)
 
-  override fun withJPAInjection(): NeedleRule = super.withJPAInjection() as NeedleRule
+  fun withJPAInjection(): NeedleRule {
+    addJPAInjectionProvider()
+    return this
+  }
 
   /**
    * Add rule to method call chain

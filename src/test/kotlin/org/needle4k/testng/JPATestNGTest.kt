@@ -8,7 +8,7 @@ import org.testng.annotations.Test
 class JPATestNGTest : AbstractNeedleTestcase() {
   @BeforeMethod
   fun init() {
-    withJPAInjection()
+    addJPAInjectionProvider()
   }
 
   @Test

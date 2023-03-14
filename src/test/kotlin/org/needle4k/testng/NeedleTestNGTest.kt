@@ -30,11 +30,6 @@ class NeedleTestNGTest : AbstractNeedleTestcase() {
   @Inject
   private lateinit var entityTransaction: EntityTransaction
 
-  @BeforeMethod
-  fun init() {
-    withJPAInjection()
-  }
-
   @Test
   fun testBasicInjection() {
     Assert.assertNotNull(componentBean)

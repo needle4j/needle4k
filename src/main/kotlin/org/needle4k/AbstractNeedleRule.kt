@@ -4,46 +4,35 @@ import org.needle4k.db.JPAInjector
 import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.LazyInjectionProvider
-import javax.persistence.EntityManager
-import javax.persistence.EntityManagerFactory
 
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>)  {
+abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) {
   val needleConfiguration get() = needleInjector.configuration.needleConfiguration
-  val jpaInjector: JPAInjector? get() = needleInjector.configuration.getInjectionProvider(JPAInjector::class.java)
-  val jpaInjectorConfiguration: JPAInjectorConfiguration
-    get() = jpaInjector?.configuration
-      ?: throw IllegalStateException("NeedleRule was not configured with JPA injection provider")
-  val entityManager: EntityManager get() = jpaInjectorConfiguration.entityManager
-  val entityManagerFactory: EntityManagerFactory get() = jpaInjectorConfiguration.entityManagerFactory
+  val jpaInjector = JPAInjector(JPAInjectorConfiguration(needleConfiguration))
+  val jpaInjectorConfiguration get() = jpaInjector.configuration
+  val entityManager get() = jpaInjectorConfiguration.entityManager
+  val entityManagerFactory get() = jpaInjectorConfiguration.entityManagerFactory
 
   init {
     needleInjector.addInjectionProvider(*injectionProviders)
     needleInjector.addInjectionProvider(LazyInjectionProvider(NeedleInjector::class.java) { needleInjector })
-    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjector::class.java) {
-      jpaInjector
-        ?: throw IllegalStateException("NeedleRule was not configured with JPA injection provider")
-    })
-    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
   }
 
-  open fun withJPAInjection(): AbstractNeedleRule {
-    if (!needleInjector.configuration.hasInjectionProvider(JPAInjector::class.java)) {
-      needleInjector.addInjectionProvider(JPAInjector(JPAInjectorConfiguration(needleConfiguration)))
-    }
-
-    return this
+  fun addJPAInjectionProvider() {
+    needleInjector.addInjectionProvider(jpaInjector)
+    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjector::class.java) { jpaInjector })
+    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
   }
 
   protected fun runBeforeTest(testInstance: Any) {
     needleInjector.initTestInstance(testInstance)
     needleInjector.before()
-    jpaInjector?.before()
+    jpaInjector.before()
   }
 
   protected fun runAfterTest() {
     needleInjector.after()
-    jpaInjector?.after()
+    jpaInjector.after()
   }
 
   fun <X> getInjectedObject(key: Any): X? = needleInjector.getInjectedObject<X>(key)
