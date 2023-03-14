@@ -20,6 +20,7 @@ class TransactionHelperProviderTest {
   fun testVerify() {
     val field = configuration.reflectionHelper.getField(this.javaClass, "helper")
     val injectionTargetInformation = FieldTargetInformation(field, field.getAnnotation(Inject::class.java))
+
     Assert.assertTrue(provider.verify(injectionTargetInformation))
     Assert.assertNotNull(provider.getInjectedObject(TransactionHelper::class.java))
   }

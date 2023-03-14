@@ -3,6 +3,7 @@ package org.needle4k.injection
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import org.needle4k.NeedleInjector
 import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.db.User
 import org.needle4k.junit4.NeedleRule
@@ -11,7 +12,7 @@ import javax.inject.Inject
 @Suppress("UNCHECKED_CAST")
 class InjectionQualifierTest {
   private val currentUser: User = User()
-  private val currentUserprovider: InjectionProvider<User> = object : InjectionProvider<User> {
+  private val currentUserProvider: InjectionProvider<User> = object : InjectionProvider<User> {
     override fun verify(information: InjectionTargetInformation<*>): Boolean {
       return information.getAnnotation(CurrentUser::class.java) != null
     }
@@ -28,9 +29,12 @@ class InjectionQualifierTest {
   @Inject
   private lateinit var user: User
 
+  @Inject
+  private lateinit var needleInjector: NeedleInjector
+
   @Rule
   @JvmField
-  var needleRule: NeedleRule = NeedleRule(currentUserprovider)
+  var needleRule: NeedleRule = NeedleRule(currentUserProvider)
 
   @ObjectUnderTest
   private lateinit var userDao: UserDao
@@ -38,6 +42,7 @@ class InjectionQualifierTest {
   @Test
   fun testInject() {
     assertNotNull(userDao)
+    assertNotNull(needleInjector)
     assertSame(currentUser, userDao.currentUser)
     assertNotNull(userDao.user)
     assertNotSame(currentUser, userDao.user)

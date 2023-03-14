@@ -2,7 +2,7 @@ package org.needle4k.testng
 
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.configuration.NeedleConfiguration
-import org.needle4k.db.DatabaseInjector
+import org.needle4k.db.JPAInjector
 import org.needle4k.db.DatabaseInjectorConfiguration
 import org.needle4k.injection.InjectionProvider
 import org.testng.annotations.AfterMethod
@@ -12,26 +12,25 @@ import javax.persistence.EntityManagerFactory
 
 open class DatabaseTestcase @JvmOverloads constructor(
   needleConfiguration: NeedleConfiguration = DefaultNeedleConfiguration.INSTANCE,
-  private val databaseInjector: DatabaseInjector = DatabaseInjector(DatabaseInjectorConfiguration(needleConfiguration))
-) : InjectionProvider<Any> by databaseInjector {
-  val entityManager: EntityManager get() = databaseInjector.configuration.entityManager
-  val entityManagerFactory: EntityManagerFactory get() = databaseInjector.configuration.entityManagerFactory
-
-  /**
-   * {@inheritDoc}
-   */
-  @AfterMethod
-  @Throws(Exception::class)
-  fun after() {
-    databaseInjector.after()
-  }
+  private val jpaInjector: JPAInjector = JPAInjector(DatabaseInjectorConfiguration(needleConfiguration))
+) : InjectionProvider<Any> by jpaInjector {
+  val entityManager: EntityManager get() = jpaInjector.configuration.entityManager
+  val entityManagerFactory: EntityManagerFactory get() = jpaInjector.configuration.entityManagerFactory
+  val needleConfiguration get() = jpaInjector.configuration.needleConfiguration
 
   /**
    * {@inheritDoc}
    */
   @BeforeMethod
-  @Throws(Exception::class)
   fun before() {
-    databaseInjector.before()
+    jpaInjector.before()
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @AfterMethod
+  fun after() {
+    jpaInjector.after()
   }
 }

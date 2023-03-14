@@ -1,4 +1,4 @@
-package org.needle4k
+package org.needle4k.junit4
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert
@@ -6,10 +6,11 @@ import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mockingDetails
+import org.needle4k.MyComponentBean
+import org.needle4k.MyEjbComponent
+import org.needle4k.MyEjbComponentBean
 import org.needle4k.annotation.InjectIntoMany
 import org.needle4k.annotation.ObjectUnderTest
-import org.needle4k.junit4.DatabaseRule
-import org.needle4k.junit4.NeedleRule
 import javax.ejb.SessionContext
 import javax.persistence.EntityManagerFactory
 

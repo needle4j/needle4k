@@ -5,8 +5,12 @@ import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
 import org.needle4k.NeedleInjector
 import org.needle4k.configuration.DefaultNeedleConfiguration
+import org.needle4k.db.JPAInjector
+import org.needle4k.db.DatabaseInjectorConfiguration
 import org.needle4k.injection.InjectionConfiguration
 import org.needle4k.injection.InjectionProvider
+import org.needle4k.injection.LazyInjectionProvider
+import javax.persistence.EntityManager
 
 /**
  * JUnit [MethodRule] for the initialization of the test. The Rule
@@ -35,16 +39,46 @@ import org.needle4k.injection.InjectionProvider
  *
  * @see NeedleInjector
  */
-class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) : MethodRule {
+open class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) : MethodRule {
   private val methodRuleChain = ArrayList<MethodRule>()
 
   val needleConfiguration get() = needleInjector.configuration.needleConfiguration
+  val jpaInjector: JPAInjector? get() = needleInjector.configuration.getInjectionProvider(JPAInjector::class.java)
+  val configuration: DatabaseInjectorConfiguration get() = jpaInjector?.configuration
+    ?: throw IllegalStateException("NeedleRule was not configured with JPA injection provider")
+  val entityManager: EntityManager get() = configuration.entityManager
 
   constructor(vararg injectionProviders: InjectionProvider<*>)
       : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)), *injectionProviders)
 
   init {
     needleInjector.addInjectionProvider(*injectionProviders)
+    needleInjector.addInjectionProvider(LazyInjectionProvider(NeedleInjector::class.java) { needleInjector })
+  }
+
+  fun withJPAInjection(): NeedleRule {
+    if (!needleInjector.configuration.hasInjectionProvider(JPAInjector::class.java)) {
+      needleInjector.addInjectionProvider(JPAInjector(DatabaseInjectorConfiguration(needleConfiguration)))
+    }
+
+    return this
+  }
+
+  /**
+   * Add rule to method call chain
+   *
+   * @param rule - outer method rule
+   * @return [NeedleRule]
+   */
+  @Suppress("unused")
+  fun withOuter(rule: MethodRule): NeedleRule {
+    if (rule is InjectionProvider<*>) {
+      needleInjector.addInjectionProvider(rule as InjectionProvider<*>)
+    }
+
+    methodRuleChain.add(0, rule)
+
+    return this
   }
 
   /**
@@ -69,29 +103,15 @@ class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: 
       @Throws(Throwable::class)
       override fun evaluate() {
         try {
-          needleInjector.before()
           needleInjector.initTestInstance(target)
+          needleInjector.before()
+          jpaInjector?.before()
           base.evaluate()
         } finally {
           needleInjector.after()
+          jpaInjector?.after()
         }
       }
     }
-  }
-
-  /**
-   * Encloses the added rule.
-   *
-   * @param rule - outer method rule
-   * @return [NeedleRule]
-   */
-  fun withOuter(rule: MethodRule): NeedleRule {
-    if (rule is InjectionProvider<*>) {
-      needleInjector.addInjectionProvider(rule as InjectionProvider<*>)
-    }
-
-    methodRuleChain.add(0, rule)
-
-    return this
   }
 }

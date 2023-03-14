@@ -3,7 +3,6 @@ package org.needle4k.db
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
-import org.needle4k.junit4.DatabaseRule
 import org.needle4k.junit4.NeedleRule
 import javax.inject.Inject
 import javax.persistence.EntityManager
@@ -12,7 +11,7 @@ import javax.persistence.EntityTransaction
 class DatabaseRuleEntityTransactionInjectionTest {
   @Rule
   @JvmField
-  var needleRule: NeedleRule = NeedleRule().withOuter(DatabaseRule())
+  var needleRule: NeedleRule = NeedleRule().withJPAInjection()
 
   @Inject
   private lateinit var entityManager: EntityManager

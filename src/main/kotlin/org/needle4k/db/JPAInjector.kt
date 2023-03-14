@@ -18,7 +18,7 @@ import javax.persistence.EntityTransaction
  *
  * @see DBOperation
  */
-open class DatabaseInjector(val configuration: DatabaseInjectorConfiguration) : InjectionProvider<Any> {
+open class JPAInjector(val configuration: DatabaseInjectorConfiguration) : InjectionProvider<Any> {
   private val injectionProviderMap: Map<Class<*>, InjectionProvider<*>> = mapOf(
     EntityManager::class.java to EntityManagerProvider(configuration.entityManager),
     EntityManagerFactory::class.java to EntityManagerFactoryProvider(configuration.entityManagerFactory),
@@ -43,7 +43,6 @@ open class DatabaseInjector(val configuration: DatabaseInjectorConfiguration) : 
   fun after() {
     configuration.dbOperation.tearDownOperation()
     configuration.entityManager.clear()
-    configuration.needleConfiguration
   }
 
   override fun verify(injectionTargetInformation: InjectionTargetInformation<*>): Boolean {

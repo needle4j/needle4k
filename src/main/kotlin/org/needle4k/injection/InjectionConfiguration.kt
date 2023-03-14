@@ -117,6 +117,13 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
     }
   }
 
+  fun hasInjectionProvider(injectorClass: Class<out InjectionProvider<*>>) =
+    getInjectionProvider(injectorClass) != null
+
+  @Suppress("UNCHECKED_CAST")
+  fun <X:InjectionProvider<*>> getInjectionProvider(injectorClass: Class<X>) : X? =
+    testInjectionProviders.map { it }.firstOrNull { it.javaClass == injectorClass } as X?
+
   @Suppress("UNCHECKED_CAST")
   private fun addInjectionAnnotation(clazz: Class<out Annotation>) {
     needleConfiguration.injectionAnnotationRegistry.addAnnotation(clazz)
