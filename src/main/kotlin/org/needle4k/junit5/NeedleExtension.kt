@@ -8,15 +8,17 @@ import org.needle4k.NeedleInjector
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.injection.InjectionConfiguration
 import org.needle4k.injection.InjectionProvider
+import org.needle4k.injection.LazyInjectionProvider
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 open class NeedleExtension(needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) :
   AbstractNeedleRule(needleInjector, *injectionProviders), AfterEachCallback, BeforeEachCallback {
 
-  constructor(vararg injectionProviders: InjectionProvider<*>)
-      : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())), *injectionProviders)
-
   constructor() : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())))
+
+  init {
+    needleInjector.addInjectionProvider(LazyInjectionProvider(NeedleExtension::class.java) { this })
+  }
 
   override fun beforeEach(context: ExtensionContext) {
     runBeforeTest(context.requiredTestInstance)

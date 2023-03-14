@@ -19,11 +19,8 @@ class NeedleJUnit4Test : AbstractNeedleTest() {
 
   @Test
   fun testMock() {
-    val mock = needle.getInjectedObject(MyEjbComponent::class.java)
-
-    assertNotNull(mock)
-    val sessionContextMock = needle.getInjectedObject(SessionContext::class.java) as SessionContext
-    assertNotNull(sessionContextMock)
+    assertNotNull(needle.getInjectedObject(MyEjbComponent::class.java))
+    assertNotNull(needle.getInjectedObject(SessionContext::class.java))
     assertNotNull(needle.getInjectedObject("queue1"))
     assertNotNull(needle.getInjectedObject("queue2"))
     assertNotNull(needle.getInjectedObject(EntityManagerFactory::class.java))
