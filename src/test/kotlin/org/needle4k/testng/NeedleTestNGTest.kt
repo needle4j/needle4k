@@ -5,18 +5,16 @@ import org.mockito.Mockito
 import org.needle4k.MyComponentBean
 import org.needle4k.MyEjbComponent
 import org.needle4k.MyEjbComponentBean
-import org.needle4k.NeedleInjector
 import org.needle4k.annotation.InjectIntoMany
 import org.needle4k.annotation.ObjectUnderTest
-import org.needle4k.configuration.DefaultNeedleConfiguration
-import org.needle4k.injection.InjectionConfiguration
 import org.testng.Assert
+import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import javax.ejb.SessionContext
 import javax.inject.Inject
 import javax.persistence.EntityTransaction
 
-class NeedleTestNGTest : AbstractNeedleTestcase(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)), DatabaseTestcase(DefaultNeedleConfiguration.INSTANCE)) {
+class NeedleTestNGTest : AbstractNeedleTestcase() {
   @ObjectUnderTest
   private lateinit var componentBean: MyComponentBean
 
@@ -31,6 +29,11 @@ class NeedleTestNGTest : AbstractNeedleTestcase(NeedleInjector(InjectionConfigur
 
   @Inject
   private lateinit var entityTransaction: EntityTransaction
+
+  @BeforeMethod
+  fun init() {
+    withJPAInjection()
+  }
 
   @Test
   fun testBasicInjection() {

@@ -2,9 +2,15 @@ package org.needle4k.testng
 
 import org.needle4k.db.Person
 import org.testng.Assert
+import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
-class TestNG_JPATest : DatabaseTestcase() {
+class TestNG_JPATest : AbstractNeedleTestcase() {
+  @BeforeMethod
+  fun init() {
+    withJPAInjection()
+  }
+
   @Test
   fun testGetDBAccess() {
     Assert.assertNotNull(entityManager)

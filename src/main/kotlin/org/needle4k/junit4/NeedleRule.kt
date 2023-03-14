@@ -3,14 +3,11 @@ package org.needle4k.junit4
 import org.junit.rules.MethodRule
 import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
+import org.needle4k.AbstractNeedleRule
 import org.needle4k.NeedleInjector
 import org.needle4k.configuration.DefaultNeedleConfiguration
-import org.needle4k.db.JPAInjector
-import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.injection.InjectionConfiguration
 import org.needle4k.injection.InjectionProvider
-import org.needle4k.injection.LazyInjectionProvider
-import javax.persistence.EntityManager
 
 /**
  * JUnit [MethodRule] for the initialization of the test. The Rule
@@ -39,36 +36,14 @@ import javax.persistence.EntityManager
  *
  * @see NeedleInjector
  */
-open class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) : MethodRule {
+open class NeedleRule(needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) :
+  AbstractNeedleRule(needleInjector, *injectionProviders), MethodRule {
   private val methodRuleChain = ArrayList<MethodRule>()
-
-  val needleConfiguration get() = needleInjector.configuration.needleConfiguration
-  val jpaInjector: JPAInjector? get() = needleInjector.configuration.getInjectionProvider(JPAInjector::class.java)
-  val jpaInjectorConfiguration: JPAInjectorConfiguration
-    get() = jpaInjector?.configuration
-      ?: throw IllegalStateException("NeedleRule was not configured with JPA injection provider")
-  val entityManager: EntityManager get() = jpaInjectorConfiguration.entityManager
 
   constructor(vararg injectionProviders: InjectionProvider<*>)
       : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration.INSTANCE)), *injectionProviders)
 
-  init {
-    needleInjector.addInjectionProvider(*injectionProviders)
-    needleInjector.addInjectionProvider(LazyInjectionProvider(NeedleInjector::class.java) { needleInjector })
-    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjector::class.java) {
-      jpaInjector
-        ?: throw IllegalStateException("NeedleRule was not configured with JPA injection provider")
-    })
-    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
-  }
-
-  fun withJPAInjection(): NeedleRule {
-    if (!needleInjector.configuration.hasInjectionProvider(JPAInjector::class.java)) {
-      needleInjector.addInjectionProvider(JPAInjector(JPAInjectorConfiguration(needleConfiguration)))
-    }
-
-    return this
-  }
+  override fun withJPAInjection(): NeedleRule = super.withJPAInjection() as NeedleRule
 
   /**
    * Add rule to method call chain
@@ -100,22 +75,15 @@ open class NeedleRule(val needleInjector: NeedleInjector, vararg injectionProvid
     return statement(appliedStatement, target)
   }
 
-  fun <X> getInjectedObject(key: Any): X? = needleInjector.getInjectedObject<X>(key)
-
-  fun <X> getInjectedObject(key: Class<X>): X? = needleInjector.getInjectedObject<X>(key)
-
   private fun statement(base: Statement, target: Any): Statement {
     return object : Statement() {
       @Throws(Throwable::class)
       override fun evaluate() {
         try {
-          needleInjector.initTestInstance(target)
-          needleInjector.before()
-          jpaInjector?.before()
+          runBeforeTest(target)
           base.evaluate()
         } finally {
-          needleInjector.after()
-          jpaInjector?.after()
+          runAfterTest()
         }
       }
     }
