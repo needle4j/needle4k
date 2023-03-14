@@ -1,5 +1,7 @@
 package org.needle4k.configuration
 
+import org.needle4k.db.operation.hsql.HSQLDeleteOperation
+import org.needle4k.mock.MockitoProvider
 import org.slf4j.LoggerFactory
 import java.io.FileNotFoundException
 import java.io.InputStream
@@ -8,10 +10,6 @@ import java.util.*
 const val MOCK_PROVIDER_KEY = "mock.provider"
 const val DB_OPERATION_KEY = "db.operation"
 const val PERSISTENCE_UNIT_NAME_KEY = "persistenceUnit.name"
-const val JDBC_URL_KEY = "jdbc.url"
-const val JDBC_DRIVER_KEY = "jdbc.driver"
-const val JDBC_USER_KEY = "jdbc.user"
-const val JDBC_PASSWORD_KEY = "jdbc.password"
 const val POST_CONSTRUCT_EXECUTE_STRATEGY = "postconstruct.executestrategy"
 
 const val CUSTOM_CONFIGURATION_FILENAME = "needle"
@@ -24,12 +22,8 @@ internal class ConfigurationLoader(resourceName: String = CUSTOM_CONFIGURATION_F
 
   private fun loadDefaults() = mutableMapOf(
     PERSISTENCE_UNIT_NAME_KEY to "TestDataModel",
-    MOCK_PROVIDER_KEY to "org.needle4k.mock.MockitoProvider",
-    DB_OPERATION_KEY to "org.needle4k.db.operation.h2.H2DeleteOperation",
-    JDBC_URL_KEY to "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-    JDBC_DRIVER_KEY to "org.h2.Driver",
-    JDBC_USER_KEY to "",
-    JDBC_PASSWORD_KEY to "",
+    MOCK_PROVIDER_KEY to MockitoProvider::class.qualifiedName!!,
+    DB_OPERATION_KEY to HSQLDeleteOperation::class.qualifiedName!!,
     POST_CONSTRUCT_EXECUTE_STRATEGY to PostConstructExecuteStrategy.DEFAULT.name
   )
 

@@ -9,6 +9,7 @@ import java.sql.Statement
  * Delete everything from the DB: This cannot be done with the JPA, because the
  * order of deletion matters. Instead we directly use a JDBC connection.
  */
+@Suppress("unused")
 open class DerbyDeleteOperation constructor(configuration: JPAInjectorConfiguration)
   : AbstractDeleteOperation(configuration) {
   @Throws(SQLException::class)

@@ -11,7 +11,6 @@ class ConfigurationLoaderTest {
 
     assertNotNull(loadResourceAndDefault)
     assertEquals("TestDataModel", loadResourceAndDefault[PERSISTENCE_UNIT_NAME_KEY])
-    assertEquals("jdbc-custom", loadResourceAndDefault[JDBC_URL_KEY])
   }
 
   @Test
@@ -20,7 +19,6 @@ class ConfigurationLoaderTest {
     val loadResourceAndDefault = objectUnderTest.configProperties
 
     assertEquals("TestDataModel", loadResourceAndDefault[PERSISTENCE_UNIT_NAME_KEY])
-    assertEquals("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", loadResourceAndDefault[JDBC_URL_KEY])
   }
 
   @Test
