@@ -1,36 +1,32 @@
-[![Build Status](https://secure.travis-ci.org/needle4j/needle4j.png)](https://travis-ci.org/needle4j/needle4j)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.needle4j/needle4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.needle4j/needle4j)
+[![Build Status](https://secure.travis-ci.org/needle4k/needle4j.png)](https://travis-ci.org/needle4j/needle4k)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.needle4k/needle4k/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.needle4k/needle4k)
 
-
-# Need(le) for Speed - Effective Unit Testing for Java EE
+# needle4k - Effective Unit Testing
 
 [@NeedleProject](https://twitter.com/NeedleProject)
 
-**Needle4j is a lightweight framework for testing Java EE components outside of the container in isolation. It reduces the test setup code by
-analysing dependencies and automatic injection of mock objects. It will thus maximize the speed of development as well as the execution of unit
-tests.**
+** needle4k is a lightweight framework for testing (Java/Jakarta EE) components in isolation. Using needle4k it is easy to
+configure your tests in order to automatically inject mock and real objects into tested components. 
+**
 
-![Needle Coffee Cups](https://needle.spree.de/images/needle-coffeecups-380px.jpg)
+<img src="https://www.needle4j.org/images/coffee.jpg" alt= “Needle Coffee Cups” width="50%" height="50%">
 
-## Core Features:
+# Core Features:
 
-* Instantiation of @ObjectUnderTest Components
+* Automated setup of components annotated with @ObjectUnderTest
 * Constructor, Method and Field based dependency injection
 * Injection of Mock objects by default
 * Extensible by providing custom injection providers
-* Wiring of object graphs
 
-* Database testing via JPA Provider, e.g. EclipseLink or Hibernate
+* Database testing using Hibernate
+* Optionally clear database after each test
 * EntityManager creation and injection
-* Execute optional database operations during test setup and tear down
-* Transaction Utilities
+* As well Java EE as Jakarta EE are supported
+* Transaction and reflection utilities
+* All major test frameworks supported out of the box: JUnit4, JUnit5, TestNG 
+* Pluggable Mock providers [EasyMock](https://www.easymock.org/) and [Mockito](https://mockito.org/), on particular
 
-* Provide Utilities for Reflection, e.g. for private method invocation or field access
-
-* Needle can be used with [JUnit](http://www.junit.org/) or [TestNG](http://testng.org/).
-* It supports [EasyMock](http://www.easymock.org/) and [Mockito](http://code.google.com/p/mockito/) out-of-the-box.
-
-## Getting started
+# Getting started
 
 Add the following dependencies to your pom.xml file to get started using Needle:
 
