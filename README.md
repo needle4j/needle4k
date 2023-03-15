@@ -8,7 +8,7 @@
 <table style="vertical-align: top; border: none;">
   <tr>
     <td style="vertical-align: top; border: none; width: 200px"> 
-        <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg" width="200" height="200" style="width:200px; height:200px">
+        <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg">
     </td>
     <td style="vertical-align: top;border: none; width: 200px">
         <b>needle4k is a lightweight framework for testing (Java EE/Jakarta EE) components in isolation. Using needle4k it is easy to
