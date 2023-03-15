@@ -83,7 +83,7 @@ abstract class AbstractDeleteOperation(configuration: JPAInjectorConfiguration) 
           statement.executeUpdate("DELETE FROM $table")
           iterator.remove()
         } catch (exc: SQLException) {
-          LOG.warn("Ignored exception: " + exc.message + ". WILL RETRY.")
+          logger.warn("Ignored exception: " + exc.message + ". WILL RETRY.")
         }
       }
 
@@ -91,9 +91,5 @@ abstract class AbstractDeleteOperation(configuration: JPAInjectorConfiguration) 
         throw AssertionError("unable to clean tables $tempTables")
       }
     }
-  }
-
-  companion object {
-    private val LOG = LoggerFactory.getLogger(AbstractDeleteOperation::class.java)
   }
 }

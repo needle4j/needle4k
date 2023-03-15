@@ -13,6 +13,8 @@ import java.sql.*
  * operations.
  */
 abstract class AbstractDBOperation(val configuration: JPAInjectorConfiguration) : DBOperation {
+  protected val logger = LoggerFactory.getLogger(javaClass)!!
+
   /**
    * Returns the names of all tables in the database by using
    * [DatabaseMetaData].
@@ -58,7 +60,7 @@ abstract class AbstractDBOperation(val configuration: JPAInjectorConfiguration) 
           if (trimmedLine.startsWith("/*")) {
             while (script.readLine().also { line = it } != null) {
               if (line!!.trim { it <= ' ' }.endsWith("*/")) {
-                LOG.debug("Ignoring $line")
+                logger.debug("Ignoring $line")
                 break
               }
             }
@@ -68,7 +70,7 @@ abstract class AbstractDBOperation(val configuration: JPAInjectorConfiguration) 
             if (trimmedLine.endsWith(";")) {
               val sqlStatement = sql.toString()
 
-              LOG.info(sqlStatement)
+              logger.info(sqlStatement)
               statement.execute(sqlStatement)
               sql.setLength(0)
             }
@@ -91,21 +93,17 @@ abstract class AbstractDBOperation(val configuration: JPAInjectorConfiguration) 
   @Throws(SQLException::class)
   fun executeScript(filename: String, statement: Statement) {
     val message = "Executing sql script: $filename"
-    LOG.info(message)
+    logger.info(message)
 
     try {
       ConfigurationLoader.loadResource(filename)?.use {
         BufferedReader(InputStreamReader(it)).use { reader ->
           executeScript(reader, statement)
         }
-      }?: LOG.warn("File $filename not found")
+      } ?: logger.warn("File $filename not found")
     } catch (e: IOException) {
-      LOG.error(message, e)
+      logger.error(message, e)
       throw SQLException(message, e)
     }
-  }
-
-  companion object {
-    private val LOG = LoggerFactory.getLogger(AbstractDBOperation::class.java)
   }
 }
