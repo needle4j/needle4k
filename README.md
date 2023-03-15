@@ -7,7 +7,7 @@
 
 <table style="vertical-align: top; border: none;">
   <tr>
-    <td style="vertical-align: top; border: none; width: 200px"> 
+    <td style="vertical-align: top; border: none;"> 
         <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg">
     </td>
     <td style="vertical-align: top;border: none; width: 200px">
