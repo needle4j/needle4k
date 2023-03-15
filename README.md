@@ -8,7 +8,7 @@
 **needle4k is a lightweight framework for testing (Java/Jakarta EE) components in isolation. Using needle4k it is easy to
 configure your tests in order to automatically inject mock and real objects into tested components.**
 
-<img alt="Needle Coffee Cups" height="50" src="https://www.needle4j.org/images/coffee.jpg" width="50"/>
+<img alt="Needle Coffee Cups" height="50%" src="https://www.needle4j.org/images/coffee.jpg" width="50%"/>
 
 # Core Features:
 
