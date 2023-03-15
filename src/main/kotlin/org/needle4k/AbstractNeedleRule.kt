@@ -9,6 +9,7 @@ import org.needle4k.reflection.ReflectionUtil
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) {
   val needleConfiguration get() = needleInjector.configuration.needleConfiguration
+  val needleContext get() = needleInjector.context
   val jpaInjector = JPAInjector(JPAInjectorConfiguration(needleConfiguration))
   val jpaInjectorConfiguration get() = jpaInjector.configuration
   val entityManager get() = jpaInjectorConfiguration.entityManager

@@ -38,7 +38,7 @@ open class NeedleInjector constructor(
   val configuration: InjectionConfiguration,
   vararg injectionProviders: InjectionProvider<*>
 ) {
-  private lateinit var context: NeedleContext
+  lateinit var context: NeedleContext private set
 
   init {
     addInjectionProvider(*injectionProviders)
