@@ -5,9 +5,11 @@
 
 [@NeedleProject](https://twitter.com/NeedleProject)
 
-<table style="vertical-align: top;    border: none;">
+<table style="border: none;">
   <tr>
-    <td style="vertical-align: top;    border: none;"> <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg" height="200" width="200"></td>
+    <td style="vertical-align: top;border: none;"> 
+        <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg" height="200" width="200">
+    </td>
     <td style="vertical-align: top">
 <b>needle4k is a lightweight framework for testing (Java/Jakarta EE) components in isolation. Using needle4k it is easy to
 configure your tests in order to automatically inject mock and real objects into tested components.</b>
@@ -15,6 +17,9 @@ configure your tests in order to automatically inject mock and real objects into
   </tr>
 </table>
 
+
+<p>
+</p>
 
 
 <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg" align="left" height="200" width="200">
