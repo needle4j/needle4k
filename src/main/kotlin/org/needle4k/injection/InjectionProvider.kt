@@ -3,7 +3,7 @@ package org.needle4k.injection
 /**
  * Provides instances of `T` and verifies the injection target.
  */
-interface InjectionProvider<T> {
+interface InjectionProvider<T : Any> {
   /**
    * Provides an instance of `T`.
    *

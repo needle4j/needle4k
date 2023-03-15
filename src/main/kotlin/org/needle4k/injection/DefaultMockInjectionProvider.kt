@@ -1,7 +1,7 @@
 package org.needle4k.injection
 
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
-open class DefaultMockInjectionProvider<T>
+open class DefaultMockInjectionProvider<T : Any>
 /**
  * @param annotationClass        injection annotation like Resource, EJB, Inject, ...
  * @param injectionConfiguration the configuration

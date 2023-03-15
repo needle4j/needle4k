@@ -29,7 +29,7 @@ object InjectionProviders {
    * @return InjectionProvider for instance
    */
   @JvmStatic
-  fun <T> providerForInstance(instance: T): InjectionProvider<T> = DefaultInstanceInjectionProvider<T>(instance)
+  fun <T : Any> providerForInstance(instance: T): InjectionProvider<T> = DefaultInstanceInjectionProvider(instance)
 
   /**
    * InjectionProvider that provides a singleton instance of type T for every
@@ -41,7 +41,7 @@ object InjectionProviders {
    * @return InjectionProvider for instance
    */
   @JvmStatic
-  fun <T> providerForNamedInstance(name: String, instance: T): InjectionProvider<T> =
+  fun <T : Any> providerForNamedInstance(name: String, instance: T): InjectionProvider<T> =
     NamedInstanceInjectionProvider(name, instance)
 
   /**
@@ -53,7 +53,7 @@ object InjectionProviders {
    * @return InjectionProvider for instance
    */
   @JvmStatic
-  fun <T> providerForQualifiedInstance(qualifier: Class<out Annotation>, instance: T): InjectionProvider<T> =
+  fun <T : Any> providerForQualifiedInstance(qualifier: Class<out Annotation>, instance: T): InjectionProvider<T> =
     QualifiedInstanceInjectionProvider(qualifier, instance)
 
   /**
@@ -118,7 +118,7 @@ object InjectionProviders {
    *
    * @param <T> type of instance
   </T> */
-  private abstract class InstanceInjectionProvider<T>(protected val instance: T) : InjectionProvider<T> {
+  private abstract class InstanceInjectionProvider<T : Any>(protected val instance: T) : InjectionProvider<T> {
 
     /**
      * `true` when injection target is or extends/implements
@@ -128,7 +128,7 @@ object InjectionProviders {
      * @return true when type is assignable from instance
      */
     protected fun isTargetAssignable(injectionTargetInformation: InjectionTargetInformation<*>) =
-      injectionTargetInformation.injectedObjectType.isAssignableFrom(instance!!::class.java)
+      injectionTargetInformation.injectedObjectType.isAssignableFrom(instance::class.java)
 
     protected fun isTargetQualifierPresent(
       injectionTargetInformation: InjectionTargetInformation<*>,
@@ -139,7 +139,7 @@ object InjectionProviders {
     override fun <T> getInjectedObject(injectionTargetType: Class<T>): T = instance as T
   }
 
-  private class DefaultInstanceInjectionProvider<T>(instance: T) : InstanceInjectionProvider<T>(instance) {
+  private class DefaultInstanceInjectionProvider<T : Any>(instance: T) : InstanceInjectionProvider<T>(instance) {
     override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) =
       injectionTargetInformation.injectedObjectType
 
@@ -147,7 +147,7 @@ object InjectionProviders {
       isTargetAssignable(injectionTargetInformation)
   }
 
-  private open class QualifiedInstanceInjectionProvider<T>(protected val qualifier: Class<out Annotation>, instance: T) :
+  private open class QualifiedInstanceInjectionProvider<T : Any>(protected val qualifier: Class<out Annotation>, instance: T) :
     InstanceInjectionProvider<T>(instance) {
 
     override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) =
@@ -158,7 +158,7 @@ object InjectionProviders {
     }
   }
 
-  private class NamedInstanceInjectionProvider<T>(private val name: String, instance: T) :
+  private class NamedInstanceInjectionProvider<T : Any>(private val name: String, instance: T) :
     QualifiedInstanceInjectionProvider<T>(
       Named::class.java, instance
     ) {

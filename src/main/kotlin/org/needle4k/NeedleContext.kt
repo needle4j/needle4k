@@ -26,10 +26,9 @@ class NeedleContext(val test: Any, val needleConfiguration: NeedleConfiguration)
     objectUnderTestAnnotations[id] = objectUnderTestAnnotation
   }
 
-  fun objectsUnderTest() = objectsUnderTest.values
+  fun objectsUnderTest() = objectsUnderTest.values.toList()
 
-  val objectsUnderTestIds: Set<String>
-    get() = objectsUnderTest.keys
+  val objectsUnderTestIds: Set<String>  get() = objectsUnderTest.keys.toSet()
 
   fun getAnnotatedTestcaseFields(annotationClass: Class<out Annotation>): List<Field> =
     annotatedTestcaseFieldMap[annotationClass] ?: ArrayList()

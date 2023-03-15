@@ -59,7 +59,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
     }
   }
 
-  private fun <T> addDefaultInjectionAnnotationClass(clazz: Class<out Annotation>) {
+  private fun <T : Any> addDefaultInjectionAnnotationClass(clazz: Class<out Annotation>) {
     LOG.debug("Register injection handler for class {}", clazz)
 
     // Special handling
@@ -121,7 +121,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
     getInjectionProvider(injectorClass) != null
 
   @Suppress("UNCHECKED_CAST")
-  fun <X:InjectionProvider<*>> getInjectionProvider(injectorClass: Class<X>) : X? =
+  fun <X : InjectionProvider<*>> getInjectionProvider(injectorClass: Class<X>): X? =
     testInjectionProviders.map { it }.firstOrNull { it.javaClass == injectorClass } as X?
 
   @Suppress("UNCHECKED_CAST")
