@@ -13,9 +13,6 @@
     <td style="vertical-align: top;border: none;">
         <b>needle4k is a lightweight framework for testing (Java/Jakarta EE) components in isolation. Using needle4k it is easy to
         configure your tests in order to automatically inject mock and real objects into tested components.</b>
-<br/>
-<br/>
-<br/>
     </td>
   </tr>
 </table>
