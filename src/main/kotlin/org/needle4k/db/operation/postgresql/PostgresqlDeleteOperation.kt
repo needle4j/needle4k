@@ -13,6 +13,8 @@ open class PostgresqlDeleteOperation constructor(configuration: JPAInjectorConfi
   AbstractDeleteOperation(configuration) {
   @Throws(SQLException::class)
   override fun setReferentialIntegrity(enable: Boolean, statement: Statement) {
+    val tables = ArrayList<String>()
+
     statement.executeQuery(
       """
       SELECT table_name FROM information_schema.tables
@@ -21,13 +23,16 @@ open class PostgresqlDeleteOperation constructor(configuration: JPAInjectorConfi
     """
     ).use {
       while (it.next()) {
-        val tableName = it.getString(1)
-        val sql = "ALTER TABLE " + tableName + (if (enable) " ENABLE " else " DISABLE ") + "TRIGGER ALL;"
-
-        logger.info(sql)
-
-        statement.execute(sql)
+        tables.add(it.getString(1))
       }
+    }
+
+    for (tableName in tables) {
+      val sql = "ALTER TABLE " + tableName + (if (enable) " ENABLE " else " DISABLE ") + "TRIGGER ALL;"
+
+      logger.info(sql)
+
+      statement.execute(sql)
     }
   }
 }
