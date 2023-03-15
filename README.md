@@ -5,10 +5,20 @@
 
 [@NeedleProject](https://twitter.com/NeedleProject)
 
-<img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg" align="left" height="200" width="200">
-
+<table style="border: unset">
+  <tr>
+    <td> <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg" height="200" width="200"></td>
+    <td>
 **needle4k is a lightweight framework for testing (Java/Jakarta EE) components in isolation. Using needle4k it is easy to
 configure your tests in order to automatically inject mock and real objects into tested components.**
+</td>
+  </tr>
+</table>
+
+
+
+<img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg" align="left" height="200" width="200">
+
 
 <br/>
 <br/>
@@ -17,7 +27,6 @@ configure your tests in order to automatically inject mock and real objects into
 <br/>
 <br/>
 <br/>
-
 
 # Core Features:
 
@@ -31,7 +40,7 @@ configure your tests in order to automatically inject mock and real objects into
 * EntityManager creation and injection
 * As well Java EE as Jakarta EE are supported
 * Transaction and reflection utilities
-* All major test frameworks supported out of the box: JUnit4, JUnit5, TestNG 
+* All major test frameworks supported out of the box: JUnit4, JUnit5, TestNG
 * Pluggable Mock providers [EasyMock](https://www.easymock.org/) and [Mockito](https://mockito.org/), on particular
 
 # Getting started
