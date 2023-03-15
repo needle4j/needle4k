@@ -5,11 +5,10 @@
 
 [@NeedleProject](https://twitter.com/NeedleProject)
 
-** needle4k is a lightweight framework for testing (Java/Jakarta EE) components in isolation. Using needle4k it is easy to
-configure your tests in order to automatically inject mock and real objects into tested components. 
-**
+**needle4k is a lightweight framework for testing (Java/Jakarta EE) components in isolation. Using needle4k it is easy to
+configure your tests in order to automatically inject mock and real objects into tested components.**
 
-![Needle Coffee Cups](https://www.needle4j.org/images/coffee.jpg)
+<img alt="Needle Coffee Cups" height="50" src="https://www.needle4j.org/images/coffee.jpg" width="50"/>
 
 # Core Features:
 
