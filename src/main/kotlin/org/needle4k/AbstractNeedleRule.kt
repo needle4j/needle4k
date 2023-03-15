@@ -10,10 +10,13 @@ import org.needle4k.reflection.ReflectionUtil
 abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) {
   val needleConfiguration get() = needleInjector.configuration.needleConfiguration
   val needleContext get() = needleInjector.context
-  val jpaInjector = JPAInjector(JPAInjectorConfiguration(needleConfiguration))
+  val jpaInjector by lazy { JPAInjector(JPAInjectorConfiguration(needleConfiguration)) }
   val jpaInjectorConfiguration get() = jpaInjector.configuration
   val entityManager get() = jpaInjectorConfiguration.entityManager
   val entityManagerFactory get() = jpaInjectorConfiguration.entityManagerFactory
+
+  private var before: () -> Unit = {needleInjector.before()}
+  private var after: () -> Unit = {needleInjector.after()}
 
   init {
     needleInjector.addInjectionProvider(*injectionProviders)
@@ -25,17 +28,26 @@ abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg inj
     needleInjector.addInjectionProvider(jpaInjector)
     needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjector::class.java) { jpaInjector })
     needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
+
+    before = {
+      needleInjector.before()
+      jpaInjector.before()
+    }
+
+    after = {
+      needleInjector.after()
+      jpaInjector.after()
+    }
   }
 
   protected fun runBeforeTest(testInstance: Any) {
     needleInjector.initTestInstance(testInstance)
-    needleInjector.before()
-    jpaInjector.before()
+
+    before()
   }
 
   protected fun runAfterTest() {
-    needleInjector.after()
-    jpaInjector.after()
+    after()
   }
 
   fun <X> getInjectedObject(key: Any): X? = needleInjector.getInjectedObject<X>(key)
