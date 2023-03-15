@@ -5,9 +5,14 @@
 
 [@NeedleProject](https://twitter.com/NeedleProject)
 
-<table style="vertical-align: top;border: none;">
-  <tr style="vertical-align: top;border: none;">
-    <td style="vertical-align: top;border: none;width: 200px"> 
+<table style="vertical-align: top; border: none;">
+<colgroup>
+ <col style="width: 75%">
+    <col style="width: 25%">
+</colgroup>
+
+  <tr style="vertical-align: top; border: none;">
+    <td style="vertical-align: top; border: none; width: 200px"> 
         <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg" width="200" height="200" style="width:200px; height:200px">
     </td>
     <td style="vertical-align: top;border: none;">
