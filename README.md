@@ -9,7 +9,7 @@
 configure your tests in order to automatically inject mock and real objects into tested components. 
 **
 
-<img src="https://www.needle4j.org/images/coffee.jpg" alt= “Needle Coffee Cups” width="50%" height="50%">
+![Needle Coffee Cups](img src="https://www.needle4j.org/images/coffee.jpg" width="50%" height="50%")
 
 # Core Features:
 
