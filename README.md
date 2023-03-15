@@ -5,6 +5,13 @@
 
 [@NeedleProject](https://twitter.com/NeedleProject)
 
+<style>
+
+table td, table td * {
+    vertical-align: top;
+    border: none;
+}
+</style>
 <table style="border: 0px">
   <tr>
     <td> <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg" height="200" width="200"></td>
