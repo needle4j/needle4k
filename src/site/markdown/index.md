@@ -1,38 +1,29 @@
 # Overview
 
-![needle4j](images/coffee.jpg)
+![needle4k](../resources/images/coffee.jpg)
 
-**Needle4j** is a lightweight framework for testing Java EE components outside of the container in isolation. The main goals are the reduction of setup
-code and faster executions of tests, especially compared to running embedded or external server tests.
+**needle4k is a lightweight framework for testing
+([Java EE/Jakarta EE](https://jakarta.ee/), [Spring Bean](https://spring.io/), e.g.) components in isolation.
+Using needle4k it is easy to configure your tests in order to automatically inject mock and real objects into tested components.
+needle4k is a [Kotlin-based](https://kotlinlang.org/) rewrite and upgraded version of the reliable
+[needle4j](https://needl4j.org/) framework.**
 
-Needle4j will automatically analyse the dependencies of components and inject mock objects by default. The developer may freely provide default or custom objects instead.
+# Core Features:
 
-Needle4j is an Open Source library, [hosted at github](https://github.com/needle4j/needle4j).
+* Automated setup of components annotated with @ObjectUnderTest
+* Constructor, Method and Field based dependency injection
+* Injection of Mock objects by default
+* Extensible by providing custom injection providers
+* Database testing using [Hibernate](http://www.hibernate.org)
+* Optionally clear database after each test
+* EntityManager creation and injection
+* As well Java EE as Jakarta EE are supported
+* Transaction and reflection utilities
+* needle4k can be used with [JUnit4](https://junit.org/junit4/), [JUnit5](https://junit.org/junit5/) or [TestNG](http://testng.org/).
+* Pluggable Mock providers: [EasyMock](https://easymock.org/) and [Mockito](https://mockito.org/), in particular
 
-GNU Lesser General Public License (LGPL) version 2.1 or later.
-
-# Features
-
-- Instantiation of tested components
-- Constructor, Method and Field based dependency injection
-- Injection of Mock objects by default
-- Extensible by providing custom injection providers
-- Comfortable automatic wiring of dependency graphs
-- Database testing via JPA Provider, e.g.[EclipseLink](http://www.eclipse.org/eclipselink/) or [Hibernate](http://www.hibernate.org)
-- EntityManager creation and injection
-- Execute optional database operations during test setup and tear down
-- Transaction Utilities
-- Provide Utilities for Reflection, e.g. for private method invocation
-    or field access
-- Needle can be used with [JUnit](http://www.junit.org) or
-    [TestNG](http://testng.org/).
-- It supports [EasyMock](http://www.easymock.org/) and
-  [Mockito](http://code.google.com/p/mockito/) out-of-the-box but
-  could also be extended with other frameworks.
-
-## Links
-
--   Needle4j Home Page: http://www.needle4j.org/
--   Downloads: http://www.needle4j.org/downloads
--   Issue Tracking: https://github.com/needle4j/needle4j/issues
--   Source Code: https://github.com/needle4j/needle4j
+<!-- TOC -->
+* [Configuration:](configuration.md)
+* [Database testing:](database-testing.md)
+    * [Links](#links)
+<!-- TOC -->

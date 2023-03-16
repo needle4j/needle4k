@@ -17,13 +17,13 @@ needle4k is a [Kotlin-based](https://kotlinlang.org/) rewrite and upgraded versi
 * Constructor, Method and Field based dependency injection
 * Injection of Mock objects by default
 * Extensible by providing custom injection providers
-* Database testing using Hibernate
+* Database testing using [Hibernate](http://www.hibernate.org)
 * Optionally clear database after each test
 * EntityManager creation and injection
 * As well Java EE as Jakarta EE are supported
 * Transaction and reflection utilities
-* All major test frameworks supported out of the box: JUnit4, JUnit5, TestNG
-* Pluggable Mock providers [EasyMock](https://easymock.org/) and [Mockito](https://mockito.org/), in particular
+* needle4k can be used with [JUnit4](https://junit.org/junit4/), [JUnit5](https://junit.org/junit5/) or [TestNG](http://testng.org/).
+* Pluggable Mock providers: [EasyMock](https://easymock.org/) and [Mockito](https://mockito.org/), in particular
 
 # Getting started
 
@@ -100,7 +100,7 @@ class UserDaoTest {
 
 # Documentation
 
-For documentation and more examples please refer to the [needle4k website](https://www.needle4j.org/).
+For documentation and more examples please refer to the [needle4k site docs](src/site/markdown/index.md).
 
 ## Licensing
 
