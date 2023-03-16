@@ -13,6 +13,8 @@
     <td style="vertical-align: top;border: none">
         <b>needle4k is a lightweight framework for testing (Java EE/Jakarta EE) components in isolation. Using needle4k it is easy to
         configure your tests in order to automatically inject mock and real objects into tested components.</b>
+        <br/>
+        needle4k is a [Kotlin-based](https://kotlinlang.org/) relaunch und upgrade of the reliable needle4j framework.  
     </td>
   </tr>
 </table>
@@ -30,7 +32,7 @@
 * As well Java EE as Jakarta EE are supported
 * Transaction and reflection utilities
 * All major test frameworks supported out of the box: JUnit4, JUnit5, TestNG
-* Pluggable Mock providers [EasyMock](https://www.easymock.org/) and [Mockito](https://mockito.org/), on particular
+* Pluggable Mock providers [EasyMock](https://easymock.org/) and [Mockito](https://mockito.org/), in particular
 
 # Getting started
 
@@ -38,61 +40,50 @@ Add the following dependencies to your pom.xml file to get started using Needle:
 
 ```
 <dependency>
-    <groupId>org.needle4j</groupId>
-    <artifactId>needle4j</artifactId>
-    <version>2.3</version>
+    <groupId>org.needle4k</groupId>
+    <artifactId>needle4k</artifactId>
+    <version>4.0.0</version>
     <scope>test</scope>
 </dependency>
-
-(plus junit, mockito, ...)
 ``` 
 
-Implementing your first Needle Test:
+(plus JUnit, Mockito, AssertJ,...)
+
+## Implementing your first JUnit5 Needle Test
 
 ```
+@ExtendWith(JPANeedleExtension.class)
 public class UserDaoTest {
+    @InjectIntoMany // Mock object will be created and injected automatically
+    private MetricsService metricsService;
 
-    @Rule
-    public DatabaseRule databaseRule = new DatabaseRule();
+    @Inject // Inject components directely into test
+    private EntityManager entityManager;
 
-    @Rule
-    public NeedleRule needleRule = new NeedleRule(databaseRule);
-
-    @ObjectUnderTest
+    @ObjectUnderTest // Create component and inject dependencies into it
     private UserDao userDao;
 
     @Test
     public void testFindByUsername() throws Exception {
-        final User user = new UserTestdataBuilder(
-        databaseRule.getEntityManager()).buildAndSave();
-
-        User userFromDb =
-            userDao.findBy(user.getUsername(), user.getPassword());
-
-        Assert.assertEquals(user.getId(), userFromDb.getId());
+        entityManager.persist(new User("demo"));
+        
+        User userFromDb = userDao.findBy("demo");
+        assertThat(userFromDb).isEqualTo(user);
     }
 }
 ``` 
+# Documentation
 
-For the documentation and more examples please refer to the maven site.
+For documentation and more examples please refer to the [needle4k website](https://www.needle4j.org/).
 
 ## Licensing
 
-Needle is licensed under GNU Lesser General Public License (LGPL) version 2.1 or later.
+needle4k is licensed under GNU Lesser General Public License (LGPL) version 2.1 or later.
 
 ## Needle URLs
 
-* Needle Home Page: http://www.needle4j.org
-* Source Code:      https://github.com/needle4j/needle4j
-* Issue Tracking:   https://github.com/needle4j/needle4j/issues
+* Needle Home Page: https://www.needle4j.org
+* Source Code:      https://github.com/needle4j/needle4k
+* Issue Tracking:   https://github.com/needle4j/needle4k/issues
 * [needle4j@ohloh.net](https://www.ohloh.net/p/needle4j)
 * [Gitter chat](https://gitter.im/needle4j)
-
-## Release Nodes
-
-Version 3.0 - Upgrade to JDK 11 and Hibernate 5.6, Removal of deprecated code, cleanup code
-
-Version 2.2 - https://github.com/akquinet/needle/issues?milestone=1&state=closed
-
-Previous Versions - https://github.com/akquinet/needle/blob/master/src/docs/dist/changelog.txt
-

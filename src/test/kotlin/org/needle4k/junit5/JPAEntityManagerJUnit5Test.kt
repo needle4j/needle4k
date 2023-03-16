@@ -7,7 +7,7 @@ import org.needle4k.db.AbstractJPAEntityManagerTest
 import org.needle4k.db.JPAInjector
 import javax.inject.Inject
 
-@ExtendWith(value = [JPANeedleExtension::class])
+@ExtendWith(JPANeedleExtension::class)
 class JPAEntityManagerJUnit5Test : AbstractJPAEntityManagerTest(){
   @Inject
   private lateinit var needle: JPANeedleExtension
