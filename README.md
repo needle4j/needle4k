@@ -27,6 +27,10 @@ There is a [quickstart project](https://github.com/needle4j/needle4k-quickstart)
 * needle4k can be used with [JUnit4](https://junit.org/junit4/), [JUnit5](https://junit.org/junit5/) or [TestNG](http://testng.org/).
 * Pluggable Mock providers: [EasyMock](https://easymock.org/) and [Mockito](https://mockito.org/), in particular
 
+# Documentation
+
+For documentation and more examples please refer to the [needle4k site docs](src/site/index.md).
+
 # Getting started
 
 Add the following dependencies to your pom.xml file to get started using needle4k:
@@ -98,17 +102,13 @@ class UserDaoTest {
 
   @Test
   fun `Find user by name`() {
-    entityManager.persist(User("demo"));
+    entityManager.persist(User("demo"))
         
-    val userFromDb = userDao.findByName("demo");
-    assertThat(userFromDb).isEqualTo(user);
+    val userFromDb = userDao.findByName("demo")
+    assertThat(userFromDb).isEqualTo(user)
   }
 }
 ```
-
-# Documentation
-
-For documentation and more examples please refer to the [needle4k site docs](src/site/index.md).
 
 ## Licensing
 
@@ -122,7 +122,7 @@ needle4k is based on the [needle4j](https://github.com/needle4j/needle4j) framew
 
 The rewrite has been developed by [Markus Dahm](mailto:markus.dahm@akquinet.de).
 
-## Needle URLs
+## Links
 
 * Source Code:      https://github.com/needle4j/needle4k
 * Issue Tracking:   https://github.com/needle4j/needle4k/issues
