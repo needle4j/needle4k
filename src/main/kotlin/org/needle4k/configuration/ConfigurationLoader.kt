@@ -10,7 +10,7 @@ import java.util.*
 const val MOCK_PROVIDER_KEY = "mock.provider"
 const val DB_OPERATION_KEY = "db.operation"
 const val PERSISTENCE_UNIT_NAME_KEY = "persistenceUnit.name"
-const val POST_CONSTRUCT_EXECUTE_STRATEGY = "postconstruct.executestrategy"
+  const val POST_CONSTRUCT_EXECUTE_STRATEGY = "postconstruct.executestrategy"
 
 const val CUSTOM_CONFIGURATION_FILENAME = "needle"
 const val CUSTOM_INJECTION_ANNOTATIONS_KEY = "custom.injection.annotations"
