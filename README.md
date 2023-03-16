@@ -71,7 +71,7 @@ public class UserDaoTest {
   @InjectIntoMany // Mock object will be created and injected automatically everywhere
   private MetricsService metricsService;
 
-  @javax.inject.Inject // Inject components directely into test using standard annotations
+  @javax.inject.Inject // Inject components directly into test using standard annotations
   private EntityManager entityManager;
 
   @ObjectUnderTest // Create testet component and inject dependencies into it
@@ -94,7 +94,7 @@ class UserDaoTest {
   @InjectIntoMany // Mock object will be created and injected automatically everywhere
   private lateinit var metricsService : MetricsService
 
-  @javax.inject.Inject // Inject components directely into test using standard annotations
+  @javax.inject.Inject // Inject components directly into test using standard annotations
   private lateinit var entityManager: EntityManager 
 
   @ObjectUnderTest // Create testet component and inject dependencies into it
