@@ -3,18 +3,16 @@
 
 # needle4k - Effective Unit Testing
 
-[@NeedleProject](https://twitter.com/NeedleProject)
-
 <table style="vertical-align: top; border: none;">
   <tr>
     <td style="vertical-align: top; border: none;"> 
-        <img alt="Needle Coffee Cups" src="https://www.needle4j.org/images/coffee.jpg">
+        <img alt="Needle Coffee Cups" src="https://github.com/needle4j/needle4k/blob/main/src/site/resources/images/coffee.jpg">
     </td>
     <td style="vertical-align: top;border: none">
         <b>needle4k is a lightweight framework for testing (Java EE/Jakarta EE) components in isolation. Using needle4k it is easy to
         configure your tests in order to automatically inject mock and real objects into tested components.</b>
         <br/>
-        needle4k is a [Kotlin-based](https://kotlinlang.org/) relaunch und upgrade of the reliable needle4j framework.  
+        needle4k is a <a href="https://kotlinlang.org/">Kotlin-based</a> rewrite and upgraded version of the reliable needle4j framework.  
     </td>
   </tr>
 </table>
@@ -36,12 +34,23 @@
 
 # Getting started
 
-Add the following dependencies to your pom.xml file to get started using Needle:
+Add the following dependencies to your pom.xml file to get started using needle4k:
 
 ```
 <dependency>
     <groupId>org.needle4k</groupId>
     <artifactId>needle4k</artifactId>
+    <version>4.0.0</version>
+    <scope>test</scope>
+</dependency>
+``` 
+
+Use this dependency if you use Jakarta EE >= 9:
+
+```
+<dependency>
+    <groupId>org.needle4k</groupId>
+    <artifactId>needle4k-jakarta</artifactId>
     <version>4.0.0</version>
     <scope>test</scope>
 </dependency>
@@ -54,22 +63,22 @@ Add the following dependencies to your pom.xml file to get started using Needle:
 ```
 @ExtendWith(JPANeedleExtension.class)
 public class UserDaoTest {
-    @InjectIntoMany // Mock object will be created and injected automatically
-    private MetricsService metricsService;
+  @InjectIntoMany // Mock object will be created and injected automatically
+  private MetricsService metricsService;
 
-    @Inject // Inject components directely into test
-    private EntityManager entityManager;
+  @Inject // Inject components directely into test
+  private EntityManager entityManager;
 
-    @ObjectUnderTest // Create component and inject dependencies into it
-    private UserDao userDao;
+  @ObjectUnderTest // Create component and inject dependencies into it
+  private UserDao userDao;
 
-    @Test
-    public void testFindByUsername() throws Exception {
-        entityManager.persist(new User("demo"));
+  @Test
+  public void testFindByUsername() throws Exception {
+    entityManager.persist(new User("demo"));
         
-        User userFromDb = userDao.findBy("demo");
-        assertThat(userFromDb).isEqualTo(user);
-    }
+    User userFromDb = userDao.findBy("demo");
+    assertThat(userFromDb).isEqualTo(user);
+  }
 }
 ``` 
 # Documentation
@@ -78,12 +87,17 @@ For documentation and more examples please refer to the [needle4k website](https
 
 ## Licensing
 
-needle4k is licensed under GNU Lesser General Public License (LGPL) version 2.1 or later.
+needle4k is licensed under the GNU Lesser General Public License (LGPL) version 2.1 or later.
+
+## Developers
+
+needle4k is based on the [needle4j](https://github.com/needle4j/needle4j) framework originally written by
+[Heinz Wilming](mailto:heinz.wilming@akquinet.de),
+[Jan Galinski](mailto:jan.galinski@holisticon.de) and [Alphonse Bendt](https://github.com/abendt).
+
+The rewrite has been developed by [Markus Dahm](mailto:markus.dahm@akquinet.de).
 
 ## Needle URLs
 
-* Needle Home Page: https://www.needle4j.org
 * Source Code:      https://github.com/needle4j/needle4k
 * Issue Tracking:   https://github.com/needle4j/needle4k/issues
-* [needle4j@ohloh.net](https://www.ohloh.net/p/needle4j)
-* [Gitter chat](https://gitter.im/needle4j)
