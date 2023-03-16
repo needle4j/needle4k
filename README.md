@@ -3,24 +3,13 @@
 
 ![Banner](src/site/resources/images/banner.png)
 
-# Isolated unit tests for Java EE and Spring components
+# Isolated unit testing for Java EE and Spring components
 
-<table style="vertical-align: top; border: none;">
-  <tr>
-    <td style="vertical-align: top; border: none;"> 
-        <img alt="Needle Coffee Cups" src="src/site/resources/images/coffee.jpg">
-    </td>
-    <td style="vertical-align: top;border: none">
-        <b>needle4k is a lightweight framework for testing (
-        <a href="https://jakarta.ee/">Java EE/Jakarta EE</a> or 
-        <a href="https://spring.io/">Spring Bean</a>, e.g.) components in isolation. Using needle4k it is easy to
-        configure your tests in order to automatically inject mock and real objects into tested components.</b>
-        <br/>
-        needle4k is a <a href="https://kotlinlang.org/">Kotlin-based</a> rewrite and upgraded version of the reliable 
-        <a href="https://needl4j.org/">needle4j</a> framework.  
-    </td>
-  </tr>
-</table>
+**needle4k is a lightweight framework for testing 
+([Java EE/Jakarta EE](https://jakarta.ee/), [Spring Bean](https://spring.io/), e.g.) components in isolation.
+Using needle4k it is easy to configure your tests in order to automatically inject mock and real objects into tested components.
+needle4k is a [Kotlin-based](https://kotlinlang.org/) rewrite and upgraded version of the reliable
+[needle4j](https://needl4j.org/) framework.**
 
 # Core Features:
 
