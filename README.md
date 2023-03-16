@@ -17,7 +17,6 @@ needle4k is a [Kotlin-based](https://kotlinlang.org/) rewrite and upgraded versi
 * Constructor, Method and Field based dependency injection
 * Injection of Mock objects by default
 * Extensible by providing custom injection providers
-
 * Database testing using Hibernate
 * Optionally clear database after each test
 * EntityManager creation and injection
@@ -39,7 +38,7 @@ Add the following dependencies to your pom.xml file to get started using needle4
 </dependency>
 ``` 
 
-Use this dependency if you use Jakarta EE >= 9:
+Use this dependency if you are using Jakarta EE &geq; 9:
 
 ```
 <dependency>
@@ -50,31 +49,54 @@ Use this dependency if you use Jakarta EE >= 9:
 </dependency>
 ``` 
 
-(plus JUnit, Mockito, AssertJ,...)
+(plus JUnit, Mockito, AssertJ, and other testing frameworks...)
 
-## Implementing your first JUnit5 Needle Test
+## Implementing your first JUnit5 test in Java
 
 ```
 @ExtendWith(JPANeedleExtension.class)
 public class UserDaoTest {
-  @InjectIntoMany // Mock object will be created and injected automatically
+  @InjectIntoMany // Mock object will be created and injected automatically everywhere
   private MetricsService metricsService;
 
-  @Inject // Inject components directely into test
+  @javax.inject.Inject // Inject components directely into test using standard annotations
   private EntityManager entityManager;
 
-  @ObjectUnderTest // Create component and inject dependencies into it
+  @ObjectUnderTest // Create testet component and inject dependencies into it
   private UserDao userDao;
 
   @Test
   public void testFindByUsername() throws Exception {
     entityManager.persist(new User("demo"));
         
-    User userFromDb = userDao.findBy("demo");
+    User userFromDb = userDao.findByName("demo");
     assertThat(userFromDb).isEqualTo(user);
   }
 }
 ``` 
+## Implementing your first JUnit5 test in Kotlin
+
+```
+@ExtendWith(JPANeedleExtension::class)
+class UserDaoTest {
+  @InjectIntoMany // Mock object will be created and injected automatically everywhere
+  private lateinit var metricsService : MetricsService
+
+  @javax.inject.Inject // Inject components directely into test using standard annotations
+  private lateinit var entityManager: EntityManager 
+
+  @ObjectUnderTest // Create testet component and inject dependencies into it
+  private lateinit var userDao: UserDao
+
+  @Test
+  fun `Find user by name`() {
+    entityManager.persist(User("demo"));
+        
+    val userFromDb = userDao.findByName("demo");
+    assertThat(userFromDb).isEqualTo(user);
+  }
+}
+```
 
 # Documentation
 
