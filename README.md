@@ -1,7 +1,9 @@
 [![Build Status](https://secure.travis-ci.org/needle4k/needle4j.png)](https://travis-ci.org/needle4j/needle4k)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.needle4k/needle4k/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.needle4k/needle4k)
 
-# needle4k - Effective Unit Testing
+![Banner](blob/main/src/site/resources/images/banner.png)
+
+# needle4k - Isolated unit tests for Java EE and Spring components
 
 <table style="vertical-align: top; border: none;">
   <tr>
@@ -9,10 +11,13 @@
         <img alt="Needle Coffee Cups" src="https://github.com/needle4j/needle4k/blob/main/src/site/resources/images/coffee.jpg">
     </td>
     <td style="vertical-align: top;border: none">
-        <b>needle4k is a lightweight framework for testing (Java EE/Jakarta EE) components in isolation. Using needle4k it is easy to
+        <b>needle4k is a lightweight framework for testing (
+        <a href="https://jakarta.ee/">Java EE/Jakarta EE</a> or 
+        <a href="https://spring.io/">Spring Bean</a>, e.g.) components in isolation. Using needle4k it is easy to
         configure your tests in order to automatically inject mock and real objects into tested components.</b>
         <br/>
-        needle4k is a <a href="https://kotlinlang.org/">Kotlin-based</a> rewrite and upgraded version of the reliable needle4j framework.  
+        needle4k is a <a href="https://kotlinlang.org/">Kotlin-based</a> rewrite and upgraded version of the reliable 
+        <a href="https://needl4j.org/">needle4j</a> framework.  
     </td>
   </tr>
 </table>
@@ -81,6 +86,7 @@ public class UserDaoTest {
   }
 }
 ``` 
+
 # Documentation
 
 For documentation and more examples please refer to the [needle4k website](https://www.needle4j.org/).
