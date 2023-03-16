@@ -49,7 +49,7 @@ class HSQLDeleteOperationTest {
 
   private fun insertAddressWithInvalidFk(statement: Statement) {
     val address = Address()
-    needleRule.jpaInjectorConfiguration.transactionHelper.executeInTransaction {
+    needleRule.jpaInjectorConfiguration.transactionHelper.execute {
       it.persist(address)
       it.flush()
     }
@@ -62,7 +62,7 @@ class HSQLDeleteOperationTest {
   fun testDeleteContent() {
     configuration.execute {
       it.createStatement().use { statement ->
-        configuration.transactionHelper.executeInTransaction { em -> em.persist(Address()) }
+        configuration.transactionHelper.execute { em -> em.persist(Address()) }
 
         val rs = statement.executeQuery("SELECT * FROM " + Address.TABLE_NAME)
         Assert.assertTrue(rs.next())

@@ -22,7 +22,7 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception save objects failed
   </T> */
   @Throws(Exception::class)
-  fun <T : Any> saveObject(obj: T): T = executeInTransaction { it.persist(obj); obj }
+  fun <T : Any> saveObject(obj: T): T = execute { it.persist(obj); obj }
 
   /**
    * Finds and returns the object of the given id in the persistence context.
@@ -34,7 +34,7 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception finding object failed
   </T> */
   @Throws(Exception::class)
-  fun <T : Any> loadObject(clazz: Class<T>, id: Any): T = executeInTransaction { it.find(clazz, id) as T }
+  fun <T : Any> loadObject(clazz: Class<T>, id: Any): T = execute { it.find(clazz, id) as T }
 
   /**
    * Returns all objects of the given class in persistence context.
@@ -48,7 +48,7 @@ class TransactionHelper(val entityManager: EntityManager) {
   @Throws(Exception::class)
   @Suppress("UNCHECKED_CAST")
   fun <T : Any> loadAllObjects(clazz: Class<T>) =
-    executeInTransaction { it.createQuery("SELECT DISTINCT e FROM ${clazz.name} e").resultList as List<T> }
+    execute { it.createQuery("SELECT DISTINCT e FROM ${clazz.name} e").resultList as List<T> }
 
   /**
    * Encapsulates execution of runnable.run() in transactions.
@@ -61,7 +61,7 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception execution failed
   </T> */
   @Throws(Exception::class)
-  fun <T> executeInTransaction(runnable: Runnable<T>, clearAfterCommit: Boolean): T {
+  fun <T> execute(runnable: ReturningWork<T>, clearAfterCommit: Boolean): T {
     val result: T
 
     try {
@@ -91,7 +91,7 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception execution failed
   </T> */
   @Throws(Exception::class)
-  fun <T> executeInTransaction(runnable: Runnable<T>): T = executeInTransaction(runnable, true)
+  fun <T> execute(runnable: ReturningWork<T>): T = execute(runnable, true)
 }
 
 fun EntityManager.beginTransaction() {
@@ -108,4 +108,4 @@ fun EntityManager.rollbackTransaction() {
 
 fun EntityManager.isTransactionActive() = transaction.isActive
 
-typealias Runnable<T> = (entityManager: EntityManager) -> T
+typealias ReturningWork<T> = (entityManager: EntityManager) -> T
