@@ -7,8 +7,11 @@ import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.LazyInjectionProvider
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-open class JPANeedleExtension(needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) :
-  NeedleExtension(needleInjector, *injectionProviders) {
+open class JPANeedleExtension
+@JvmOverloads constructor(
+  needleInjector: NeedleInjector = NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())),
+  vararg injectionProviders: InjectionProvider<*>
+) : NeedleExtension(needleInjector, *injectionProviders) {
 
   constructor() : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())))
 
