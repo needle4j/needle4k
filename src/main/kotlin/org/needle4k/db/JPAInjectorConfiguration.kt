@@ -49,8 +49,7 @@ class JPAInjectorConfiguration(val needleConfiguration: NeedleConfiguration) {
   private fun createDBOperation(dbOperationClass: Class<out AbstractDBOperation>): DBOperation {
     try {
       return needleConfiguration.reflectionUtil.createInstance(
-        dbOperationClass,
-        JPAInjectorConfiguration::class.java to this
+        dbOperationClass, JPAInjectorConfiguration::class.java to this
       )
     } catch (e: Exception) {
       throw IllegalArgumentException("Could not create a new instance of configured DB operation $dbOperationClass", e)
@@ -58,6 +57,7 @@ class JPAInjectorConfiguration(val needleConfiguration: NeedleConfiguration) {
   }
 
   private fun lookupDBOperationClass(dbOperation: String): Class<out AbstractDBOperation> = try {
+    LOG.info("Using DB operation class {}", dbOperation)
     needleConfiguration.reflectionUtil.lookupClass(AbstractDBOperation::class.java, dbOperation)
       ?: NoOperation::class.java
   } catch (e: Exception) {
