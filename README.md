@@ -1,14 +1,14 @@
 [![Build Status](https://secure.travis-ci.org/needle4k/needle4j.png)](https://travis-ci.org/needle4j/needle4k)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.needle4k/needle4k/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.needle4k/needle4k)
 
-![Banner](blob/main/src/site/resources/images/banner.png)
+![Banner](src/site/resources/images/banner.png)
 
 # needle4k - Isolated unit tests for Java EE and Spring components
 
 <table style="vertical-align: top; border: none;">
   <tr>
     <td style="vertical-align: top; border: none;"> 
-        <img alt="Needle Coffee Cups" src="https://github.com/needle4j/needle4k/blob/main/src/site/resources/images/coffee.jpg">
+        <img alt="Needle Coffee Cups" src="src/site/resources/images/coffee.jpg">
     </td>
     <td style="vertical-align: top;border: none">
         <b>needle4k is a lightweight framework for testing (
