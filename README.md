@@ -1,7 +1,7 @@
 [![Build Status](https://secure.travis-ci.org/needle4k/needle4j.png)](https://travis-ci.org/needle4j/needle4k)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.needle4k/needle4k/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.needle4k/needle4k)
 
-![Banner](src/site/resources/images/banner.png)
+![Banner](src/site/images/banner.png)
 
 # Isolated unit testing for Java EE and Spring components
 
@@ -108,7 +108,7 @@ class UserDaoTest {
 
 # Documentation
 
-For documentation and more examples please refer to the [needle4k site docs](src/site/markdown/index.md).
+For documentation and more examples please refer to the [needle4k site docs](src/site/index.md).
 
 ## Licensing
 

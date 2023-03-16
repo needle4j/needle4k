@@ -30,8 +30,8 @@
     <persistence-unit name="H2TestDataModel" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>org.needle4j.db.Person</class>
-        <class>org.needle4j.db.Address</class>
+        <class>org.needle4k.db.Person</class>
+        <class>org.needle4k.db.Address</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

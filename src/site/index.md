@@ -1,6 +1,6 @@
 # Documentation
 
-![needle4k](../resources/images/coffee-small.jpg)
+![needle4k](images/coffee-small.jpg)
 
 **needle4k is a lightweight framework for testing
 ([Java EE/Jakarta EE](https://jakarta.ee/), [Spring Bean](https://spring.io/), e.g.) components in isolation.
