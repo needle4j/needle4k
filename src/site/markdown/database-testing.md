@@ -106,11 +106,11 @@ There are the following implementations:
 
 Class  | Description
 ------------- | -------------
-org.needle4j.db.operation.ExecuteScriptOperation  | Execute sql scripts during test setup and tear down. A before.sql and after.sql script must be provided on the classpath.
-org.needle4j.db.operation.h2.H2DeleteOperation | Deletes all rows of all tables of the h2 database.
-org.needle4j.db.operation.hsql.HSQLDeleteOperation` | Deletes all rows of all tables of the hsql database.
+org.needle4k.db.operation.ExecuteScriptOperation  | Execute sql scripts during test setup and tear down. A before.sql and after.sql script must be provided on the classpath.
+org.needle4k.db.operation.h2.H2DeleteOperation | Deletes all rows of all tables of the h2 database.
+org.needle4k.db.operation.hsql.HSQLDeleteOperation` | Deletes all rows of all tables of the hsql database.
 
-To use own Database operation implementations, the abstract base class `org.needle4j.db.operation.AbstractDBOperation` 
+To use own Database operation implementations, the abstract base class `org.needle4k.db.operation.AbstractDBOperation` 
 must be implemented and configured in the `needle.properties` file.
 
 ## Testdatabuilder
@@ -122,7 +122,7 @@ together and provide transient or persistent testdata for the test case.
 
 For this purpose Needle provides an abstract base class. The following
 code examples shows two implementations of Test Data Builder pattern.
-The Testdatabuilder inherit from 'org.needle4j.db.testdata.AbstractTestdataBuilder' class.
+The Testdatabuilder inherit from 'org.needle4k.db.testdata.AbstractTestdataBuilder' class.
 
 ```java
 public class UserTestdataBuilder extends AbstractTestdataBuilder<User> {

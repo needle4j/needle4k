@@ -2,7 +2,7 @@
 
 ## ObjectUnderTest instantiation and initialization
 
-Needle4j may automatically instantiate all objects under test for you. The
+needle4k may automatically instantiate all objects under test for you. The
 Needle test case scans all fields of the test class for annotations and
 creates a completely initialized instance. Alternatively, the developer
 may of course instantiate the field herself, too.
@@ -107,7 +107,7 @@ in the `needle.properties`.
     custom.injection.annotations=org.jboss.seam.annotations.In, org.jboss.seam.annotations.Logger
 
 It is also possible to implement custom providers. A custom injection
-provider must implement the `org.needle4j.injection.InjectionProvider` interface.
+provider must implement the `org.needle4k.injection.InjectionProvider` interface.
 
 ```java
 public class CurrentUserInjectionProvider implements InjectionProvider<User> {
@@ -142,7 +142,7 @@ global provider (again in the `needle.properties` file).
 If you need to configure multiple InjectionProviders at once, it is
 possible to use the InjectionProviderInstancesSupplier. It returns a Set
 of InjectionProviders. A custom injection provider supplier must
-implement the `org.needle4j.injection.InjectionProviderInstancesSupplier` interface.
+implement the `org.needle4k.injection.InjectionProviderInstancesSupplier` interface.
 
 ```java
 public class FooBarInjectionProviderInstancesSupplier implements InjectionProviderInstancesSupplier {

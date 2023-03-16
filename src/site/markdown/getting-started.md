@@ -1,6 +1,6 @@
 # Getting Started
 
-In this chapter, a very simple user management application is to be tested using **needle4j**.
+In this chapter, a very simple user management application is to be tested using **needle4k**.
 
 ## Sample Application
 
@@ -96,7 +96,7 @@ public class Authenticator {
 
 ## Using Needle with JUnit
 
-Needle4j provides JUnit “Rules” to extend JUnit. Rules are basically wrappers around test methods. They may execute 
+needle4k provides JUnit “Rules” to extend JUnit. Rules are basically wrappers around test methods. They may execute 
 code before, after or instead of a test method.
 
 The following example demonstrates hwo to write a simple JUnit Needle
@@ -143,12 +143,12 @@ public class UserDaoTest {
 
 ## Using Needle with TestNG
 
-Needle4j also supports TestNG. There are two abstract test cases that may be extended by concrete test classes.
+needle4k also supports TestNG. There are two abstract test cases that may be extended by concrete test classes.
 
-The class `org.needle4j.testng.AbstractNeedleTestcase` scans all fields annotated with `@ObjectUnderTest` and 
+The class `org.needle4k.testng.AbstractNeedleTestcase` scans all fields annotated with `@ObjectUnderTest` and 
 initializes the components.
 
-The class `org.needle4j.testng.DatabaseTestcase` can either be used as a special provider for `EntityManager` injection 
+The class `org.needle4k.testng.DatabaseTestcase` can either be used as a special provider for `EntityManager` injection 
 or as a base test case for JPA tests. In the first case, a new DatabaseTestcase instance is passed to the constructor of
 the AbstractNeedleTestcase:
 

@@ -5,7 +5,7 @@ collaborators. Needle generates Mock objects dynamically for
 dependencies of the components under test by default. Out-of-the-box
 Needle has implementations for EasyMock and Mockito. 
 
-To use other mock frameworks, the interface `org.needle4j.mock.MockProvider`
+To use other mock frameworks, the interface `org.needle4k.mock.MockProvider`
 must be implemented and configured in the `needle.properties` file.
 
 ## Create a Mock Object
@@ -120,7 +120,7 @@ public class AuthenticatorTest {
 To use Mockito, the mockito provider must be configured in the `needle.properties` file and the mockito library must be 
 present on test classpath.
 
-    mock.provider=org.needle4j.mock.MockitoProvider
+    mock.provider=org.needle4k.mock.MockitoProvider
 
 For more details about Mockito, please refer to the [Mockito](http://mockito.org) documentation.
 

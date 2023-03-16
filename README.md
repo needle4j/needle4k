@@ -9,7 +9,9 @@
 ([Java EE/Jakarta EE](https://jakarta.ee/), [Spring Bean](https://spring.io/), e.g.) components in isolation.
 Using needle4k it is easy to configure your tests in order to automatically inject mock and real objects into tested components.
 needle4k is a [Kotlin-based](https://kotlinlang.org/) rewrite and upgraded version of the reliable
-[needle4j](https://needl4j.org/) framework.**
+[needle4j](https://needle4j.org/) framework.**
+
+There is a [quickstart project](https://github.com/needle4j/needle4k-quickstart) demonstrating all features.
 
 # Core Features:
 
@@ -29,31 +31,37 @@ needle4k is a [Kotlin-based](https://kotlinlang.org/) rewrite and upgraded versi
 
 Add the following dependencies to your pom.xml file to get started using needle4k:
 
-```
+```xml
 <dependency>
     <groupId>org.needle4k</groupId>
     <artifactId>needle4k</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
     <scope>test</scope>
 </dependency>
-``` 
+```
 
 Use this dependency if you are using Jakarta EE &geq; 9:
 
-```
+```xml
 <dependency>
     <groupId>org.needle4k</groupId>
     <artifactId>needle4k-jakarta</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
     <scope>test</scope>
 </dependency>
 ``` 
 
 (plus JUnit, Mockito, AssertJ, and other testing frameworks...)
 
+## Gradle dependency
+
+```gradle
+testCompile("org.needle4k:needle4k:4.0.1")
+```
+
 ## Implementing your first JUnit5 test in Java
 
-```
+```java
 @ExtendWith(JPANeedleExtension.class)
 public class UserDaoTest {
   @InjectIntoMany // Mock object will be created and injected automatically everywhere
@@ -73,10 +81,10 @@ public class UserDaoTest {
     assertThat(userFromDb).isEqualTo(user);
   }
 }
-``` 
+```
 ## Implementing your first JUnit5 test in Kotlin
 
-```
+```kotlin
 @ExtendWith(JPANeedleExtension::class)
 class UserDaoTest {
   @InjectIntoMany // Mock object will be created and injected automatically everywhere
