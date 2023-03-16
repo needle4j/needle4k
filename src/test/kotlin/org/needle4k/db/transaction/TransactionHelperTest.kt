@@ -14,7 +14,7 @@ class TransactionHelperTest {
   
   @Test
   fun testLoadAllObjects_WithEntityName() {
-    val entity: Person = objectUnderTest.persist(Person().apply { myName = "jens" })
+    val entity: Person = objectUnderTest.saveObject(Person().apply { myName = "jens" })
     Assert.assertNotNull(entity.id)
     val loadAllObjects: List<Person> = objectUnderTest.loadAllObjects(Person::class.java)
     Assert.assertEquals(1, loadAllObjects.size)
@@ -22,7 +22,7 @@ class TransactionHelperTest {
 
   @Test
   fun testLoadAllObjects_WithDefaultEntityName() {
-    val entity: User = objectUnderTest.persist(User())
+    val entity: User = objectUnderTest.saveObject(User())
     Assert.assertNotNull(entity.id)
     val loadAllObjects: List<User> = objectUnderTest.loadAllObjects(User::class.java)
     Assert.assertEquals(1, loadAllObjects.size)
@@ -37,6 +37,6 @@ class TransactionHelperTest {
 
   @Test(expected = IllegalArgumentException::class)
   fun testLoadAllObjects_WithUnknownEntity() {
-    objectUnderTest.persist(Any())
+    objectUnderTest.saveObject(Any())
   }
 }

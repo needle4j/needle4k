@@ -79,7 +79,8 @@ public class UserDaoTest {
 
   @Test
   public void testFindByUsername() throws Exception {
-    entityManager.persist(new User("demo"));
+    final User user = new User("demo");
+    entityManager.persist(user);
         
     User userFromDb = userDao.findByName("demo");
     assertThat(userFromDb).isEqualTo(user);
@@ -92,18 +93,19 @@ public class UserDaoTest {
 @ExtendWith(JPANeedleExtension::class)
 class UserDaoTest {
   @InjectIntoMany // Mock object will be created and injected automatically everywhere
-  private lateinit var metricsService : MetricsService
+  private lateinit var metricsService: MetricsService
 
   @javax.inject.Inject // Inject components directly into test using standard annotations
-  private lateinit var entityManager: EntityManager 
+  private lateinit var entityManager: EntityManager
 
   @ObjectUnderTest // Create testet component and inject dependencies into it
   private lateinit var userDao: UserDao
 
   @Test
   fun `Find user by name`() {
-    entityManager.persist(User("demo"))
-        
+    val user = User("demo")
+    entityManager.persist(user)
+
     val userFromDb = userDao.findByName("demo")
     assertThat(userFromDb).isEqualTo(user)
   }

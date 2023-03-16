@@ -22,7 +22,7 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception save objects failed
   </T> */
   @Throws(Exception::class)
-  fun <T : Any> saveObject(obj: T): T = executeInTransaction { entityManager -> persist(obj, entityManager) }
+  fun <T : Any> saveObject(obj: T): T = executeInTransaction { it.persist(obj); obj }
 
   /**
    * Finds and returns the object of the given id in the persistence context.
@@ -34,8 +34,7 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception finding object failed
   </T> */
   @Throws(Exception::class)
-  fun <T : Any> loadObject(clazz: Class<T>, id: Any): T =
-    executeInTransaction { entityManager -> loadObject(entityManager, clazz, id) }
+  fun <T : Any> loadObject(clazz: Class<T>, id: Any): T = executeInTransaction { it.find(clazz, id) as T }
 
   /**
    * Returns all objects of the given class in persistence context.
@@ -92,22 +91,7 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws Exception execution failed
   </T> */
   @Throws(Exception::class)
-  fun <T> executeInTransaction(runnable: Runnable<T>): T {
-    return executeInTransaction(runnable, true)
-  }
-
-  fun <T : Any> persist(obj: T): T {
-    return persist(obj, entityManager)
-  }
-
-  fun <T : Any> persist(obj: T, entityManager: EntityManager): T {
-    entityManager.persist(obj)
-    return obj
-  }
-
-  fun <T : Any> loadObject(entityManager: EntityManager, clazz: Class<T>, id: Any): T {
-    return entityManager.find(clazz, id)
-  }
+  fun <T> executeInTransaction(runnable: Runnable<T>): T = executeInTransaction(runnable, true)
 }
 
 fun EntityManager.beginTransaction() {
