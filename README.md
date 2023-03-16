@@ -3,7 +3,7 @@
 
 ![Banner](src/site/resources/images/banner.png)
 
-# needle4k - Isolated unit tests for Java EE and Spring components
+# Isolated unit tests for Java EE and Spring components
 
 <table style="vertical-align: top; border: none;">
   <tr>
