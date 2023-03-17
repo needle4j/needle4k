@@ -53,7 +53,7 @@ public class UserTest
   public NeedleRule needleRule = new NeedleRule().withJPAInjection();
 
   @Inject
-  private EntityManager entityManager; 
+  private EntityManager entityManager;
 
   @Test
   public void testPersist() throws Exception
@@ -62,10 +62,10 @@ public class UserTest
 
     // You can access the entity manager either way
     assertSame(this.entityManager, entityManager);
-    
+
     final User user = new UserTestdataBuilder(entityManager).buildAndSave();
     final User userFromDb = entityManager.find(User.class, user.getId());
-    
+
     assertEquals(user.getId(), userFromDb.getId());
   }
 }
@@ -73,8 +73,10 @@ public class UserTest
 
 ## Transaction helper
 
-The EntityManager is the primary interface used by application developers to interact with the underlying database. Many operations
-must be executed in a transaction which is not started in the test component, because it is usually maintained by the application server.
+The EntityManager is the primary interface used by application developers to interact with the underlying database. Many
+operations
+must be executed in a transaction which is not started in the test component, because it is usually maintained by the application
+server.
 To run your code using DB transactions you might want to use the `TransactionHelper` utility.
 
 ```java
@@ -90,195 +92,45 @@ public class UserTest
   public void testPersist() throws Exception
   {
     final User user = new User();
-    ...
-    transactionHelper.executeInTransaction(new VoidRunnable()
-    {
-      @Override
-      public void doRun(EntityManager entityManager) throws Exception
-      {
-        entityManager.persist(user);
-      }
+
+    transactionHelper.execute(entityManager -> {
+      entityManager.persist(user);
+      entityManager.flush();
     });
   }
 }
 ```
 
-The above example illustrates the use of the `TransactionHelper` class and the execution of a transaction. The
-implementation of the VoidRunnable is executed within a transaction. There is also `Runnable<T>` interface that contains
-a method run return a value to be used for further testing.
+The above example illustrates the use of the `TransactionHelper` class and the execution of a transaction. It also provides
+several utility methods for saving and loading objects.
 
 ## Database operation
 
-A common issue in unit tests that access a real database is their effect
-on the state of the persistence store. They usually expect a certain
-state at the beginning and alter it at runtime which of course will
-affect other tests. To address that problem optional Database operations
-can be executed before and after test execution, in order to clean up or
-set up data.
+A common issue in unit tests that access a real database is their effect on the state of the persistence store. They usually
+expect a certain
+state at the beginning and alter it at runtime which of course will affect other tests.
+To address that problem optional Database operations can be executed before and after test execution, in order to clean up or set
+up data.
 
-There are the following implementations:
+The following operation are provided by default:
 
- Class                                               | Description                                                                                                               
------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------
- org.needle4k.db.operation.ExecuteScriptOperation    | Execute sql scripts during test setup and tear down. A before.sql and after.sql script must be provided on the classpath. 
- org.needle4k.db.operation.h2.H2DeleteOperation      | Deletes all rows of all tables of the h2 database.                                                                        
- org.needle4k.db.operation.hsql.HSQLDeleteOperation` | Deletes all rows of all tables of the hsql database.                                                                      
+ Class                                                  | Description                                                                                                               
+--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------
+ org.needle4k.db.operation.ExecuteScriptOperation       | Execute sql scripts during test setup and tear down. A `/before.sql` and `/after.sql` script has to be provided on the classpath. 
+ org.needle4k.db.operation.h2.H2DeleteOperation         | Deletes all rows of all tables of the H2 database.                                                                        
+ org.needle4k.db.operation.hsql.HSQLDeleteOperation`    | Deletes all rows of all tables of the HSQL database.                                                                      
+ org.needle4k.db.operation.derby.DerbyLDeleteOperation` | Deletes all rows of all tables of the Derby database.                                                                     
 
-To use own Database operation implementations, the abstract base class `org.needle4k.db.operation.AbstractDBOperation`
-must be implemented and configured in the `needle.properties` file.
-
-## Testdatabuilder
-
-Using the Test Data Builder pattern, the builder class provides methods
-that can be used to configure the test objects. Properties that are not
-configured use default values. The builder methods can be chained
-together and provide transient or persistent testdata for the test case.
-
-For this purpose Needle provides an abstract base class. The following
-code examples shows two implementations of Test Data Builder pattern.
-The Testdatabuilder inherit from 'org.needle4k.db.testdata.AbstractTestdataBuilder' class.
-
-```java
-public class UserTestdataBuilder extends AbstractTestdataBuilder<User>
-{
-
-  private String withUsername;
-  private String withPassword;
-  private Profile withProfile;
-
-  public UserTestdataBuilder()
-  {
-    super();
-  }
-
-  public UserTestdataBuilder(EntityManager entityManager)
-  {
-    super(entityManager);
-  }
-
-  public UserTestdataBuilder withUsername(final String username)
-  {
-    this.withUsername = username;
-    return this;
-  }
-
-  private String getUsername()
-  {
-    return withUsername != null ? withUsername : "username";
-  }
-
-  public UserTestdataBuilder withPassword(final String password)
-  {
-    this.withPassword = password;
-    return this;
-  }
-
-  private String getPassword()
-  {
-    return withPassword != null ? withPassword : "password";
-  }
-
-  public UserTestdataBuilder withProfile(final Profile profile)
-  {
-    this.withProfile = profile;
-    return this;
-  }
-
-  private Profile getProfile()
-  {
-    if (withProfile != null)
-    {
-      return withProfile;
-    }
-    return hasEntityManager()
-        ? new ProfileTestdataBuilder(getEntityManager()).buildAndSave()
-        : new ProfileTestdataBuilder().build();
-  }
-
-  @Override
-  public User build()
-  {
-    User user = new User();
-    user.setUsername(getUsername());
-    user.setPassword(getPassword());
-    user.setProfile(getProfile());
-    return user;
-  }
-}
-```
-
-```java
-public class ProfileTestdataBuilder extends AbstractTestdataBuilder<Profile>
-{
-
-  private String withLanguage;
-
-  public ProfileTestdataBuilder()
-  {
-    super();
-  }
-
-  public ProfileTestdataBuilder(EntityManager entityManager)
-  {
-    super(entityManager);
-  }
-
-  public ProfileTestdataBuilder withLanguage(final String language)
-  {
-    this.withLanguage = language;
-    return this;
-  }
-
-  private String getLanguage()
-  {
-    return withLanguage != null ? withLanguage : "de";
-  }
-
-  @Override
-  public Profile build()
-  {
-    Profile profile = new Profile();
-    profile.setLanguage(getLanguage());
-    return profile;
-  }
-}
-```
-
-In the example the Testdatabuilder is using defaults for everything except the username.
-
-    final User user = new UserTestdataBuilder(databaseRule.getEntityManager()).withUsername("user").buildAndSave();
-
-    final User user = new UserTestdataBuilder().withUsername("user").build()
+To use own Database operation implementations, extend the abstract base class `org.needle4k.db.operation.AbstractDBOperation`
+and configured the "db.operation" property in the `needle.properties` file.
 
 ## Injectable database resources
 
 In combination with the NeedleRule, the following resources are injectable by the DatabaseTestcase.
 
 1. EntityManager
-1. EntityManagerFactory
-1. EntityTransaction
-1. TransactionHelper
+2. EntityManagerFactory
+3. EntityTransaction
+4. TransactionHelper
+5. JPAInjectorConfiguration
 
-Example:
-
-```java
-public class UserDaoTest
-{
-
-  @Rule
-  public NeedleRule needleRule = new NeedleRule().withOuter(new DatabaseRule());
-  //  Alternative:
-  // 
-  //  @Rule
-  //  public DatabaseRule dbRule = new DatabaseRule()
-  //  @Rule
-  //  public NeedleRule needleRule = new NeedleRule(dbRule);
-
-  @Inject
-  private EntityManager entityManager;
-
-  @Inject
-  private EntityTransaction entityTransaction;
-  //…
-}
-```

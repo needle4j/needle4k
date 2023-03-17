@@ -94,7 +94,7 @@ public class Authenticator {
 }
 ```
 
-## Using Needle with JUnit
+## Using Needle with JUnit4
 
 needle4k provides JUnit “Rules” to extend JUnit. Rules are basically wrappers around test methods. They may execute 
 code before, after or instead of a test method.
@@ -115,63 +115,74 @@ method injection.
 ```java
 public class UserDaoTest {
   @Rule
-  public DatabaseRule databaseRule = new DatabaseRule();
+  public NeedleRule needleRule = new NeedleRule().withJPAInjection();
 
-  @Rule
-  public NeedleRule needleRule = new NeedleRule(databaseRule);
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @ObjectUnderTest
   private UserDao userDao;
 
   @Test
   public void testFindByUsername() throws Exception {
-    final User user = new UserTestdataBuilder(databaseRule.getEntityManager()).buildAndSave();
-    User findBy = userDao.findBy(user.getUsername(), user.getPassword());
-    Assert.assertEquals(user.getId(), findBy.getId());
+    final User user = new UserTestdataBuilder(entityManager).buildAndSave();
+    final User findBy = userDao.findBy(user.getUsername(), user.getPassword());
+    assertEquals(user.getId(), findBy.getId());
+  
+    final List<User> all = userDao.findAll();
+    assertEquals(1, all.size());
   }
+}
+```
+
+## Using Needle with JUnit4
+
+Basically it is the same, but using `extensions` instead of `rules`:
+
+```java
+@ExtendWith(JPANeedleExtension.class)
+public class UserDaoTest {
+  @PersistenceContext
+  private EntityManager entityManager;
+
+  @ObjectUnderTest
+  private UserDao userDao;
 
   @Test
-  public void testFindAll() throws Exception {
-    new UserTestdataBuilder(databaseRule.getEntityManager()).buildAndSave();
-
-    List<User> all = userDao.findAll();
-
-    Assert.assertEquals(1, all.size());
+  public void testFindByUsername() throws Exception {
+    final User user = new UserTestdataBuilder(entityManager).buildAndSave();
+    final User findBy = userDao.findBy(user.getUsername(), user.getPassword());
+    assertEquals(user.getId(), findBy.getId());
+  
+    final List<User> all = userDao.findAll();
+    assertEquals(1, all.size());
   }
 }
 ```
 
 ## Using Needle with TestNG
 
-needle4k also supports TestNG. There are two abstract test cases that may be extended by concrete test classes.
-
-The class `org.needle4k.testng.AbstractNeedleTestcase` scans all fields annotated with `@ObjectUnderTest` and 
-initializes the components.
-
-The class `org.needle4k.testng.DatabaseTestcase` can either be used as a special provider for `EntityManager` injection 
-or as a base test case for JPA tests. In the first case, a new DatabaseTestcase instance is passed to the constructor of
-the AbstractNeedleTestcase:
+**needle4k** also supports TestNG. There is an abstract test case that may be extended by concrete test classes.
 
 ```java
 public class UserDaoTest extends AbstractNeedleTestcase {
-  public UserDaoTest() {
-    super(new DatabaseTestcase());
-  }
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @ObjectUnderTest
   private UserDao userDao;
 
-  @Test
-  public void testFindByUsername() throws Exception {
-    final User user = new UserTestdataBuilder(getEntityManager()).buildAndSave();
-
-    User findBy = userDao.findBy(user.getUsername(), user.getPassword());
-    Assert.assertEquals(user.getId(), findBy.getId());
+  @BeforeMethod
+  public void init() {
+    addJPAInjectionProvider();
   }
 
   @Test
-  public void testFindAll() throws Exception {
-    new UserTestdataBuilder(getEntityManager()).buildAndSave();
+  public void testFindByUsername() throws Exception {
+    final User user = new UserTestdataBuilder(entityManager).buildAndSave();
+
+    User findBy = userDao.findBy(user.getUsername(), user.getPassword());
+    Assert.assertEquals(user.getId(), findBy.getId());
 
     List<User> all = userDao.findAll();
     Assert.assertEquals(1, all.size());
