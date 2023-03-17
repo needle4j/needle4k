@@ -1,6 +1,6 @@
 # Object instantiation and injection
 
-**needle4k** will automatically instantiate all objects under test for you. The Needle rules/extensions scan all fields of the
+**needle4k** will automatically instantiate all objects under test for you. The **needle4k** rules/extensions scan all fields of the
 test class for annotations and creates completely initialized instances, transitively. Alternatively, the developer may of course
 instantiate the field herself, too.
 
@@ -47,7 +47,7 @@ public class UserDaoTest
 
 ## Injection
 
-Needle supports field, constructor and method injection by
+**needle4k** supports field, constructor and method injection by
 evaluating `@EJB`, `@Resource`, `@PersistenceContext`, `@PersistenceUnit`, `@Inject` and other common annotations.
 You may also provide your own annotations
 
@@ -94,7 +94,7 @@ key or – in the case of resource injection – the mapped name of the resource
 
 ## Custom injection provider
 
-Needle is fully extensible, you may implement your own injection providers or register additional annotations.
+**needle4k** is fully extensible, you may implement your own injection providers or register additional annotations.
 
 The following example shows the registration of additional annotations
 in the `needle.properties`.

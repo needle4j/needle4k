@@ -42,7 +42,7 @@ The EasyMockProvider implementation is a subclass of EasyMockSupport. EasyMockSu
 class to your test cases. It will automatically register all created mocks and to replay, reset or verify them in batch instead of
 explicitly.
 
-The following test illustrates the usage of EasyMock with Needle and the injection of generated mock objects.
+The following test illustrates the usage of EasyMock with **needle4k** and the injection of generated mock objects.
 
 ```java
 public class AuthenticatorTest
@@ -85,12 +85,12 @@ For more details about EasyMock, please refer to the [EasyMock](https://easymock
 
 ## Mockito
 
-Needle has also an mock provider implementation for Mockito. Mockito generates Mock objects, where by default the return value of a method is
+**needle4k** has also a mock provider implementation for Mockito. Mockito generates Mock objects, where by default the return value of a method is
 null, an empty collection or the appropriate primitive value.
 
-Mockito is the default mock provider in **needle4k**.
+**Mockito is the default mock provider in needle4k**.
 
-The following test illustrates the usage of Mockito with Needle.
+The following test illustrates the usage of Mockito with **needle4k**.
 
 ```java
 public class AuthenticatorTest

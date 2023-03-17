@@ -94,7 +94,7 @@ public class Authenticator {
 }
 ```
 
-## Using Needle with JUnit4
+## Using needle4k with JUnit4
 
 needle4k provides JUnit “Rules” to extend JUnit. Rules are basically wrappers around test methods. They may execute 
 code before, after or instead of a test method.
@@ -102,7 +102,7 @@ code before, after or instead of a test method.
 The following example demonstrates hwo to write a simple JUnit Needle
 test with two rules. The database rule provides access to the database
 via JPA and may execute optional database operations, e.g. to setup the
-initial data. The Needle rule does the real magic: it scans the test for
+initial data. The `NeedleRule` does the real magic: it scans the test for
 all fields annotated with `@ObjectUnderTest` and initializes these
 tested components by injection of their dependencies. I.e., the UserDao
 will get the `EntityManager` field injected automatically. Since we
@@ -135,7 +135,7 @@ public class UserDaoTest {
 }
 ```
 
-## Using Needle with JUnit4
+## Using needle4k with JUnit4
 
 Basically it is the same, but using `extensions` instead of `rules`:
 
@@ -160,7 +160,7 @@ public class UserDaoTest {
 }
 ```
 
-## Using Needle with TestNG
+## Using needle4k with TestNG
 
 **needle4k** also supports TestNG. There is an abstract test case that may be extended by concrete test classes.
 

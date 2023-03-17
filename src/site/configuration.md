@@ -50,10 +50,10 @@ Typically, these dependencies look like
         </dependency>
 ```
 
-## Needle configuration properties
+## needle4k configuration properties
 
 The needle4k default configuration may be modified in a `needle.properties` file in the classpath root. 
-I.e., Needle will look for a file `/needle.properties` in the classpath.
+I.e., **needle4k** will look for a file `/needle.properties` in the classpath.
 
 ### Configuration of additional custom injection annotations and injection provider
 

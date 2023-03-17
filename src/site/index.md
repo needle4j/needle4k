@@ -11,9 +11,9 @@ needle4k is a [Kotlin-based](https://kotlinlang.org/) rewrite and upgraded versi
 # Content
 
 <!-- TOC -->
+* [Getting started](getting-started.md)
 * [Configuration](configuration.md)
 * [Database testing](database-testing.md)
-* [Getting started](getting-started.md)
 * [Using mocks](mock-objects.md)
 * [Object instantiation and injection](injection.md)
 <!-- TOC -->
