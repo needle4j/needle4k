@@ -1,6 +1,7 @@
 # Object instantiation and injection
 
-**needle4k** will automatically instantiate all objects under test for you. The **needle4k** rules/extensions scan all fields of the
+**needle4k** will automatically instantiate all objects under test for you. The **needle4k** rules/extensions scan all fields of
+the
 test class for annotations and creates completely initialized instances, transitively. Alternatively, the developer may of course
 instantiate the field herself, too.
 
@@ -11,9 +12,9 @@ already instantiated, only the dependency injection will be done.
 ## PostConstruct lifecycle callback
 
 During the object under test instantiation it is possible to execute lifecycle methods annotated with PostConstruct. The
-`@PostConstruct` annotation is used on a method that needs to be executed after dependency injection is done but before any
-business methods may be called. By default, lifecycle methods are ignored. The execution can be activated by the annotation
-`@ObjectUnderTest`.
+`@PostConstruct` annotation is used on a method that needs to be executed after dependency injection is done, but before any
+business methods may be called on the componet. By default, lifecycle methods are ignored. The execution can be activated by the
+annotation `@ObjectUnderTest`.
 
 ```java
 
