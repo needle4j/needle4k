@@ -4,10 +4,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.mockito.Mockito
-import org.needle4k.configuration.DefaultNeedleConfiguration
 
 class MockitoProviderTest {
-  private val mockitoProvider = MockitoProvider(DefaultNeedleConfiguration())
+  private val mockitoProvider = MockitoProvider()
 
   @Test
   fun shouldCreateMockComponent() {

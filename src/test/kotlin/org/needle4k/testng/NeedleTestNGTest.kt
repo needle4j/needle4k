@@ -8,7 +8,6 @@ import org.needle4k.MyEjbComponentBean
 import org.needle4k.annotation.InjectIntoMany
 import org.needle4k.annotation.ObjectUnderTest
 import org.testng.Assert
-import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import javax.ejb.SessionContext
 import javax.inject.Inject

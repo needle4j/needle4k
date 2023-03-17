@@ -21,7 +21,7 @@ abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg inj
   init {
     needleInjector.addInjectionProvider(*injectionProviders)
     needleInjector.addInjectionProvider(LazyInjectionProvider(NeedleInjector::class.java) { needleInjector })
-    needleInjector.addInjectionProvider(LazyInjectionProvider(ReflectionHelper::class.java) { needleConfiguration.reflectionHelper })
+    needleInjector.addInjectionProvider(LazyInjectionProvider(ReflectionHelper::class.java) { ReflectionHelper })
   }
 
   fun addJPAInjectionProvider() {

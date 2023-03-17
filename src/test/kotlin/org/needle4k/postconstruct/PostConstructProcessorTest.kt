@@ -11,6 +11,7 @@ import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.configuration.POST_CONSTRUCT_EXECUTE_STRATEGY
 import org.needle4k.configuration.PostConstructExecuteStrategy
 import org.needle4k.injection.InjectionConfiguration
+import org.needle4k.reflection.ReflectionHelper
 import java.lang.reflect.Method
 import javax.annotation.PostConstruct
 
@@ -125,8 +126,7 @@ class PostConstructProcessorTest {
 
   @Test
   fun shouldFindTwoPostConstructMethodsForC() {
-    val context = NeedleContext(this, needleConfiguration)
-    val methods: Set<Method> = postConstructProcessor.getPostConstructMethods(context, C::class.java)
+    val methods: Set<Method> = postConstructProcessor.getPostConstructMethods(C::class.java)
 
     assertEquals(methods.size.toLong(), 2)
   }
@@ -163,6 +163,6 @@ class PostConstructProcessorTest {
     verify(runnableMock)
   }
 
-  private fun getObjectUnderTestAnnotation(fieldname: String) =
-    needleConfiguration.reflectionHelper.getField(javaClass, fieldname).getAnnotation(ObjectUnderTest::class.java)
+  private fun getObjectUnderTestAnnotation(fieldName: String) =
+    ReflectionHelper.getField(javaClass, fieldName).getAnnotation(ObjectUnderTest::class.java)
 }

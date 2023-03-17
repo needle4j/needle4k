@@ -4,6 +4,7 @@ import org.junit.Test
 import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.injection.InjectionConfiguration
+import org.needle4k.reflection.ReflectionHelper
 
 @Suppress("unused")
 class ObjectUnderTestInstantiationTest {
@@ -38,6 +39,6 @@ class ObjectUnderTestInstantiationTest {
     val field = ObjectUnderTestInstantiationTest::class.java.getDeclaredField(fieldName)
     val objectUnderTestAnnotation: ObjectUnderTest = field.getAnnotation(ObjectUnderTest::class.java)
 
-    configuration.reflectionHelper.invokeMethod(needleTestcase, "setInstanceIfNotNull", field, objectUnderTestAnnotation, this)
+    ReflectionHelper.invokeMethod(needleTestcase, "setInstanceIfNotNull", field, objectUnderTestAnnotation, this)
   }
 }

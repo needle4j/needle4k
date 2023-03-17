@@ -1,14 +1,14 @@
 package org.needle4k.registries
 
-import org.needle4k.configuration.NeedleConfiguration
+import org.needle4k.reflection.ReflectionHelper
 
-class AnnotationRegistry(private val configuration: NeedleConfiguration) {
+class AnnotationRegistry {
   private val registeredAnnotations = HashSet<Class<out Annotation>>()
 
   fun allAnnotations() = registeredAnnotations.toSet()
 
   fun addAnnotation(className: String): AnnotationRegistry {
-    val clazz = configuration.reflectionHelper.lookupClass(Annotation::class.java, className)
+    val clazz = ReflectionHelper.lookupClass(Annotation::class.java, className)
 
     if (clazz != null) {
       registeredAnnotations.add(clazz)
@@ -36,6 +36,6 @@ class AnnotationRegistry(private val configuration: NeedleConfiguration) {
     annotationClasses.toSet().intersect(registeredAnnotations).isNotEmpty()
 
   fun isRegistered(vararg classNames: String) =
-    classNames.mapNotNull { configuration.reflectionHelper.lookupClass(Annotation::class.java, it) }.toSet()
+    classNames.mapNotNull { ReflectionHelper.lookupClass(Annotation::class.java, it) }.toSet()
       .intersect(registeredAnnotations).isNotEmpty()
 }

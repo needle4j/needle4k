@@ -5,6 +5,7 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.injection.FieldTargetInformation
+import org.needle4k.reflection.ReflectionHelper
 import javax.inject.Inject
 import javax.persistence.EntityManager
 
@@ -18,7 +19,7 @@ class TransactionHelperProviderTest {
 
   @Test
   fun testVerify() {
-    val field = configuration.reflectionHelper.getField(this.javaClass, "helper")
+    val field = ReflectionHelper.getField(this.javaClass, "helper")
     val injectionTargetInformation = FieldTargetInformation(field, field.getAnnotation(Inject::class.java))
 
     Assert.assertTrue(provider.verify(injectionTargetInformation))

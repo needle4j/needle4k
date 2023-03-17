@@ -2,7 +2,6 @@ package org.needle4k.mock
 
 import org.easymock.EasyMock
 import org.easymock.EasyMockSupport
-import org.needle4k.configuration.NeedleConfiguration
 
 /**
  * An EasyMock specific [MockProvider] implementation. For details, see
@@ -30,7 +29,7 @@ import org.needle4k.configuration.NeedleConfiguration
 </pre> *
  */
 @Suppress("UNUSED_PARAMETER", "unused")
-class EasyMockProvider(needleConfiguration: NeedleConfiguration) : EasyMockSupport(), MockProvider {
+class EasyMockProvider : EasyMockSupport(), MockProvider {
   /**
    * {@inheritDoc} By default a mock with nice behavior. Skipping creation, if
    * the type is final or primitive. For details, see the EasyMock

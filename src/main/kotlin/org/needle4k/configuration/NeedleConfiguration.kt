@@ -2,15 +2,13 @@ package org.needle4k.configuration
 
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionProviderInstancesSupplier
-import org.needle4k.reflection.ReflectionHelper
 import org.needle4k.registries.AnnotationRegistry
 
 interface NeedleConfiguration {
-  val reflectionHelper: ReflectionHelper
   val configurationProperties: MutableMap<String, String>
 
   val injectionAnnotationRegistry: AnnotationRegistry
-  val postconstructAnnotationRegistry: AnnotationRegistry
+  val postConstructAnnotationRegistry: AnnotationRegistry
 
   val customInjectionAnnotations: Set<Class<out Annotation>>
   val customInjectionProviderClasses: Set<Class<InjectionProvider<*>>>

@@ -1,21 +1,19 @@
 package org.needle4k.reflection
 
-import javax.annotation.Resource
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.needle4k.MyComponentBean
-import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.db.Address
 import org.needle4k.injection.InjectionTargetInformation
 import java.lang.reflect.Field
 import java.lang.reflect.Method
+import javax.annotation.Resource
 
 class ReflectionHelperTest {
-  private val configuration = DefaultNeedleConfiguration()
-  private val objectUnderTest = configuration.reflectionHelper
+  private val objectUnderTest = ReflectionHelper
 
   @Test
   fun testCanLookupPrivateFieldFromSuperclass() {

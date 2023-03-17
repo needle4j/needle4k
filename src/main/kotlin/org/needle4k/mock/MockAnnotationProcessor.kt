@@ -4,6 +4,7 @@ import org.needle4k.NeedleContext
 import org.needle4k.annotation.Mock
 import org.needle4k.injection.InjectionConfiguration
 import org.needle4k.processor.AbstractNeedleProcessor
+import org.needle4k.reflection.ReflectionHelper
 import org.slf4j.LoggerFactory
 import java.lang.reflect.Modifier
 
@@ -23,7 +24,7 @@ class MockAnnotationProcessor(configuration: InjectionConfiguration) : AbstractN
     for (field in fields) {
       val mock = configuration.mockProvider.createMockComponent(field.type)
 
-      configuration.needleConfiguration.reflectionHelper.setField(field, context.test, mock)
+      ReflectionHelper.setField(field, context.test, mock)
     }
   }
 

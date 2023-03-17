@@ -4,6 +4,7 @@ import org.needle4k.annotation.InjectInto
 import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.injection.*
 import org.needle4k.mock.SpyProvider
+import org.needle4k.reflection.ReflectionHelper
 import org.needle4k.reflection.getAllFieldsWithSupportedAnnotation
 import org.slf4j.LoggerFactory
 import java.lang.reflect.*
@@ -110,9 +111,8 @@ open class NeedleInjector constructor(
 
   private fun initMethodInjection(instance: Any) {
     val needleConfiguration = configuration.needleConfiguration
-    val reflectionHelper = needleConfiguration.reflectionHelper
     val registry = needleConfiguration.injectionAnnotationRegistry
-    val methods = reflectionHelper.getMethods(instance.javaClass)
+    val methods = ReflectionHelper.getMethods(instance.javaClass)
       .filter { registry.isRegistered(*it.declaredAnnotations) }
 
     for (method in methods) {
@@ -121,7 +121,7 @@ open class NeedleInjector constructor(
       val arguments = createArguments(parameterInfos)
 
       try {
-        reflectionHelper.invokeMethod(method, instance, *arguments)
+        ReflectionHelper.invokeMethod(method, instance, *arguments)
       } catch (e: Exception) {
         LOG.warn("Could not invoke method", e)
       }
@@ -169,7 +169,6 @@ open class NeedleInjector constructor(
   private fun injectIntoAnnotatedFields(instance: Any) {
     val needleConfiguration = configuration.needleConfiguration
     val registry = needleConfiguration.injectionAnnotationRegistry
-    val reflectionHelper = needleConfiguration.reflectionHelper
     val fields = instance.javaClass.getAllFieldsWithSupportedAnnotation(configuration.needleConfiguration)
 
     for (field in fields) {
@@ -179,7 +178,7 @@ open class NeedleInjector constructor(
 
       if (injection != null) {
         try {
-          reflectionHelper.setField(field, instance, injection.second)
+          ReflectionHelper.setField(field, instance, injection.second)
         } catch (e: Exception) {
           LOG.error(e.message, e)
         }
@@ -188,12 +187,11 @@ open class NeedleInjector constructor(
   }
 
   private fun setInstanceIfNotNull(field: Field, objectUnderTestAnnotation: ObjectUnderTest, test: Any): Any {
-    val reflectionHelper = configuration.needleConfiguration.reflectionHelper
     val spyProvider: SpyProvider = configuration.spyProvider
     val id = objectUnderTestAnnotation.id.ifBlank { field.name }
 
     // First try
-    var instance: Any? = reflectionHelper.getFieldValue(test, field)
+    var instance: Any? = ReflectionHelper.getFieldValue(test, field)
 
     if (instance == null) {
       val implementation = if (objectUnderTestAnnotation.implementation.java !== Void::class.java)
@@ -227,10 +225,8 @@ open class NeedleInjector constructor(
 
   @Throws(ObjectUnderTestInstantiationException::class)
   fun setField(field: Field, test: Any, instance: Any?) {
-    val reflectionHelper = configuration.needleConfiguration.reflectionHelper
-
     try {
-      reflectionHelper.setField(field, test, instance)
+      ReflectionHelper.setField(field, test, instance)
     } catch (e: Exception) {
       throw ObjectUnderTestInstantiationException(e)
     }

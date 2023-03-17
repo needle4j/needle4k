@@ -4,6 +4,7 @@ import org.needle4k.NeedleContext
 import org.needle4k.annotation.InjectInto
 import org.needle4k.annotation.InjectIntoMany
 import org.needle4k.processor.NeedleProcessor
+import org.needle4k.reflection.ReflectionHelper
 import org.slf4j.LoggerFactory
 import java.lang.reflect.Field
 
@@ -14,13 +15,12 @@ class InjectionAnnotationProcessor : NeedleProcessor {
   }
 
   private fun processInjectIntoMany(context: NeedleContext) {
-    val reflectionHelper = context.needleConfiguration.reflectionHelper
     val testcase: Any = context.test
     val fieldsWithInjectIntoManyAnnotation: List<Field> = context.getAnnotatedTestcaseFields(
       InjectIntoMany::class.java
     )
     for (field in fieldsWithInjectIntoManyAnnotation) {
-      val sourceObject = reflectionHelper.getFieldValue(testcase, field)
+      val sourceObject = ReflectionHelper.getFieldValue(testcase, field)
 
       if (sourceObject != null) {
         val injectIntoManyAnnotation: InjectIntoMany = field.getAnnotation(InjectIntoMany::class.java)
@@ -43,12 +43,11 @@ class InjectionAnnotationProcessor : NeedleProcessor {
   }
 
   private fun processInjectInto(context: NeedleContext) {
-    val reflectionHelper = context.needleConfiguration.reflectionHelper
     val testcase: Any = context.test
     val fields: List<Field> = context.getAnnotatedTestcaseFields(InjectInto::class.java)
 
     for (field in fields) {
-      val sourceObject = reflectionHelper.getFieldValue(testcase, field)
+      val sourceObject = ReflectionHelper.getFieldValue(testcase, field)
 
       if (sourceObject != null) {
         processInjectInto(context, field, sourceObject, field.getAnnotation(InjectInto::class.java))
@@ -58,17 +57,14 @@ class InjectionAnnotationProcessor : NeedleProcessor {
     }
   }
 
-  private fun processInjectInto(
-    context: NeedleContext, field: Field, sourceObject: Any,
-    injectInto: InjectInto
-  ) {
+  private fun processInjectInto(context: NeedleContext, field: Field, sourceObject: Any, injectInto: InjectInto) {
     val instance = context.getObjectUnderTest(injectInto.targetComponentId)
 
     if (instance != null) {
       if (injectInto.fieldName.isBlank()) {
         injectByType(context, instance, sourceObject, field.type)
       } else {
-        injectByFieldName(context, instance, sourceObject, injectInto.fieldName)
+        injectByFieldName(instance, sourceObject, injectInto.fieldName)
       }
     } else {
       LOG.warn(
@@ -80,24 +76,21 @@ class InjectionAnnotationProcessor : NeedleProcessor {
   private fun injectByType(context: NeedleContext, objectUnderTest: Any, sourceObject: Any, type: Class<*>) {
     val needleConfiguration = context.needleConfiguration
     val registry = needleConfiguration.injectionAnnotationRegistry
-    val reflectionHelper = needleConfiguration.reflectionHelper
-    val fields: List<Field> = reflectionHelper.getAllFieldsAssignableFrom(type, objectUnderTest.javaClass)
+    val fields = ReflectionHelper.getAllFieldsAssignableFrom(type, objectUnderTest.javaClass)
       .filter { registry.isRegistered(*it.declaredAnnotations) }
 
     for (field in fields) {
       try {
-        reflectionHelper.setField(field, objectUnderTest, sourceObject)
+        ReflectionHelper.setField(field, objectUnderTest, sourceObject)
       } catch (e: Exception) {
         LOG.warn("could not inject into component $objectUnderTest", e)
       }
     }
   }
 
-  private fun injectByFieldName(context: NeedleContext, objectUnderTest: Any, sourceObject: Any, fieldName: String) {
-    val reflectionHelper = context.needleConfiguration.reflectionHelper
-
+  private fun injectByFieldName(objectUnderTest: Any, sourceObject: Any, fieldName: String) {
     try {
-      reflectionHelper.setField(fieldName, objectUnderTest, sourceObject)
+      ReflectionHelper.setField(fieldName, objectUnderTest, sourceObject)
     } catch (e: Exception) {
       LOG.warn("could not inject into component $objectUnderTest", e)
     }

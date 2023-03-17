@@ -1,7 +1,7 @@
 package org.needle4k.mock
 
 import org.mockito.Mockito
-import org.needle4k.configuration.NeedleConfiguration
+import org.needle4k.reflection.ReflectionHelper
 import org.slf4j.LoggerFactory
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -10,11 +10,10 @@ import java.lang.reflect.Modifier
  * A Mockito specific [MockProvider] implementation. For more details, see
  * the Mockito documentation.
  */
-class MockitoProvider(needleConfiguration: NeedleConfiguration) :
-  MockProvider, SpyProvider {
+class MockitoProvider : MockProvider, SpyProvider {
   @Suppress("UNCHECKED_CAST")
   override val spyAnnotation: Class<out Annotation>? =
-    needleConfiguration.reflectionHelper.forName(SPY_ANNOTATION_FQN) as Class<out Annotation>?
+    ReflectionHelper.forName(SPY_ANNOTATION_FQN) as Class<out Annotation>?
 
   /**
    * {@inheritDoc} Skipping creation, if the type is final or primitive.

@@ -5,6 +5,7 @@ import org.needle4k.ObjectUnderTestInstantiationException
 import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.configuration.PostConstructExecuteStrategy
 import org.needle4k.injection.InjectionConfiguration
+import org.needle4k.reflection.ReflectionHelper
 import java.lang.reflect.Method
 
 /**
@@ -22,7 +23,7 @@ import java.lang.reflect.Method
  * @author Heinz Wilming, akquinet AG (heinz.wilming@akquinet.de)
  */
 class PostConstructProcessor(private val configuration: InjectionConfiguration) : NeedleProcessor {
-  private val postConstructAnnotations get() = configuration.needleConfiguration.postconstructAnnotationRegistry.allAnnotations()
+  private val postConstructAnnotations get() = configuration.needleConfiguration.postConstructAnnotationRegistry.allAnnotations()
   private val postConstructExecuteStrategy get() = configuration.needleConfiguration.postConstructExecuteStrategy
 
   /**
@@ -43,7 +44,7 @@ class PostConstructProcessor(private val configuration: InjectionConfiguration) 
         ) {
           val instance = context.getObjectUnderTest(objectUnderTestId)
             ?: throw ObjectUnderTestInstantiationException("Could not resolve @ObjectUnderTest with id $objectUnderTestId")
-          process(context, instance)
+          process(instance)
         }
       }
     }
@@ -55,12 +56,12 @@ class PostConstructProcessor(private val configuration: InjectionConfiguration) 
    * @param instance
    * @throws ObjectUnderTestInstantiationException
    */
-  private fun process(context: NeedleContext, instance: Any) {
-    val postConstructMethods = getPostConstructMethods(context, instance.javaClass)
+  private fun process(instance: Any) {
+    val postConstructMethods = getPostConstructMethods(instance.javaClass)
 
     for (method in postConstructMethods) {
       try {
-        context.needleConfiguration.reflectionHelper.invokeMethod(method, instance)
+        ReflectionHelper.invokeMethod(method, instance)
       } catch (e: Exception) {
         throw ObjectUnderTestInstantiationException(
           "Error executing postConstruction method '${method.name}'", e
@@ -72,12 +73,12 @@ class PostConstructProcessor(private val configuration: InjectionConfiguration) 
   /**
    * @return all instance methods that are marked as postConstruction methods
    */
-  fun getPostConstructMethods(context: NeedleContext, type: Class<*>): Set<Method> {
+  fun getPostConstructMethods(type: Class<*>): Set<Method> {
     val postConstructMethods: MutableSet<Method> = LinkedHashSet()
 
     for (postConstructAnnotation in postConstructAnnotations) {
       postConstructMethods.addAll(
-        context.needleConfiguration.reflectionHelper.getAllMethodsWithAnnotation(
+        ReflectionHelper.getAllMethodsWithAnnotation(
           type,
           postConstructAnnotation
         )

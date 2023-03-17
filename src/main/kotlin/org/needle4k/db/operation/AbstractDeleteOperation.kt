@@ -1,7 +1,6 @@
 package org.needle4k.db.operation
 
 import org.needle4k.db.JPAInjectorConfiguration
-import org.slf4j.LoggerFactory
 import java.sql.SQLException
 import java.sql.Statement
 

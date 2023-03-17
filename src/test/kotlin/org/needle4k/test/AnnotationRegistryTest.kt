@@ -1,28 +1,29 @@
 package org.needle4k.test
 
-import javax.ejb.EJB
-import javax.inject.Inject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.needle4k.configuration.DefaultNeedleConfiguration
+import org.needle4k.reflection.ReflectionHelper
 import org.needle4k.reflection.getAllFieldsWithSupportedAnnotation
 import org.needle4k.registries.AnnotationRegistry
+import javax.ejb.EJB
+import javax.inject.Inject
 
 @Suppress("UsePropertyAccessSyntax")
 class AnnotationRegistryTest {
   private val configuration = DefaultNeedleConfiguration()
-  private val objectUnderTest = AnnotationRegistry(configuration)
-  private val ejb = configuration.reflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, EJB::class.java).first()
+  private val objectUnderTest = AnnotationRegistry()
+  private val ejb = ReflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, EJB::class.java).first()
     .getAnnotation(EJB::class.java)
   private val inject =
-    configuration.reflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, Inject::class.java).first()
+    ReflectionHelper.getAllFieldsWithAnnotation(TestClass::class.java, Inject::class.java).first()
       .getAnnotation(Inject::class.java)
 
   @BeforeEach
   fun patchConfiguration() {
-    configuration.reflectionHelper.setFieldValue(configuration, "injectionAnnotationRegistry", objectUnderTest)
+    ReflectionHelper.setFieldValue(configuration, "injectionAnnotationRegistry", objectUnderTest)
   }
 
   @Test
@@ -45,7 +46,7 @@ class AnnotationRegistryTest {
   fun `Check annotation classes`() {
     assertThrows(IllegalArgumentException::class.java) { objectUnderTest.addAnnotation(HashMap::class.java.name) }
 
-    val prefix = if(configuration.reflectionHelper.forName("jakarta.inject.Inject") == null) "jakarta" else "javax"
+    val prefix = if(ReflectionHelper.forName("jakarta.inject.Inject") == null) "jakarta" else "javax"
     objectUnderTest.addAnnotation("$prefix.inject.Inject")
     assertThat(objectUnderTest.allAnnotations()).`as`("class not found").isEmpty()
 

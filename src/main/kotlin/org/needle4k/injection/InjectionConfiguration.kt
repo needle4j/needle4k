@@ -6,6 +6,7 @@ import org.needle4k.mock.MockProvider
 import org.needle4k.mock.SpyProvider
 import org.needle4k.processor.ChainedNeedleProcessor
 import org.needle4k.processor.PostConstructProcessor
+import org.needle4k.reflection.ReflectionHelper
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -51,8 +52,8 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
   }
 
   private fun addCdiInstance() {
-    val instanceClass = needleConfiguration.reflectionHelper.forName("javax.enterprise.inject.Instance")
-      ?: needleConfiguration.reflectionHelper.forName("jakarta.enterprise.inject.Instance")
+    val instanceClass = ReflectionHelper.forName("javax.enterprise.inject.Instance")
+      ?: ReflectionHelper.forName("jakarta.enterprise.inject.Instance")
 
     if (instanceClass != null) {
       defaultInjectionProviders.add(CDIInstanceInjectionProvider(instanceClass, this))
@@ -88,11 +89,10 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
   private fun initGlobalInjectionProviders() {
     val customInjectionProviders: Set<Class<InjectionProvider<*>>> = needleConfiguration.customInjectionProviderClasses
-    val reflectionHelper = needleConfiguration.reflectionHelper
 
     for (injectionProviderClass in customInjectionProviders) {
       try {
-        val injection: InjectionProvider<*> = reflectionHelper.createInstance(injectionProviderClass)
+        val injection: InjectionProvider<*> = ReflectionHelper.createInstance(injectionProviderClass)
 
         globalInjectionProviders.add(0, injection)
       } catch (e: Exception) {
@@ -102,7 +102,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
     for (supplierClass in needleConfiguration.customInjectionProviderInstancesSupplierClasses) {
       try {
-        val supplier: InjectionProviderInstancesSupplier = reflectionHelper.createInstance(supplierClass)
+        val supplier: InjectionProviderInstancesSupplier = ReflectionHelper.createInstance(supplierClass)
 
         globalInjectionProviders.addAll(0, supplier.get())
       } catch (e: Exception) {
@@ -150,11 +150,10 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
   internal fun createMockProvider(): MockProvider {
     val className = needleConfiguration.mockProviderClassName
-    val helper = needleConfiguration.reflectionHelper
-    val mockProviderClass = helper.lookupClass(MockProvider::class.java, className)
+    val mockProviderClass = ReflectionHelper.lookupClass(MockProvider::class.java, className)
       ?: throw IllegalStateException("Could not load mock provider class: '$className'")
 
-    return helper.createInstance(mockProviderClass, NeedleConfiguration::class.java to needleConfiguration)
+    return ReflectionHelper.createInstance(mockProviderClass)
   }
 
   companion object {

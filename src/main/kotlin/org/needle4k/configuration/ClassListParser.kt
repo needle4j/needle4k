@@ -1,5 +1,7 @@
 package org.needle4k.configuration
 
+import org.needle4k.reflection.ReflectionHelper
+
 /**
  * Function to lookup classes. Expects FQN classnames separated by comma.
  */
@@ -8,6 +10,6 @@ internal class ClassListParser(private val needleConfiguration: NeedleConfigurat
   fun <T> lookup(key: String): Set<Class<T>> {
     val classesList = needleConfiguration.configurationProperties[key] ?: ""
 
-    return classesList.split(",").mapNotNull { needleConfiguration.reflectionHelper.forName(it.trim()) as Class<T>? }.toSet()
+    return classesList.split(",").mapNotNull { ReflectionHelper.forName(it.trim()) as Class<T>? }.toSet()
   }
 }
