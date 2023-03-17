@@ -27,7 +27,7 @@ class TestcaseInjectionProcessor(configuration: InjectionConfiguration) : Abstra
   private fun processField(context: NeedleContext, configuration: InjectionConfiguration, field: Field) {
     val needleConfiguration = context.needleConfiguration
     val registry = needleConfiguration.injectionAnnotationRegistry
-    val reflectionUtil = needleConfiguration.reflectionUtil
+    val reflectionHelper = needleConfiguration.reflectionHelper
     val annotation = registry.registeredAnnotation(*field.declaredAnnotations)!!
     val injectionTargetInformation: InjectionTargetInformation<*> = FieldTargetInformation(field, annotation)
     val injection = configuration.handleInjectionProvider(configuration.allInjectionProviders, injectionTargetInformation)
@@ -36,7 +36,7 @@ class TestcaseInjectionProcessor(configuration: InjectionConfiguration) : Abstra
       val injectedObject = context.getInjectedObject<Any>(injection.first) ?: injection.second
 
       try {
-        reflectionUtil.setField(field, context.test, injectedObject)
+        reflectionHelper.setField(field, context.test, injectedObject)
         return
       } catch (e: Exception) {
         LOGGER.error("processField", e)

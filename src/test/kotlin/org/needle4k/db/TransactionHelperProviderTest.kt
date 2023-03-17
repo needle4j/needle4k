@@ -18,7 +18,7 @@ class TransactionHelperProviderTest {
 
   @Test
   fun testVerify() {
-    val field = configuration.reflectionUtil.getField(this.javaClass, "helper")
+    val field = configuration.reflectionHelper.getField(this.javaClass, "helper")
     val injectionTargetInformation = FieldTargetInformation(field, field.getAnnotation(Inject::class.java))
 
     Assert.assertTrue(provider.verify(injectionTargetInformation))

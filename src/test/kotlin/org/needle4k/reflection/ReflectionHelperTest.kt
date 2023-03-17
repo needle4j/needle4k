@@ -13,9 +13,9 @@ import org.needle4k.injection.InjectionTargetInformation
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
-class ReflectionUtilTest {
+class ReflectionHelperTest {
   private val configuration = DefaultNeedleConfiguration()
-  private val objectUnderTest = configuration.reflectionUtil
+  private val objectUnderTest = configuration.reflectionHelper
 
   @Test
   fun testCanLookupPrivateFieldFromSuperclass() {

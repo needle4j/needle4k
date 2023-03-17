@@ -51,8 +51,8 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
   }
 
   private fun addCdiInstance() {
-    val instanceClass = needleConfiguration.reflectionUtil.forName("javax.enterprise.inject.Instance")
-      ?: needleConfiguration.reflectionUtil.forName("jakarta.enterprise.inject.Instance")
+    val instanceClass = needleConfiguration.reflectionHelper.forName("javax.enterprise.inject.Instance")
+      ?: needleConfiguration.reflectionHelper.forName("jakarta.enterprise.inject.Instance")
 
     if (instanceClass != null) {
       defaultInjectionProviders.add(CDIInstanceInjectionProvider(instanceClass, this))
@@ -88,11 +88,11 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
   private fun initGlobalInjectionProviders() {
     val customInjectionProviders: Set<Class<InjectionProvider<*>>> = needleConfiguration.customInjectionProviderClasses
-    val reflectionUtil = needleConfiguration.reflectionUtil
+    val reflectionHelper = needleConfiguration.reflectionHelper
 
     for (injectionProviderClass in customInjectionProviders) {
       try {
-        val injection: InjectionProvider<*> = reflectionUtil.createInstance(injectionProviderClass)
+        val injection: InjectionProvider<*> = reflectionHelper.createInstance(injectionProviderClass)
 
         globalInjectionProviders.add(0, injection)
       } catch (e: Exception) {
@@ -102,7 +102,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
     for (supplierClass in needleConfiguration.customInjectionProviderInstancesSupplierClasses) {
       try {
-        val supplier: InjectionProviderInstancesSupplier = reflectionUtil.createInstance(supplierClass)
+        val supplier: InjectionProviderInstancesSupplier = reflectionHelper.createInstance(supplierClass)
 
         globalInjectionProviders.addAll(0, supplier.get())
       } catch (e: Exception) {
@@ -150,7 +150,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
   internal fun createMockProvider(): MockProvider {
     val className = needleConfiguration.mockProviderClassName
-    val helper = needleConfiguration.reflectionUtil
+    val helper = needleConfiguration.reflectionHelper
     val mockProviderClass = helper.lookupClass(MockProvider::class.java, className)
       ?: throw IllegalStateException("Could not load mock provider class: '$className'")
 

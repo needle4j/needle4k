@@ -5,10 +5,8 @@ import org.slf4j.LoggerFactory
 import java.lang.reflect.*
 import java.util.*
 
-class ReflectionUtil(private val configuration: NeedleConfiguration) {
-  fun getAllFieldsWithSupportedAnnotation(clazz: Class<*>) =
-    clazz.allDeclaredFields().filter { configuration.injectionAnnotationRegistry.isRegistered(*it.annotations) }
-
+@Suppress("MemberVisibilityCanBePrivate", "unused")
+object ReflectionHelper {
   fun getAllFieldsWithAnnotation(clazz: Class<*>, annotation: Class<out Annotation>) =
     clazz.allDeclaredFields().filter { it.isAnnotationPresent(annotation) }
 
@@ -267,22 +265,22 @@ class ReflectionUtil(private val configuration: NeedleConfiguration) {
     return result
   }
 
-  companion object {
-    private val LOG = LoggerFactory.getLogger(ReflectionUtil::class.java)
+  private val LOG = LoggerFactory.getLogger(ReflectionHelper::class.java)
 
-    private val PRIMITIVES = mapOf(
-      Int::class.javaPrimitiveType to java.lang.Integer::class.java,
-      Double::class.javaPrimitiveType to java.lang.Double::class.java,
-      Boolean::class.javaPrimitiveType to java.lang.Boolean::class.java,
-      Long::class.javaPrimitiveType to java.lang.Long::class.java,
-      Float::class.javaPrimitiveType to java.lang.Float::class.java,
-      Char::class.javaPrimitiveType to java.lang.Character::class.java,
-      Short::class.javaPrimitiveType to java.lang.Short::class.java,
-      Byte::class.javaPrimitiveType to java.lang.Byte::class.java
-    )
-  }
-
-  private fun Class<*>.allDeclaredFields() = toClassHierarchy().toList().map { it.declaredFields.toList() }.flatten()
-  private fun Class<*>.allDeclaredMethods() = toClassHierarchy().toList().map { it.declaredMethods.toList() }.flatten()
-  private fun Class<*>.toClassHierarchy() = ClassIterator(this)
+  private val PRIMITIVES = mapOf(
+    Int::class.javaPrimitiveType to java.lang.Integer::class.java,
+    Double::class.javaPrimitiveType to java.lang.Double::class.java,
+    Boolean::class.javaPrimitiveType to java.lang.Boolean::class.java,
+    Long::class.javaPrimitiveType to java.lang.Long::class.java,
+    Float::class.javaPrimitiveType to java.lang.Float::class.java,
+    Char::class.javaPrimitiveType to java.lang.Character::class.java,
+    Short::class.javaPrimitiveType to java.lang.Short::class.java,
+    Byte::class.javaPrimitiveType to java.lang.Byte::class.java
+  )
 }
+
+fun Class<*>.allDeclaredFields() = toClassHierarchy().toList().map { it.declaredFields.toList() }.flatten()
+fun Class<*>.allDeclaredMethods() = toClassHierarchy().toList().map { it.declaredMethods.toList() }.flatten()
+fun Class<*>.toClassHierarchy() = ClassIterator(this)
+fun Class<*>.getAllFieldsWithSupportedAnnotation(needleConfiguration: NeedleConfiguration) =
+  allDeclaredFields().filter { needleConfiguration.injectionAnnotationRegistry.isRegistered(*it.annotations) }

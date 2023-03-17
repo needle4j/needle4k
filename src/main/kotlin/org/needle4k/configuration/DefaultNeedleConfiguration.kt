@@ -2,11 +2,11 @@ package org.needle4k.configuration
 
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionProviderInstancesSupplier
-import org.needle4k.reflection.ReflectionUtil
+import org.needle4k.reflection.ReflectionHelper
 import org.needle4k.registries.AnnotationRegistry
 
 class DefaultNeedleConfiguration(needlePropertiesFile: String = CUSTOM_CONFIGURATION_FILENAME) : NeedleConfiguration {
-  override val reflectionUtil = ReflectionUtil(this)
+  override val reflectionHelper = ReflectionHelper
   override var configurationProperties = ConfigurationLoader(needlePropertiesFile).configProperties
 
   override val injectionAnnotationRegistry = AnnotationRegistry(this)

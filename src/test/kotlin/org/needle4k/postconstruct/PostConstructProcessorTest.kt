@@ -164,5 +164,5 @@ class PostConstructProcessorTest {
   }
 
   private fun getObjectUnderTestAnnotation(fieldname: String) =
-    needleConfiguration.reflectionUtil.getField(javaClass, fieldname).getAnnotation(ObjectUnderTest::class.java)
+    needleConfiguration.reflectionHelper.getField(javaClass, fieldname).getAnnotation(ObjectUnderTest::class.java)
 }

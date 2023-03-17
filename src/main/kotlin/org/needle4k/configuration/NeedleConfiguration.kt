@@ -2,11 +2,11 @@ package org.needle4k.configuration
 
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionProviderInstancesSupplier
-import org.needle4k.reflection.ReflectionUtil
+import org.needle4k.reflection.ReflectionHelper
 import org.needle4k.registries.AnnotationRegistry
 
 interface NeedleConfiguration {
-  val reflectionUtil: ReflectionUtil
+  val reflectionHelper: ReflectionHelper
   val configurationProperties: MutableMap<String, String>
 
   val injectionAnnotationRegistry: AnnotationRegistry

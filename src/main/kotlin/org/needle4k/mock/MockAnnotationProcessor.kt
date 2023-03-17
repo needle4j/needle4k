@@ -23,7 +23,7 @@ class MockAnnotationProcessor(configuration: InjectionConfiguration) : AbstractN
     for (field in fields) {
       val mock = configuration.mockProvider.createMockComponent(field.type)
 
-      configuration.needleConfiguration.reflectionUtil.setField(field, context.test, mock)
+      configuration.needleConfiguration.reflectionHelper.setField(field, context.test, mock)
     }
   }
 

@@ -19,7 +19,7 @@ class EntityManagerFactoryProviderTest {
 
   @Test
   fun testVerify() {
-    val field = needleConfiguration.reflectionUtil.getField(this.javaClass, "entityManagerFactory")
+    val field = needleConfiguration.reflectionHelper.getField(this.javaClass, "entityManagerFactory")
     val injectionTargetInformation = FieldTargetInformation(field, field.getAnnotation(Resource::class.java))
     Assert.assertTrue(entityManagerFactoryProvider.verify(injectionTargetInformation))
   }

@@ -1,6 +1,6 @@
 package org.needle4k.reflection
 
-internal class ClassIterator(clazz: Class<*>) : Iterable<Class<*>> {
+class ClassIterator(clazz: Class<*>) : Iterable<Class<*>> {
   private var currentClass: Class<*>? = clazz
 
   override fun iterator() = object : Iterator<Class<*>> {

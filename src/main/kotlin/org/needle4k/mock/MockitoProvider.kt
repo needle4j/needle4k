@@ -14,7 +14,7 @@ class MockitoProvider(needleConfiguration: NeedleConfiguration) :
   MockProvider, SpyProvider {
   @Suppress("UNCHECKED_CAST")
   override val spyAnnotation: Class<out Annotation>? =
-    needleConfiguration.reflectionUtil.forName(SPY_ANNOTATION_FQN) as Class<out Annotation>?
+    needleConfiguration.reflectionHelper.forName(SPY_ANNOTATION_FQN) as Class<out Annotation>?
 
   /**
    * {@inheritDoc} Skipping creation, if the type is final or primitive.
@@ -42,7 +42,7 @@ class MockitoProvider(needleConfiguration: NeedleConfiguration) :
 
   override fun isSpyPossible(field: Field) = super.isSpyPossible(field) && spyAnnotation != null
 
-  override fun isSpyRequested(field: Field) = field.isAnnotationPresent(spyAnnotation)
+  override fun isSpyRequested(field: Field) =  spyAnnotation != null && field.isAnnotationPresent(spyAnnotation)
 
   companion object {
     const val SPY_ANNOTATION_FQN = "org.mockito.Spy"

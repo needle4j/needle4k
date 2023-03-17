@@ -38,6 +38,6 @@ class ObjectUnderTestInstantiationTest {
     val field = ObjectUnderTestInstantiationTest::class.java.getDeclaredField(fieldName)
     val objectUnderTestAnnotation: ObjectUnderTest = field.getAnnotation(ObjectUnderTest::class.java)
 
-    configuration.reflectionUtil.invokeMethod(needleTestcase, "setInstanceIfNotNull", field, objectUnderTestAnnotation, this)
+    configuration.reflectionHelper.invokeMethod(needleTestcase, "setInstanceIfNotNull", field, objectUnderTestAnnotation, this)
   }
 }

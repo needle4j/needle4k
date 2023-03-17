@@ -1,6 +1,5 @@
 package org.needle4k.db
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert
 import org.junit.Assert.assertSame
