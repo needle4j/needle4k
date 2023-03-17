@@ -15,8 +15,8 @@ abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg inj
   val entityManager get() = jpaInjectorConfiguration.entityManager
   val entityManagerFactory get() = jpaInjectorConfiguration.entityManagerFactory
 
-  private var before: () -> Unit = {needleInjector.before()}
-  private var after: () -> Unit = {needleInjector.after()}
+  private var before: () -> Unit = { needleInjector.before() }
+  private var after: () -> Unit = { needleInjector.after() }
 
   init {
     needleInjector.addInjectionProvider(*injectionProviders)

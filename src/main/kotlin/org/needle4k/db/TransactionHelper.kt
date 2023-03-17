@@ -54,19 +54,19 @@ class TransactionHelper(val entityManager: EntityManager) {
    * Encapsulates execution of runnable.run() in transactions.
    *
    * @param <T>              result type of runnable.run()
-   * @param runnable         algorithm to execute
+   * @param action         algorithm to execute
    * @param clearAfterCommit <pre>true</pre> triggers entityManager.clear() after transaction
    * commit
    * @return return value of runnable.run()
    * @throws Exception execution failed
   </T> */
   @Throws(Exception::class)
-  fun <T> execute(runnable: ReturningWork<T>, clearAfterCommit: Boolean): T {
+  fun <T> execute(action: Action<T>, clearAfterCommit: Boolean): T {
     val result: T
 
     try {
       entityManager.beginTransaction()
-      result = runnable(entityManager)
+      result = action(entityManager)
       entityManager.flush()
       entityManager.commitTransaction()
 
@@ -86,12 +86,12 @@ class TransactionHelper(val entityManager: EntityManager) {
    * see executeInTransaction(runnable, clearAfterCommit) .
    *
    * @param <T>      result type of runnable.run()
-   * @param runnable algorithm to execute
+   * @param action algorithm to execute
    * @return return value of runnable.run()
    * @throws Exception execution failed
   </T> */
   @Throws(Exception::class)
-  fun <T> execute(runnable: ReturningWork<T>): T = execute(runnable, true)
+  fun <T> execute(action: Action<T>): T = execute(action, true)
 }
 
 fun EntityManager.beginTransaction() {
@@ -108,4 +108,4 @@ fun EntityManager.rollbackTransaction() {
 
 fun EntityManager.isTransactionActive() = transaction.isActive
 
-typealias ReturningWork<T> = (entityManager: EntityManager) -> T
+typealias Action<T> = (entityManager: EntityManager) -> T

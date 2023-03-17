@@ -5,7 +5,7 @@ However, you will also need to test against a real database, e.g. to make sure t
 
 Again, take a look at the [quickstart project](https://github.com/needle4j/needle4k-quickstart) for ready-to-use examples.
 
-## Database Testcase
+## Database Testcases
 
 **needle4k** can inject anything you want... This includes creating and injecting `EntityManager` instances into your objects
 under test automagically. You simply need to provide a JPA-conforming `META-INF/persistence.xml` for your JPA tests
@@ -71,22 +71,20 @@ public class UserTest
 }
 ```
 
-## Transaction utilities
+## Transaction helper
 
-The EntityManager is the primary interface used by application
-developers to interact with the underlying database. Many operations
-must be executed in a transaction which is not started in the test
-component, because it is usually maintained by the application server.
-To run your code using transactions the `TransactionHelper` Utility
-makes this more convenient.
+The EntityManager is the primary interface used by application developers to interact with the underlying database. Many operations
+must be executed in a transaction which is not started in the test component, because it is usually maintained by the application server.
+To run your code using DB transactions you might want to use the `TransactionHelper` utility.
 
 ```java
 public class UserTest
 {
   @Rule
-  public DatabaseRule databaseRule = new DatabaseRule();
+  public NeedleRule needleRule = new NeedleRule().withJPAInjection();
 
-  private TransactionHelper transactionHelper = databaseRule.getTransactionHelper();
+  @Inject
+  private TransactionHelper transactionHelper;
 
   @Test
   public void testPersist() throws Exception

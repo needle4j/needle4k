@@ -1,10 +1,10 @@
 package org.needle4k
 
+import java.util.*
 import javax.annotation.Resource
 import javax.ejb.EJB
 import javax.ejb.SessionContext
 import javax.inject.Inject
-import java.util.*
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.PersistenceContext
