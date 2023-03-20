@@ -76,7 +76,7 @@ public class AuthenticatorTest
 }
 ```
 
-To use EasyMock, the EasyMockProvider must be configured in the `needle.properties` file and the mockito library must be
+To use EasyMock, the EasyMockProvider has to be configured in the `needle.properties` file and the mockito library be
 present on test classpath.
 
     mock.provider=org.needle4k.mock.EasyMockProvider
