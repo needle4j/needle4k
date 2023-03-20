@@ -8,19 +8,19 @@
 **needle4k is a lightweight framework for testing 
 ([Java EE/Jakarta EE](https://jakarta.ee/), [Spring Bean](https://spring.io/), e.g.) components in isolation.
 Using needle4k it is easy to configure your tests in order to automatically inject mock and real objects into tested components.
-needle4k is a [Kotlin-based](https://kotlinlang.org/) rewrite and upgraded version of the reliable
+needle4k is a [Kotlin-based](https://kotlinlang.org/) rewrite and upgraded version of the well-known
 [needle4j](https://needle4j.org/) framework.**
 
 There is a [quickstart project](https://github.com/needle4j/needle4k-quickstart) demonstrating all features.
 
-# Core Features:
+# Core features
 
-* Automated setup of components annotated with @ObjectUnderTest
-* Constructor, Method and Field based dependency injection
-* Injection of Mock objects by default
+* Automated setup of components annotated with `@ObjectUnderTest`
+* Constructor, method and field based dependency injection
+* Configurable injection of mock or real objects
 * Extensible by providing custom injection providers
 * Database testing using [Hibernate](http://www.hibernate.org)
-* Optionally clear database after each test
+* Optionally clear or setup database before/after each test
 * EntityManager creation and injection
 * As well Java EE as Jakarta EE are supported
 * Transaction and reflection utilities
@@ -33,7 +33,7 @@ For documentation and more examples please refer to the [needle4k site docs](src
 
 # Getting started
 
-Add the following dependencies to your pom.xml file to get started using needle4k:
+Add the following dependencies to your pom.xml file to get started using **needle4k**:
 
 ```xml
 <dependency>
@@ -78,7 +78,7 @@ public class UserDaoTest {
   private UserDao userDao;
 
   @Test
-  public void testFindByUsername() throws Exception {
+  public void testFindByUsername() {
     final User user = new User("demo");
     entityManager.persist(user);
         

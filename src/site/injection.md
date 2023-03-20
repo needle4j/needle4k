@@ -1,9 +1,8 @@
 # Object instantiation and injection
 
 **needle4k** will automatically instantiate all objects under test for you. The **needle4k** rules/extensions scan all fields of
-the
-test class for annotations and creates completely initialized instances, transitively. Alternatively, the developer may of course
-instantiate the field herself, too.
+the test class for annotations and creates completely initialized instances, transitively. Alternatively, the developer may of
+course instantiate the field herself, too.
 
 Multiple fields can be annotated with the `@ObjectUnderTest` annotation. The annotation can optionally be configured with the
 implementation of the type and an id. The id may be used for additional injections (explained later). When an object under test is
@@ -13,8 +12,8 @@ already instantiated, only the dependency injection will be done.
 
 During the object under test instantiation it is possible to execute lifecycle methods annotated with PostConstruct. The
 `@PostConstruct` annotation is used on a method that needs to be executed after dependency injection is done, but before any
-business methods may be called on the componet. By default, lifecycle methods are ignored. The execution can be activated by the
-annotation `@ObjectUnderTest`.
+business methods may be called on the component. By default, lifecycle methods are ignored. The execution can be activated by the
+annotation `@ObjectUnderTest(postconstruct = true)`.
 
 ```java
 
@@ -49,8 +48,11 @@ public class UserDaoTest
 ## Injection
 
 **needle4k** supports field, constructor and method injection by
-evaluating `@EJB`, `@Resource`, `@PersistenceContext`, `@PersistenceUnit`, `@Inject` and other common annotations.
-You may also provide your own annotations
+evaluating `@EJB`, `@Resource`, `@PersistenceContext`, `@PersistenceUnit`, `@Inject`, `@AutoWired` and other common annotations.
+You may also provide your own annotations.
+
+**Note:** Injection will only work, if the annotations can be found on the classpath, i.e. if you add a dependency to the EJB
+classes, CDI, the Spring framework, etc. in your project.
 
 By default, mock objects for the dependencies are created and injected.
 

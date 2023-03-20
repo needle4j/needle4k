@@ -74,9 +74,8 @@ public class UserTest
 ## Transaction helper
 
 The EntityManager is the primary interface used by application developers to interact with the underlying database. Many
-operations
-must be executed in a transaction which is not started in the test component, because it is usually maintained by the application
-server.
+operations must be executed in a transaction which is not started in the test component, because it is usually maintained by the
+application server.
 To run your code using DB transactions you might want to use the `TransactionHelper` utility.
 
 ```java
@@ -114,12 +113,12 @@ up data.
 
 The following operation are provided by default:
 
- Class                                                  | Description                                                                                                               
---------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------
+ Class                                                  | Description                                                                                                                       
+--------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------
  org.needle4k.db.operation.ExecuteScriptOperation       | Execute sql scripts during test setup and tear down. A `/before.sql` and `/after.sql` script has to be provided on the classpath. 
- org.needle4k.db.operation.h2.H2DeleteOperation         | Deletes all rows of all tables of the H2 database.                                                                        
- org.needle4k.db.operation.hsql.HSQLDeleteOperation`    | Deletes all rows of all tables of the HSQL database.                                                                      
- org.needle4k.db.operation.derby.DerbyLDeleteOperation` | Deletes all rows of all tables of the Derby database.                                                                     
+ org.needle4k.db.operation.h2.H2DeleteOperation         | Deletes all rows of all tables of the H2 database.                                                                                
+ org.needle4k.db.operation.hsql.HSQLDeleteOperation`    | Deletes all rows of all tables of the HSQL database.                                                                              
+ org.needle4k.db.operation.derby.DerbyLDeleteOperation` | Deletes all rows of all tables of the Derby database.                                                                             
 
 To use own Database operation implementations, extend the abstract base class `org.needle4k.db.operation.AbstractDBOperation`
 and configured the "db.operation" property in the `needle.properties` file.
