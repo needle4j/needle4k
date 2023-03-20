@@ -27,12 +27,19 @@ Check for the most current version at the [maven central repo](http://mvnreposit
 
 ### Transitive dependencies
 
-To reduce complexity the needle4k framework has only two transitive dependencies:
+To reduce complexity the needle4k framework has only two hard *runtime* dependencies:
 
-* [SLF4J](https://www.slf4j.org/) for its logging
+* [SLF4J-API](https://www.slf4j.org/) for internal logging
 * and the [Kotlin standard library](https://kotlinlang.org/api/latest/jvm/stdlib/).
 
-You are not restricted to use a specific versions of JUnit, Mockito or Hibernate. But you will have to explicitly configure
+and some *compile-time* dependencies you may safely ignore, if you're not using them:
+
+* Hibernate
+* Java Persistence API
+* JUnit 4 & 5
+* TestNG
+
+You are not restricted to use a specific versions of EJB, JPA, JUnit, Mockito or Hibernate. But you will have to explicitly configure
 dependencies for Hibernate as the JPA provider and Mockito as the mock provider. However, this should have been configured
 in your project anyway.
 
