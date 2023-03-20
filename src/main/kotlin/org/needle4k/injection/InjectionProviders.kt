@@ -1,8 +1,9 @@
 @file:JvmName("InjectionUtil")
+
 package org.needle4k.injection
 
-import javax.inject.Named
-import javax.inject.Qualifier
+import org.needle4k.reflection.ReflectionHelper.invokeMethod
+import org.needle4k.reflection.ReflectionHelper.lookupClass
 
 /**
  *
@@ -43,7 +44,7 @@ object InjectionProviders {
    */
   @JvmStatic
   fun <T : Any> providerForNamedInstance(name: String, instance: T): InjectionProvider<T> =
-    NamedInstanceInjectionProvider(name, instance)
+    NamedInstanceInjectionProvider(namedAnnotation, name, instance)
 
   /**
    * InjectionProvider that provides a singleton instance of type T for every
@@ -148,29 +149,55 @@ object InjectionProviders {
       isTargetAssignable(injectionTargetInformation)
   }
 
-  private open class QualifiedInstanceInjectionProvider<T : Any>(protected val qualifier: Class<out Annotation>, instance: T) :
+  private open class QualifiedInstanceInjectionProvider<T : Any>(
+    protected val annotationClass: Class<out Annotation>,
+    instance: T
+  ) :
     InstanceInjectionProvider<T>(instance) {
 
     override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) =
-      injectionTargetInformation.injectedObjectType.canonicalName + "#" + qualifier.name
+      injectionTargetInformation.injectedObjectType.canonicalName + "#" + annotationClass.name
 
     override fun verify(injectionTargetInformation: InjectionTargetInformation<*>): Boolean {
-      return (isTargetQualifierPresent(injectionTargetInformation, qualifier) && isTargetAssignable(injectionTargetInformation))
+      return (isTargetQualifierPresent(injectionTargetInformation, annotationClass) && isTargetAssignable(
+        injectionTargetInformation
+      ))
     }
   }
 
-  private class NamedInstanceInjectionProvider<T : Any>(private val name: String, instance: T) :
-    QualifiedInstanceInjectionProvider<T>(
-      Named::class.java, instance
-    ) {
+  private class NamedInstanceInjectionProvider<T : Any>(named: Class<out Annotation>, private val name: String, instance: T) :
+    QualifiedInstanceInjectionProvider<T>(named, instance) {
     override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) =
       injectionTargetInformation.injectedObjectType.canonicalName + "#" + name
 
-    override fun verify(injectionTargetInformation: InjectionTargetInformation<*>) =
-      isTargetQualifierPresent(injectionTargetInformation, qualifier)
-          && (injectionTargetInformation.getAnnotation(qualifier) as Named).value == name
-          && isTargetAssignable(injectionTargetInformation)
+    override fun verify(injectionTargetInformation: InjectionTargetInformation<*>): Boolean {
+      val annotationInstance = injectionTargetInformation.getAnnotation(annotationClass)
+
+      return if (annotationInstance != null) {
+        val namedValue = invokeMethod(annotationInstance, "value")
+
+        isTargetQualifierPresent(injectionTargetInformation, annotationClass)
+            && namedValue == name
+            && isTargetAssignable(injectionTargetInformation)
+      } else {
+        false
+      }
+    }
   }
+
+  private val qualifierAnnotation: Class<out Annotation> by lazy {
+    lookupClass(Annotation::class.java, "javax.inject.Qualifier")
+      ?: lookupClass(Annotation::class.java, "jakarta.inject.Qualifier")
+      ?: throw IllegalStateException("Cannot find @Qualifier interface on classpath! Please add CDI dependencies to your project.")
+  }
+
+  private val namedAnnotation: Class<out Annotation> by lazy {
+    lookupClass(Annotation::class.java, "javax.inject.Named")
+      ?: lookupClass(Annotation::class.java, "jakarta.inject.Named")
+      ?: throw IllegalStateException("Cannot find @Named interface on classpath! Please add CDI dependencies to your project.")
+  }
+
+  @JvmStatic
+  fun Class<out Annotation>.isQualifier() = getAnnotation(qualifierAnnotation) != null
 }
 
-fun Class<out Annotation>.isQualifier() = getAnnotation(Qualifier::class.java) != null
