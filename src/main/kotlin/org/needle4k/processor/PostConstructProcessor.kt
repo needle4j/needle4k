@@ -5,7 +5,7 @@ import org.needle4k.ObjectUnderTestInstantiationException
 import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.configuration.PostConstructExecuteStrategy
 import org.needle4k.injection.InjectionConfiguration
-import org.needle4k.reflection.ReflectionHelper
+import org.needle4k.reflection.ReflectionUtil
 import java.lang.reflect.Method
 
 /**
@@ -61,7 +61,7 @@ class PostConstructProcessor(private val configuration: InjectionConfiguration) 
 
     for (method in postConstructMethods) {
       try {
-        ReflectionHelper.invokeMethod(method, instance)
+        ReflectionUtil.invokeMethod(method, instance)
       } catch (e: Exception) {
         throw ObjectUnderTestInstantiationException(
           "Error executing postConstruction method '${method.name}'", e
@@ -78,7 +78,7 @@ class PostConstructProcessor(private val configuration: InjectionConfiguration) 
 
     for (postConstructAnnotation in postConstructAnnotations) {
       postConstructMethods.addAll(
-        ReflectionHelper.getAllMethodsWithAnnotation(
+        ReflectionUtil.getAllMethodsWithAnnotation(
           type,
           postConstructAnnotation
         )

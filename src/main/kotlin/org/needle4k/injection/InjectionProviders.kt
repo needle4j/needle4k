@@ -2,8 +2,8 @@
 
 package org.needle4k.injection
 
-import org.needle4k.reflection.ReflectionHelper.invokeMethod
-import org.needle4k.reflection.ReflectionHelper.lookupClass
+import org.needle4k.reflection.ReflectionUtil.invokeMethod
+import org.needle4k.reflection.ReflectionUtil.lookupClass
 
 /**
  *

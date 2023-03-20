@@ -40,8 +40,8 @@ class SpyProviderTest {
   }
 }
 
-open interface B {
-  open val name: String
+interface B {
+  val name: String
 }
 
 open class BImpl : B {

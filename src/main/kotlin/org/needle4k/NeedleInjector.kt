@@ -4,7 +4,7 @@ import org.needle4k.annotation.InjectInto
 import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.injection.*
 import org.needle4k.mock.SpyProvider
-import org.needle4k.reflection.ReflectionHelper
+import org.needle4k.reflection.ReflectionUtil
 import org.needle4k.reflection.getAllFieldsWithSupportedAnnotation
 import org.slf4j.LoggerFactory
 import java.lang.reflect.*
@@ -111,7 +111,7 @@ open class NeedleInjector constructor(
   private fun initMethodInjection(instance: Any) {
     val needleConfiguration = configuration.needleConfiguration
     val registry = needleConfiguration.injectionAnnotationRegistry
-    val methods = ReflectionHelper.getMethods(instance.javaClass)
+    val methods = ReflectionUtil.getMethods(instance.javaClass)
       .filter { registry.isRegistered(*it.declaredAnnotations) }
 
     for (method in methods) {
@@ -120,7 +120,7 @@ open class NeedleInjector constructor(
       val arguments = createArguments(parameterInfos)
 
       try {
-        ReflectionHelper.invokeMethod(method, instance, *arguments)
+        ReflectionUtil.invokeMethod(method, instance, *arguments)
       } catch (e: Exception) {
         LOG.warn("Could not invoke method", e)
       }
@@ -176,7 +176,7 @@ open class NeedleInjector constructor(
 
       if (injection != null) {
         try {
-          ReflectionHelper.setField(field, instance, injection.second)
+          ReflectionUtil.setField(field, instance, injection.second)
         } catch (e: Exception) {
           LOG.error(e.message, e)
         }
@@ -189,7 +189,7 @@ open class NeedleInjector constructor(
     val id = objectUnderTestAnnotation.id.ifBlank { field.name }
 
     // First try
-    var instance: Any? = ReflectionHelper.getFieldValue(test, field)
+    var instance: Any? = ReflectionUtil.getFieldValue(test, field)
 
     if (instance == null) {
       val implementation = if (objectUnderTestAnnotation.implementation.java !== Void::class.java)
@@ -223,7 +223,7 @@ open class NeedleInjector constructor(
 
   fun setField(field: Field, test: Any, instance: Any?) {
     try {
-      ReflectionHelper.setField(field, test, instance)
+      ReflectionUtil.setField(field, test, instance)
     } catch (e: Exception) {
       throw ObjectUnderTestInstantiationException(e)
     }

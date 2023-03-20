@@ -1,4 +1,4 @@
-@file:JvmName("ReflectionUtil")
+@file:JvmName("ReflectionHelper")
 
 package org.needle4k.reflection
 
@@ -8,7 +8,7 @@ import java.lang.reflect.*
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-object ReflectionHelper {
+object ReflectionUtil {
   @JvmStatic
   fun getAllFieldsWithAnnotation(clazz: Class<*>, annotation: Class<out Annotation>) =
     clazz.allDeclaredFields().filter { it.isAnnotationPresent(annotation) }
@@ -278,7 +278,7 @@ object ReflectionHelper {
     return result
   }
 
-  private val LOG = LoggerFactory.getLogger(ReflectionHelper::class.java)
+  private val LOG = LoggerFactory.getLogger(ReflectionUtil::class.java)
 
   private val PRIMITIVES = mapOf(
     Int::class.javaPrimitiveType to java.lang.Integer::class.java,

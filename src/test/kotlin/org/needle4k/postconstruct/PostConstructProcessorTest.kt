@@ -11,7 +11,7 @@ import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.configuration.POST_CONSTRUCT_EXECUTE_STRATEGY
 import org.needle4k.configuration.PostConstructExecuteStrategy
 import org.needle4k.injection.InjectionConfiguration
-import org.needle4k.reflection.ReflectionHelper
+import org.needle4k.reflection.ReflectionUtil
 import java.lang.reflect.Method
 import javax.annotation.PostConstruct
 
@@ -164,5 +164,5 @@ class PostConstructProcessorTest {
   }
 
   private fun getObjectUnderTestAnnotation(fieldName: String) =
-    ReflectionHelper.getField(javaClass, fieldName).getAnnotation(ObjectUnderTest::class.java)
+    ReflectionUtil.getField(javaClass, fieldName).getAnnotation(ObjectUnderTest::class.java)
 }

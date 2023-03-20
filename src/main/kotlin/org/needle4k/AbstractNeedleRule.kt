@@ -4,7 +4,7 @@ import org.needle4k.db.JPAInjector
 import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.LazyInjectionProvider
-import org.needle4k.reflection.ReflectionHelper
+import org.needle4k.reflection.ReflectionUtil
 
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) {
@@ -21,7 +21,7 @@ abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg inj
   init {
     needleInjector.addInjectionProvider(*injectionProviders)
     needleInjector.addInjectionProvider(LazyInjectionProvider(NeedleInjector::class.java) { needleInjector })
-    needleInjector.addInjectionProvider(LazyInjectionProvider(ReflectionHelper::class.java) { ReflectionHelper })
+    needleInjector.addInjectionProvider(LazyInjectionProvider(ReflectionUtil::class.java) { ReflectionUtil })
   }
 
   fun addJPAInjectionProvider() {

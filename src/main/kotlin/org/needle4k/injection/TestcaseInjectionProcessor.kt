@@ -2,7 +2,7 @@ package org.needle4k.injection
 
 import org.needle4k.NeedleContext
 import org.needle4k.processor.AbstractNeedleProcessor
-import org.needle4k.reflection.ReflectionHelper
+import org.needle4k.reflection.ReflectionUtil
 import org.slf4j.LoggerFactory
 import java.lang.reflect.Field
 
@@ -36,7 +36,7 @@ class TestcaseInjectionProcessor(configuration: InjectionConfiguration) : Abstra
       val injectedObject = context.getInjectedObject<Any>(injection.first) ?: injection.second
 
       try {
-        ReflectionHelper.setField(field, context.test, injectedObject)
+        ReflectionUtil.setField(field, context.test, injectedObject)
         return
       } catch (e: Exception) {
         LOGGER.error("processField", e)

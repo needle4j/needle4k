@@ -12,8 +12,8 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 import javax.annotation.Resource
 
-class ReflectionHelperTest {
-  private val objectUnderTest = ReflectionHelper
+class ReflectionUtilTest {
+  private val objectUnderTest = ReflectionUtil
 
   @Test
   fun testCanLookupPrivateFieldFromSuperclass() {
