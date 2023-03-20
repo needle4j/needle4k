@@ -30,6 +30,7 @@ interface SpyProvider {
      * Just return the given instance. Use this as default provider when the
      * mockProvider does not support spies.
      */
+    @JvmStatic
     val FAKE: SpyProvider = object : SpyProvider {
       override fun <T : Any> createSpyComponent(instance: T): T {
         return instance

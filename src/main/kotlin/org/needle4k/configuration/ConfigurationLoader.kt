@@ -54,7 +54,7 @@ internal class ConfigurationLoader(resourceName: String = CUSTOM_CONFIGURATION_F
      * @return an input stream for reading the resource or null
      * @throws FileNotFoundException if the resource could not be found
      */
-    @Throws(FileNotFoundException::class)
+    @JvmStatic
     fun loadResource(resource: String): InputStream? {
       val hasLeadingSlash = resource.startsWith("/")
       val stripped = if (hasLeadingSlash) resource.substring(1) else resource

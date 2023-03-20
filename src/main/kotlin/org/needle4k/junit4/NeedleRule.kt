@@ -80,7 +80,6 @@ open class NeedleRule(needleInjector: NeedleInjector, vararg injectionProviders:
 
   private fun statement(base: Statement, target: Any): Statement {
     return object : Statement() {
-      @Throws(Throwable::class)
       override fun evaluate() {
         try {
           runBeforeTest(target)

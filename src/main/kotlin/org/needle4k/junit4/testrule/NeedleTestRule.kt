@@ -60,7 +60,6 @@ class NeedleTestRule @JvmOverloads constructor(
 
   override fun apply(base: Statement, description: Description): Statement {
     return object : Statement() {
-      @Throws(Throwable::class)
       override fun evaluate() {
         needleInjector.initTestInstance(testInstance)
         needleInjector.before()

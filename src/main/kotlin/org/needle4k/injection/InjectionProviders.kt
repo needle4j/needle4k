@@ -1,3 +1,4 @@
+@file:JvmName("InjectionUtil")
 package org.needle4k.injection
 
 import javax.inject.Named

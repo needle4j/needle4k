@@ -60,7 +60,6 @@ open class NeedleInjector constructor(
    * @param test an instance of the test
    * @throws Exception thrown if an initialization error occurs.
    */
-  @Throws(Exception::class)
   open fun initTestInstance(test: Any) {
     LOG.info("Initializing testcase {}...", test)
     context = NeedleContext(test, configuration.needleConfiguration)
@@ -128,7 +127,6 @@ open class NeedleInjector constructor(
     }
   }
 
-  @Throws(ObjectUnderTestInstantiationException::class)
   fun getInstanceByConstructorInjection(implementation: Class<*>): Any? {
     val registry = configuration.needleConfiguration.injectionAnnotationRegistry
     val constructors = implementation.constructors.filter { registry.isRegistered(*it.declaredAnnotations) }
@@ -223,7 +221,6 @@ open class NeedleInjector constructor(
     return instance
   }
 
-  @Throws(ObjectUnderTestInstantiationException::class)
   fun setField(field: Field, test: Any, instance: Any?) {
     try {
       ReflectionHelper.setField(field, test, instance)
@@ -232,7 +229,6 @@ open class NeedleInjector constructor(
     }
   }
 
-  @Throws(ObjectUnderTestInstantiationException::class)
   fun createInstanceByNoArgConstructor(implementation: Class<*>): Any {
     return try {
       implementation.getConstructor()

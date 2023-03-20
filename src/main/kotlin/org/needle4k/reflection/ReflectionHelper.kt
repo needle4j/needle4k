@@ -1,3 +1,5 @@
+@file:JvmName("ReflectionUtil")
+
 package org.needle4k.reflection
 
 import org.needle4k.configuration.NeedleConfiguration
@@ -7,24 +9,29 @@ import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object ReflectionHelper {
+  @JvmStatic
   fun getAllFieldsWithAnnotation(clazz: Class<*>, annotation: Class<out Annotation>) =
     clazz.allDeclaredFields().filter { it.isAnnotationPresent(annotation) }
 
+  @JvmStatic
   fun getAllMethodsWithAnnotation(clazz: Class<*>, annotation: Class<out Annotation>) =
     clazz.allDeclaredMethods().filter { it.isAnnotationPresent(annotation) }
 
+  @JvmStatic
   fun getAllAnnotatedFields(clazz: Class<*>): Map<Class<out Annotation>, List<Field>> =
     clazz.allDeclaredFields().map { it to it.annotations.map { a -> a.annotationClass.java }.toList() }
       .map { it.second.map { clazz -> it.first to clazz } }.flatten()
       .groupBy({ pair -> pair.second }, { pair -> pair.first })
 
+  @JvmStatic
   fun getAllFieldsAssignableFrom(assignableType: Class<*>, clazz: Class<*>) =
     clazz.allDeclaredFields().filter { it.type.isAssignableFrom(assignableType) }
 
-  fun getAllFieldsWithAnnotation(instance: Any, annotation: Class<out Annotation>): List<Field> {
-    return getAllFieldsWithAnnotation(instance.javaClass, annotation)
-  }
+  @JvmStatic
+  fun getAllFieldsWithAnnotation(instance: Any, annotation: Class<out Annotation>)=
+    getAllFieldsWithAnnotation(instance.javaClass, annotation)
 
+  @JvmStatic
   fun getAllFields(clazz: Class<*>) = clazz.allDeclaredFields()
 
   /**
@@ -32,6 +39,7 @@ object ReflectionHelper {
    * @return list of method objects
    * @see Class.getMethods
    */
+  @JvmStatic
   fun getMethods(clazz: Class<*>) = clazz.methods.toList()
 
   /**
@@ -42,7 +50,7 @@ object ReflectionHelper {
    * @param fieldName -- name of field whose value is to be set
    * @param value     -- object that is injected
    */
-  @Throws(NoSuchFieldException::class)
+  @JvmStatic
   fun setFieldValue(instance: Any, clazz: Class<*>, fieldName: String, value: Any?) {
     val field = clazz.getDeclaredField(fieldName)
 
@@ -60,6 +68,7 @@ object ReflectionHelper {
    * @param fieldName -- name of field whose value is to be set
    * @param value     -- object that is injected
    */
+  @JvmStatic
   fun setFieldValue(instance: Any, fieldName: String, value: Any) {
     val field = instance.javaClass.allDeclaredFields().firstOrNull { it.name.equals(fieldName) }
       ?: throw IllegalArgumentException("Could not find field $fieldName")
@@ -76,6 +85,7 @@ object ReflectionHelper {
    * @return -- the value of the represented field in object; primitive values
    * are wrapped in an appropriate object before being returned
    */
+  @JvmStatic
   fun getFieldValue(instance: Any, clazz: Class<*>, fieldName: String): Any? {
     return try {
       val field = clazz.getDeclaredField(fieldName)
@@ -93,6 +103,7 @@ object ReflectionHelper {
    * @return -- the value of the represented field in object; primitive values
    * are wrapped in an appropriate object before being returned
    */
+  @JvmStatic
   fun getFieldValue(instance: Any, field: Field): Any? {
     return try {
       if (!field.canAccess(instance)) {
@@ -114,6 +125,7 @@ object ReflectionHelper {
    * are wrapped in an appropriate object before being returned
    */
   @Suppress("unused")
+  @JvmStatic
   fun getFieldValue(`object`: Any, fieldName: String): Any? {
     return getFieldValue(`object`, `object`.javaClass, fieldName)
   }
@@ -129,7 +141,6 @@ object ReflectionHelper {
    * @return -- method object to which invocation is actually dispatched
    * @throws Exception - operation exception
    */
-  @Throws(Exception::class)
   private fun invokeMethod(instance: Any, clazz: Class<*>, methodName: String, vararg arguments: Any?): Any? {
     val method = clazz.allDeclaredMethods().firstOrNull {
       val parameterTypes = it.parameterTypes
@@ -139,7 +150,7 @@ object ReflectionHelper {
     return invokeMethod(method, instance, *arguments)
   }
 
-  @Throws(Exception::class)
+  @JvmStatic
   fun invokeMethod(method: Method, instance: Any, vararg arguments: Any?): Any? {
     return try {
       if (!method.canAccess(instance)) {
@@ -159,7 +170,7 @@ object ReflectionHelper {
     }
   }
 
-  @Throws(NoSuchMethodException::class)
+  @JvmStatic
   fun getMethod(clazz: Class<*>, methodName: String, vararg parameterTypes: Class<*>): Method =
     clazz.allDeclaredMethods().filter { it.name == methodName }.map {
       try {
@@ -179,7 +190,7 @@ object ReflectionHelper {
    * @return -- method object to which invocation is actually dispatched
    * @throws Exception - exception
    */
-  @Throws(Exception::class)
+  @JvmStatic
   fun invokeMethod(instance: Any, methodName: String, vararg arguments: Any?): Any? {
     return invokeMethod(instance, instance.javaClass, methodName, *arguments)
   }
@@ -191,6 +202,7 @@ object ReflectionHelper {
    * @param className the fully qualified name of the desired class.
    * @return `Class` or null
    */
+  @JvmStatic
   fun forName(className: String): Class<*>? = try {
     Class.forName(className)
   } catch (e: ClassNotFoundException) {
@@ -198,7 +210,7 @@ object ReflectionHelper {
     null
   }
 
-  @Throws(Exception::class)
+  @JvmStatic
   fun setField(field: Field, target: Any, value: Any?) {
     if (!field.canAccess(target)) {
       field.isAccessible = true
@@ -207,16 +219,16 @@ object ReflectionHelper {
     field.set(target, value)
   }
 
-  @Throws(Exception::class)
+  @JvmStatic
   fun setField(fieldName: String, target: Any, value: Any?) {
     val field = getField(target.javaClass, fieldName)
     setField(field, target, value)
   }
 
-  @Throws(Exception::class)
+  @JvmStatic
   fun getField(clazz: Class<*>, fieldName: String): Field = clazz.allDeclaredFields().first { it.name == fieldName }
 
-  @Throws(Exception::class)
+  @JvmStatic
   fun <T> createInstance(clazz: Class<T>, vararg parameter: Pair<Class<*>, Any>): T {
     val parameterTypes = parameter.map { it.first }.toTypedArray()
     val arguments = parameter.map { it.second }.toTypedArray()
@@ -232,6 +244,7 @@ object ReflectionHelper {
    * @throws ClassNotFoundException - ClassNotFoundException
    */
   @Suppress("UNCHECKED_CAST")
+  @JvmStatic
   fun <T> lookupClass(type: Class<T>, className: String): Class<T>? {
     val clazz = forName(className)
 

@@ -18,7 +18,6 @@ class JPATestRule @JvmOverloads constructor(
 
   override fun apply(base: Statement, description: Description): Statement {
     return object : Statement() {
-      @Throws(Throwable::class)
       override fun evaluate() {
         try {
           jpaInjector.before()

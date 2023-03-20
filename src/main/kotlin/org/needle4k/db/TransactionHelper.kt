@@ -1,4 +1,5 @@
 @file:Suppress("UNCHECKED_CAST")
+@file:JvmName("TransactionUtil")
 
 package org.needle4k.db
 
@@ -21,7 +22,6 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @return updated object
    * @throws Exception save objects failed
   </T> */
-  @Throws(Exception::class)
   fun <T : Any> saveObject(obj: T): T = execute { it.persist(obj); obj }
 
   /**
@@ -33,7 +33,6 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @return found object
    * @throws Exception finding object failed
   </T> */
-  @Throws(Exception::class)
   fun <T : Any> loadObject(clazz: Class<T>, id: Any): T = execute { it.find(clazz, id) as T }
 
   /**
@@ -45,7 +44,6 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @throws IllegalArgumentException if the instance is not an entity
    * @throws Exception                loading objects failed
   </T> */
-  @Throws(Exception::class)
   @Suppress("UNCHECKED_CAST")
   fun <T : Any> loadAllObjects(clazz: Class<T>) =
     execute { it.createQuery("SELECT DISTINCT e FROM ${clazz.name} e").resultList as List<T> }
@@ -60,7 +58,6 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @return return value of runnable.run()
    * @throws Exception execution failed
   </T> */
-  @Throws(Exception::class)
   fun <T> execute(action: Action<T>, clearAfterCommit: Boolean): T {
     val result: T
 
@@ -90,7 +87,6 @@ class TransactionHelper(val entityManager: EntityManager) {
    * @return return value of runnable.run()
    * @throws Exception execution failed
   </T> */
-  @Throws(Exception::class)
   fun <T> execute(action: Action<T>): T = execute(action, true)
 }
 
