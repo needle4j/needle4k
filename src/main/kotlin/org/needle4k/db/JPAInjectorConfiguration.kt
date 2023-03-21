@@ -11,14 +11,13 @@ import org.needle4k.reflection.ReflectionUtil
 import org.slf4j.LoggerFactory
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
-import javax.persistence.Persistence
+import javax.persistence.Persistence.createEntityManagerFactory
 
 class JPAInjectorConfiguration(val needleConfiguration: NeedleConfiguration) {
-  val entityManagerFactory: EntityManagerFactory =
-    Persistence.createEntityManagerFactory(needleConfiguration.persistenceUnitName)
-  val dbOperation = createDBOperation(lookupDBOperationClass(needleConfiguration.dbOperationClassName))
-  val entityManager: EntityManager = entityManagerFactory.createEntityManager()
-  val transactionHelper = TransactionHelper(entityManager)
+  val entityManagerFactory: EntityManagerFactory by lazy { createEntityManagerFactory(needleConfiguration.persistenceUnitName) }
+  val dbOperation: DBOperation by lazy { createDBOperation(lookupDBOperationClass(needleConfiguration.dbOperationClassName)) }
+  val entityManager: EntityManager by lazy { entityManagerFactory.createEntityManager() }
+  val transactionHelper: TransactionHelper by lazy { TransactionHelper(entityManager) }
 
   private val hibernateSession: Session get() = entityManager.delegate as Session
 

@@ -1,6 +1,6 @@
 package org.needle4k.junit5
 
-import org.junit.Assert
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.needle4k.MyEjbComponent
@@ -9,6 +9,7 @@ import javax.ejb.SessionContext
 import javax.inject.Inject
 import javax.persistence.EntityManagerFactory
 
+@Suppress("CdiInjectionPointsInspection")
 @ExtendWith(value = [NeedleExtension::class])
 class NeedleJUnit5Test : AbstractNeedleTest() {
   @Inject
@@ -21,10 +22,10 @@ class NeedleJUnit5Test : AbstractNeedleTest() {
 
   @Test
   fun testMock() {
-    Assert.assertNotNull(needle.getInjectedObject(MyEjbComponent::class.java))
-    Assert.assertNotNull(needle.getInjectedObject(SessionContext::class.java))
-    Assert.assertNotNull(needle.getInjectedObject("queue1"))
-    Assert.assertNotNull(needle.getInjectedObject("queue2"))
-    Assert.assertNotNull(needle.getInjectedObject(EntityManagerFactory::class.java))
+    assertNotNull(needle.getInjectedObject(MyEjbComponent::class.java))
+    assertNotNull(needle.getInjectedObject(SessionContext::class.java))
+    assertNotNull(needle.getInjectedObject("queue1"))
+    assertNotNull(needle.getInjectedObject("queue2"))
+    assertNotNull(needle.getInjectedObject(EntityManagerFactory::class.java))
   }
 }

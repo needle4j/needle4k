@@ -10,6 +10,7 @@ import org.needle4k.junit4.NeedleRule
 import javax.inject.Inject
 import javax.inject.Named
 
+@Suppress("CdiInjectionPointsInspection")
 class InjectionProvidersNamedInstanceInjectionProviderTest {
   open class SomeType
 

@@ -2,12 +2,10 @@ package org.needle4k.testng
 
 import org.needle4k.db.Person
 import org.testng.Assert
-import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
 class JPATestNGTest : AbstractNeedleTestcase() {
-  @BeforeMethod
-  fun init() {
+  override fun configure() {
     addJPAInjectionProvider()
   }
 

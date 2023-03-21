@@ -1,3 +1,5 @@
+@file:Suppress("CdiInjectionPointsInspection")
+
 package org.needle4k.injection
 
 import org.junit.Assert
@@ -74,6 +76,7 @@ open class PostConstructTestObjectUnderTest : PostConstructDummyA() {
   @Inject
   lateinit var dummyB: PostConstructDummyB
 
+  @Suppress("unused")
   @Inject
   fun injectDummy(dummy: PostConstructDummyA) {
     dummyA = dummy

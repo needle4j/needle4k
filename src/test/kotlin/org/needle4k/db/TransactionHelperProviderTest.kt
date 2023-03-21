@@ -9,7 +9,7 @@ import org.needle4k.reflection.ReflectionUtil
 import javax.inject.Inject
 import javax.persistence.EntityManager
 
-@Suppress("unused")
+@Suppress("unused", "CdiInjectionPointsInspection")
 class TransactionHelperProviderTest {
   private val configuration = DefaultNeedleConfiguration()
   private val provider = TransactionHelperProvider(TransactionHelper(Mockito.mock(EntityManager::class.java)))

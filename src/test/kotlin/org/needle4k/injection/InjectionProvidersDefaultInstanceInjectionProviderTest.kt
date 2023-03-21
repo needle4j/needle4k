@@ -10,6 +10,7 @@ import javax.inject.Inject
 /**
  * moved from original package to avoid
  */
+@Suppress("CdiInjectionPointsInspection")
 class InjectionProvidersDefaultInstanceInjectionProviderTest {
   private val instance: MyConcreteComponent = MyConcreteComponent()
 

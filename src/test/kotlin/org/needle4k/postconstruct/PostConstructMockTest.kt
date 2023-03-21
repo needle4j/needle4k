@@ -15,7 +15,7 @@ import org.needle4k.mock.EasyMockProvider
 import org.needle4k.mock.MockProvider
 import javax.inject.Inject
 
-@Suppress("unused")
+@Suppress("unused", "CdiInjectionPointsInspection")
 class PostConstructMockTest {
   private val needleInjector = object : NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())) {
     override fun beforePostConstruct() {

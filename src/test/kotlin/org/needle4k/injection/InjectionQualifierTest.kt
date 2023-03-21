@@ -9,17 +9,17 @@ import org.needle4k.db.User
 import org.needle4k.junit4.NeedleRule
 import javax.inject.Inject
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "CdiInjectionPointsInspection")
 class InjectionQualifierTest {
   private val currentUser: User = User()
   private val currentUserProvider: InjectionProvider<User> = object : InjectionProvider<User> {
-    override fun verify(information: InjectionTargetInformation<*>): Boolean {
-      return information.getAnnotation(CurrentUser::class.java) != null
+    override fun verify(injectionTargetInformation: InjectionTargetInformation<*>): Boolean {
+      return injectionTargetInformation.getAnnotation(CurrentUser::class.java) != null
     }
 
     override fun <T> getInjectedObject(injectionTargetType: Class<T>): T = currentUser as T
 
-    override fun getKey(information: InjectionTargetInformation<*>) = CurrentUser::class.java
+    override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) = CurrentUser::class.java
   }
 
   @Inject
@@ -39,6 +39,7 @@ class InjectionQualifierTest {
   @ObjectUnderTest
   private lateinit var userDao: UserDao
 
+  @Suppress("AssertBetweenInconvertibleTypes")
   @Test
   fun testInject() {
     assertNotNull(userDao)

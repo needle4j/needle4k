@@ -7,6 +7,7 @@ import org.needle4k.junit4.NeedleRule
 import org.needle4k.mock.MockProvider
 import javax.inject.Inject
 
+@Suppress("CdiInjectionPointsInspection")
 class MockProviderInjectionTest {
   @Rule
   @JvmField

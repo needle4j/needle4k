@@ -1,6 +1,6 @@
 package org.needle4k.injection.cdi
 
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.needle4k.annotation.ObjectUnderTest
@@ -8,6 +8,7 @@ import org.needle4k.junit4.NeedleRule
 import javax.enterprise.inject.Instance
 import javax.inject.Inject
 
+@Suppress("CdiInjectionPointsInspection", "AssertBetweenInconvertibleTypes")
 class InstanceConstructorInjectionTest {
   @Rule
   @JvmField
@@ -24,11 +25,11 @@ class InstanceConstructorInjectionTest {
 
   @Test
   fun testInstanceMethodInjection() {
-    Assert.assertNotNull(instance)
-    Assert.assertNotNull(runnableInstances)
-    Assert.assertNotSame(instance, runnableInstances)
-    Assert.assertNotNull(component.instance)
-    Assert.assertSame(instance, component.instance)
+    assertNotNull(instance)
+    assertNotNull(runnableInstances)
+    assertNotSame(instance, runnableInstances)
+    assertNotNull(component.instance)
+    assertSame(instance, component.instance)
   }
 }
 

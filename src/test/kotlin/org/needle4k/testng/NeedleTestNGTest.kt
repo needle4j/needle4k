@@ -13,6 +13,7 @@ import javax.ejb.SessionContext
 import javax.inject.Inject
 import javax.persistence.EntityTransaction
 
+@Suppress("CdiInjectionPointsInspection")
 class NeedleTestNGTest : AbstractNeedleTestcase() {
   @ObjectUnderTest
   private lateinit var componentBean: MyComponentBean

@@ -12,6 +12,7 @@ import org.needle4k.junit4.NeedleRule
 import java.sql.Statement
 import javax.inject.Inject
 
+@Suppress("CdiInjectionPointsInspection", "SqlNoDataSourceInspection", "SqlWithoutWhere")
 class HSQLDeleteOperationTest {
   @JvmField
   @Rule

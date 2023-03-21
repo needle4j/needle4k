@@ -14,6 +14,7 @@ import org.needle4k.injection.UserDao
 import org.needle4k.junit4.NeedleRule
 import javax.inject.Inject
 
+@Suppress("CdiInjectionPointsInspection")
 class EasyMockProviderTest {
   @Rule
   @JvmField

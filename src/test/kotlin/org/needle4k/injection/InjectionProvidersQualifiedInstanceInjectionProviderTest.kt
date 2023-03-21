@@ -9,6 +9,7 @@ import org.needle4k.injection.InjectionProviders.providerForQualifiedInstance
 import org.needle4k.junit4.NeedleRule
 import javax.inject.Inject
 
+@Suppress("CdiInjectionPointsInspection")
 class InjectionProvidersQualifiedInstanceInjectionProviderTest {
   private val providedQualifiedInstance = MyConcreteComponent()
 

@@ -7,6 +7,7 @@ import org.needle4k.db.AbstractJPAEntityManagerTest
 import org.needle4k.db.JPAInjector
 import javax.inject.Inject
 
+@Suppress("CdiInjectionPointsInspection")
 @ExtendWith(JPANeedleExtension::class)
 class JPAEntityManagerJUnit5Test : AbstractJPAEntityManagerTest(){
   @Inject
@@ -14,11 +15,6 @@ class JPAEntityManagerJUnit5Test : AbstractJPAEntityManagerTest(){
 
   @Inject
   private lateinit var jpaInjector: JPAInjector
-
-//  @BeforeEach
-//  fun init() {
-//    needle.withJPAInjection()
-//  }
 
   @Test
   override fun `test with real entity manager`() {

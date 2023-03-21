@@ -10,6 +10,7 @@ import java.net.Authenticator
 import javax.ejb.EJB
 import javax.inject.Inject
 
+@Suppress("CdiInjectionPointsInspection")
 class TestMockInjectionTest {
   @Rule
   @JvmField

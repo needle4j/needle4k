@@ -9,6 +9,7 @@ import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.junit4.testrule.NeedleTestRule
 import javax.inject.Inject
 
+@Suppress("CdiInjectionPointsInspection")
 class NeedleTestRuleTest {
   class DummyTarget {
     @Inject

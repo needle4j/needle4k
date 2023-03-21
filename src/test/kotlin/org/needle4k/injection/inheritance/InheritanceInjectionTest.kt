@@ -10,6 +10,7 @@ import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.junit4.NeedleRule
 import javax.inject.Inject
 
+@Suppress("CdiInjectionPointsInspection")
 class InheritanceInjectionTest {
   @Rule
   @JvmField
@@ -44,8 +45,8 @@ class InheritanceInjectionTest {
 
   @Test
   fun testGraphInjection() {
-    val componentByFieldInjection: MyComponent? = derivedComponent.componentByFieldInjection
-    val component: MyComponent? = dependencyComponent.component
+    val componentByFieldInjection = derivedComponent.componentByFieldInjection
+    val component = dependencyComponent.component
 
     assertSame(component, componentByFieldInjection)
   }

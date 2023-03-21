@@ -8,6 +8,7 @@ import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.persistence.EntityTransaction
 
+@Suppress("CdiInjectionPointsInspection")
 class EntityTransactionInjectionTest {
   @Rule
   @JvmField
