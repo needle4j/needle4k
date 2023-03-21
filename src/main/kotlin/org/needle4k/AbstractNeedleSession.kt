@@ -1,17 +1,17 @@
 package org.needle4k
 
-import org.needle4k.db.JPAInjector
+import org.needle4k.db.JPAInjectionProvider
 import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.LazyInjectionProvider
 import org.needle4k.reflection.ReflectionUtil
 
 @Suppress("MemberVisibilityCanBePrivate", "LeakingThis")
-abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) {
+abstract class AbstractNeedleSession(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) {
   val needleConfiguration get() = needleInjector.configuration.needleConfiguration
   val needleContext get() = needleInjector.context
-  val jpaInjector by lazy { JPAInjector(JPAInjectorConfiguration(needleConfiguration)) }
-  val jpaInjectorConfiguration get() = jpaInjector.configuration
+  val jpaInjectionProvider by lazy { JPAInjectionProvider(JPAInjectorConfiguration(needleConfiguration)) }
+  val jpaInjectorConfiguration get() = jpaInjectionProvider.configuration
   val entityManager get() = jpaInjectorConfiguration.entityManager
   val entityManagerFactory get() = jpaInjectorConfiguration.entityManagerFactory
 
@@ -26,22 +26,22 @@ abstract class AbstractNeedleRule(val needleInjector: NeedleInjector, vararg inj
     needleInjector.addInjectionProvider(LazyInjectionProvider(ReflectionUtil::class.java) { ReflectionUtil })
   }
 
-  open fun configure() {
+  protected open fun configure() {
   }
 
   fun addJPAInjectionProvider() {
-    needleInjector.addInjectionProvider(jpaInjector)
-    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjector::class.java) { jpaInjector })
+    needleInjector.addInjectionProvider(jpaInjectionProvider)
+    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectionProvider::class.java) { jpaInjectionProvider })
     needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
 
     before = {
       needleInjector.before()
-      jpaInjector.before()
+      jpaInjectionProvider.before()
     }
 
     after = {
       needleInjector.after()
-      jpaInjector.after()
+      jpaInjectionProvider.after()
     }
   }
 

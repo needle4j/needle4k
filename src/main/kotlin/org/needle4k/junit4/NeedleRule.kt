@@ -3,7 +3,7 @@ package org.needle4k.junit4
 import org.junit.rules.MethodRule
 import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
-import org.needle4k.AbstractNeedleRule
+import org.needle4k.AbstractNeedleSession
 import org.needle4k.NeedleInjector
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.injection.InjectionConfiguration
@@ -37,7 +37,7 @@ import org.needle4k.injection.InjectionProvider
  * @see NeedleInjector
  */
 open class NeedleRule(needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) :
-  AbstractNeedleRule(needleInjector, *injectionProviders), MethodRule {
+  AbstractNeedleSession(needleInjector, *injectionProviders), MethodRule {
   private val methodRuleChain = ArrayList<MethodRule>()
 
   constructor(vararg injectionProviders: InjectionProvider<*>)

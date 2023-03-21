@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.needle4k.db.AbstractJPAEntityManagerTest
-import org.needle4k.db.JPAInjector
+import org.needle4k.db.JPAInjectionProvider
 import javax.inject.Inject
 
 @Suppress("CdiInjectionPointsInspection")
@@ -14,7 +14,7 @@ class JPAEntityManagerJUnit5Test : AbstractJPAEntityManagerTest(){
   private lateinit var needle: JPANeedleExtension
 
   @Inject
-  private lateinit var jpaInjector: JPAInjector
+  private lateinit var jpaInjectionProvider: JPAInjectionProvider
 
   @Test
   override fun `test with real entity manager`() {
@@ -28,7 +28,7 @@ class JPAEntityManagerJUnit5Test : AbstractJPAEntityManagerTest(){
 
   @Test
   fun `test same entity manager`() {
-    assertThat(needle.jpaInjector.configuration.entityManager).isSameAs(this.entityManager)
-    assertThat(needle.jpaInjector).isSameAs(this.jpaInjector)
+    assertThat(needle.jpaInjectionProvider.configuration.entityManager).isSameAs(this.entityManager)
+    assertThat(needle.jpaInjectionProvider).isSameAs(this.jpaInjectionProvider)
   }
 }

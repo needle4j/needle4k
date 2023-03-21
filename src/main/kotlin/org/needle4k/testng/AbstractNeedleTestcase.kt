@@ -1,6 +1,6 @@
 package org.needle4k.testng
 
-import org.needle4k.AbstractNeedleRule
+import org.needle4k.AbstractNeedleSession
 import org.needle4k.NeedleInjector
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.injection.InjectionConfiguration
@@ -12,7 +12,7 @@ import org.testng.annotations.BeforeMethod
 abstract class AbstractNeedleTestcase @JvmOverloads constructor(
   needleInjector: NeedleInjector = NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())),
   vararg injectionProviders: InjectionProvider<*>
-) : AbstractNeedleRule(needleInjector, *injectionProviders) {
+) : AbstractNeedleSession(needleInjector, *injectionProviders) {
   @BeforeMethod
   fun beforeNeedleTestcase() {
     runBeforeTest(this)

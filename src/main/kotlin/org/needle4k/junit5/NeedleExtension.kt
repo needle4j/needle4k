@@ -3,7 +3,7 @@ package org.needle4k.junit5
 import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
-import org.needle4k.AbstractNeedleRule
+import org.needle4k.AbstractNeedleSession
 import org.needle4k.NeedleInjector
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.injection.InjectionConfiguration
@@ -15,7 +15,7 @@ open class NeedleExtension
 @JvmOverloads constructor(
   needleInjector: NeedleInjector = NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())),
   vararg injectionProviders: InjectionProvider<*>
-) : AbstractNeedleRule(needleInjector, *injectionProviders), AfterEachCallback, BeforeEachCallback {
+) : AbstractNeedleSession(needleInjector, *injectionProviders), AfterEachCallback, BeforeEachCallback {
 
   constructor() : this(NeedleInjector(InjectionConfiguration(DefaultNeedleConfiguration())))
 
