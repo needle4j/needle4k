@@ -17,14 +17,14 @@ class PostConstructInjectIntoTest {
   private lateinit var componentWithPostConstruct: ComponentWithPrivatePostConstruct
 
   @InjectIntoMany
-  @ObjectUnderTest
+  @ObjectUnderTest(postConstruct = false)
   private lateinit var dependentComponent: DependentComponent
 
   @Test
   fun testPostConstruct_InjectIntoMany() {
     dependentComponent.count()
 
-    // expect one call in postConstruct, one call in here
+    // expect one call in postConstruct of ComponentWithPrivatePostConstruct, one call here
     Assert.assertEquals(dependentComponent.counter, 2)
   }
 }

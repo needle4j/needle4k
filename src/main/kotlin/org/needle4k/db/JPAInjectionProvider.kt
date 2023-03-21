@@ -18,7 +18,7 @@ import javax.persistence.EntityTransaction
  *
  * @see DBOperation
  */
-open class JPAInjectionProvider(val configuration: JPAInjectorConfiguration) : InjectionProvider<Any> {
+class JPAInjectionProvider(val configuration: JPAInjectorConfiguration) : InjectionProvider<Any> {
   private val injectionProviderMap: Map<Class<*>, InjectionProvider<*>> = mapOf(
     EntityManager::class.java to EntityManagerProvider(configuration.entityManager),
     EntityManagerFactory::class.java to EntityManagerFactoryProvider(configuration.entityManagerFactory),

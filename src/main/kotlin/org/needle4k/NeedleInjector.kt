@@ -36,7 +36,7 @@ import java.lang.reflect.*
  * @author Heinz Wilming, Alphonse Bendt, Markus Dahm Akquinet AG
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  */
-open class NeedleInjector constructor(
+class NeedleInjector constructor(
   val configuration: InjectionConfiguration,
   vararg injectionProviders: InjectionProvider<*>
 ) {
@@ -60,7 +60,7 @@ open class NeedleInjector constructor(
    * @param test an instance of the test
    * @throws Exception thrown if an initialization error occurs.
    */
-  open fun initTestInstance(test: Any) {
+  fun initTestInstance(test: Any) {
     LOG.info("Initializing testcase {}...", test)
     context = NeedleContext(test, configuration.needleConfiguration)
 
@@ -68,7 +68,6 @@ open class NeedleInjector constructor(
 
     configuration.chainedNeedleProcessor.process(context)
 
-    beforePostConstruct()
     configuration.postConstructProcessor.process(context)
   }
 
@@ -91,11 +90,6 @@ open class NeedleInjector constructor(
   }
 
   /**
-   * init mocks
-   */
-  open fun beforePostConstruct() {}
-
-  /**
    * Inject dependencies into the given instance. First, all field injections
    * are executed, if there exists an [InjectionProvider] for the
    * target. Then the method injection is executed, if the injection
@@ -103,7 +97,7 @@ open class NeedleInjector constructor(
    *
    * @param instance the instance to initialize.
    */
-  open fun initInstance(instance: Any) {
+  private fun initInstance(instance: Any) {
     injectIntoAnnotatedFields(instance)
     initMethodInjection(instance)
   }
@@ -127,7 +121,7 @@ open class NeedleInjector constructor(
     }
   }
 
-  fun getInstanceByConstructorInjection(implementation: Class<*>): Any? {
+  private fun getInstanceByConstructorInjection(implementation: Class<*>): Any? {
     val registry = configuration.needleConfiguration.injectionAnnotationRegistry
     val constructors = implementation.constructors.filter { registry.isRegistered(*it.declaredAnnotations) }
 
@@ -221,7 +215,7 @@ open class NeedleInjector constructor(
     return instance
   }
 
-  fun setField(field: Field, test: Any, instance: Any?) {
+  private fun setField(field: Field, test: Any, instance: Any?) {
     try {
       ReflectionUtil.setField(field, test, instance)
     } catch (e: Exception) {
@@ -229,7 +223,7 @@ open class NeedleInjector constructor(
     }
   }
 
-  fun createInstanceByNoArgConstructor(implementation: Class<*>): Any {
+  private fun createInstanceByNoArgConstructor(implementation: Class<*>): Any {
     return try {
       implementation.getConstructor()
       implementation.getDeclaredConstructor().newInstance()
