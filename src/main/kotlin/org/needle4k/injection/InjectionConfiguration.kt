@@ -16,14 +16,14 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
   // Default InjectionProvider for annotations
   private val defaultInjectionProviders = ArrayList<InjectionProvider<*>>()
 
-  // Global InjectionProvider for custom implementations
-  private val globalInjectionProviders = ArrayList<InjectionProvider<*>>()
+  // InjectionProvider from custom implementations
+  private val customInjectionProviders = ArrayList<InjectionProvider<*>>()
 
   // Test-specific custom injection provider
   private val testInjectionProviders = ArrayList<InjectionProvider<*>>()
 
   // all with priority order
-  val allInjectionProviders get() = listOf(testInjectionProviders, globalInjectionProviders, defaultInjectionProviders).flatten()
+  val allInjectionProviders get() = listOf(testInjectionProviders, customInjectionProviders, defaultInjectionProviders).flatten()
 
   val supportedAnnotations get() = needleConfiguration.injectionAnnotationRegistry.allAnnotations()
 
@@ -40,16 +40,15 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
     ChainedNeedleProcessor(mockAnnotationProcessor, injectionIntoAnnotationProcessor, testcaseInjectionProcessor)
 
   init {
-    addCdiInstance()
-
     needleConfiguration.injectionAnnotationRegistry.allAnnotations().forEach {
       addDefaultInjectionAnnotationClass<Any>(it)
     }
+    addCdiInstance()
 
-    initGlobalInjectionAnnotations()
-    initGlobalInjectionProviders()
+    initCustomInjectionAnnotations()
+    initCustomInjectionProviders()
 
-    defaultInjectionProviders.add(0, MockProviderInjectionProvider { mockProvider })
+    addDefaultInjectionProvider(MockProviderInjectionProvider { mockProvider })
   }
 
   private fun addCdiInstance() {
@@ -57,7 +56,7 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
       ?: ReflectionUtil.forName("jakarta.enterprise.inject.Instance")
 
     if (instanceClass != null) {
-      defaultInjectionProviders.add(CDIInstanceInjectionProvider(instanceClass, this))
+      addDefaultInjectionProvider(CDIInstanceInjectionProvider(instanceClass, this))
     }
   }
 
@@ -66,36 +65,36 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
 
     // Special handling
     if (clazz.name.endsWith(".annotation.Resource")) {
-      defaultInjectionProviders.add(ResourceMockInjectionProvider(clazz, this))
+      addDefaultInjectionProvider(ResourceMockInjectionProvider(clazz, this))
     } else {
-      defaultInjectionProviders.add(DefaultMockInjectionProvider<T>(clazz, this))
+      addDefaultInjectionProvider(DefaultMockInjectionProvider<T>(clazz, this))
     }
 
     addInjectionAnnotation(clazz)
   }
 
-  private fun initGlobalInjectionAnnotations() {
+  private fun initCustomInjectionAnnotations() {
     val customInjectionAnnotations = needleConfiguration.customInjectionAnnotations
 
     for (annotation in customInjectionAnnotations) {
-      addGlobalInjectionAnnotationClass(annotation)
+      addCustomInjectionAnnotationClass(annotation)
     }
   }
 
-  fun addGlobalInjectionAnnotationClass(annotation: Class<out Annotation>) {
+  fun addCustomInjectionAnnotationClass(annotation: Class<out Annotation>) {
     addInjectionAnnotation(annotation)
 
-    globalInjectionProviders.add(0, DefaultMockInjectionProvider<Any>(annotation, this))
+    customInjectionProviders.add(0, DefaultMockInjectionProvider<Any>(annotation, this))
   }
 
-  private fun initGlobalInjectionProviders() {
+  private fun initCustomInjectionProviders() {
     val customInjectionProviders: Set<Class<InjectionProvider<*>>> = needleConfiguration.customInjectionProviderClasses
 
     for (injectionProviderClass in customInjectionProviders) {
       try {
         val injection: InjectionProvider<*> = ReflectionUtil.createInstance(injectionProviderClass)
 
-        globalInjectionProviders.add(0, injection)
+        this.customInjectionProviders.add(0, injection)
       } catch (e: Exception) {
         LOG.warn("Could not create an instance of injection provider $injectionProviderClass", e)
       }
@@ -105,17 +104,19 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
       try {
         val supplier: InjectionProviderInstancesSupplier = ReflectionUtil.createInstance(supplierClass)
 
-        globalInjectionProviders.addAll(0, supplier.get())
+        this.customInjectionProviders.addAll(0, supplier.get())
       } catch (e: Exception) {
         LOG.warn("Could not create an instance of injection provider instance supplier $supplierClass", e)
       }
     }
   }
 
-  fun addInjectionProvider(vararg injectionProvider: InjectionProvider<*>) {
-    for (provider in injectionProvider) {
-      testInjectionProviders.add(0, provider)
-    }
+  fun addInjectionProvider(vararg injectionProviders: InjectionProvider<*>) {
+    testInjectionProviders.addAll(0, injectionProviders.asList())
+  }
+
+  internal fun addDefaultInjectionProvider(vararg injectionProviders: InjectionProvider<*>) {
+    defaultInjectionProviders.addAll(0, injectionProviders.asList())
   }
 
   fun hasInjectionProvider(injectorClass: Class<out InjectionProvider<*>>) =

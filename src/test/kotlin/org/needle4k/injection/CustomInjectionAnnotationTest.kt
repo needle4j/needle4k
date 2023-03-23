@@ -11,7 +11,7 @@ class CustomInjectionAnnotationTest {
   @Rule
   // CustomInjectionAnnotation1 is added by needle.properties
   var needleRule: NeedleRule = NeedleRule().apply {
-    needleInjector.configuration.addGlobalInjectionAnnotationClass(CustomInjectionAnnotation2::class.java)
+    needleInjector.configuration.addCustomInjectionAnnotationClass(CustomInjectionAnnotation2::class.java)
   }
 
   @ObjectUnderTest

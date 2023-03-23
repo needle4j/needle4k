@@ -25,17 +25,17 @@ abstract class AbstractNeedleSession(
     configure()
 
     needleInjector.addInjectionProvider(*injectionProviders)
-    needleInjector.addInjectionProvider(LazyInjectionProvider(NeedleInjector::class.java) { needleInjector })
-    needleInjector.addInjectionProvider(LazyInjectionProvider(ReflectionUtil::class.java) { ReflectionUtil })
+    needleInjector.addDefaultInjectionProvider(LazyInjectionProvider(NeedleInjector::class.java) { needleInjector },
+      LazyInjectionProvider(ReflectionUtil::class.java) { ReflectionUtil })
   }
 
   protected open fun configure() {
   }
 
   fun addJPAInjectionProvider() {
-    needleInjector.addInjectionProvider(jpaInjectionProvider)
-    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectionProvider::class.java) { jpaInjectionProvider })
-    needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
+    needleInjector.addDefaultInjectionProvider(jpaInjectionProvider,
+      LazyInjectionProvider(JPAInjectionProvider::class.java) { jpaInjectionProvider },
+      LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
 
     before = {
       needleInjector.before()

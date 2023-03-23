@@ -50,6 +50,10 @@ class NeedleInjector constructor(
     configuration.addInjectionProvider(*injectionProvider)
   }
 
+  internal fun addDefaultInjectionProvider(vararg injectionProvider: InjectionProvider<*>) {
+    configuration.addDefaultInjectionProvider(*injectionProvider)
+  }
+
   /**
    * Initialize all fields annotated with [ObjectUnderTest]. Is an
    * object under test annotated field already initialized, only the injection
