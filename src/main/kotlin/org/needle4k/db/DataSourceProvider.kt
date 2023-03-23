@@ -50,6 +50,7 @@ class JPADataSource(private val needleSession: NeedleSession) : DataSource {
 
   override fun getConnection(): Connection = getConnection("", "")
 
+  // Works both with Hibernate5/6
   override fun getConnection(username: String, password: String): Connection =
-    needleSession.jpaInjectorConfiguration.hibernateSession.connection()
+    needleSession.jpaInjectorConfiguration.hibernateSession.sessionFactory.jdbcServices.bootstrapJdbcConnectionAccess.obtainConnection()
 }
