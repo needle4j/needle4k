@@ -6,8 +6,7 @@ import javax.persistence.EntityManager
 import javax.persistence.EntityTransaction
 
 internal class EntityTransactionProvider(private val entityManager: EntityManager) : InjectionProvider<EntityTransaction> {
-  @Suppress("UNCHECKED_CAST")
-  override fun <T> getInjectedObject(injectionTargetType: Class<T>)= entityManager.transaction as T
+  override fun getInjectedObject(injectionTargetType: Class<*>): EntityTransaction = entityManager.transaction
 
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) = EntityTransaction::class.java
 

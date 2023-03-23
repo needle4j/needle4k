@@ -1,7 +1,7 @@
 package org.needle4k.injection
 
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
-open class DefaultMockInjectionProvider<T : Any>
+open class DefaultMockInjectionProvider<T>
 /**
  * @param annotationClass        injection annotation like Resource, EJB, Inject, ...
  * @param injectionConfiguration the configuration
@@ -13,8 +13,8 @@ open class DefaultMockInjectionProvider<T : Any>
     injectionTargetInformation.injectionAnnotation.javaClass === annotationClass
         || annotationClass.isAnnotation && injectionTargetInformation.isAnnotationPresent(annotationClass)
 
-  override fun <T> getInjectedObject(injectionTargetType: Class<T>): T? =
-    injectionConfiguration.mockProvider.createMockComponent(injectionTargetType)
+  override fun getInjectedObject(injectionTargetType: Class<*>): T =
+    injectionConfiguration.mockProvider.createMockComponent(injectionTargetType) as T
 
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>): Any =
     injectionTargetInformation.injectedObjectType

@@ -8,9 +8,9 @@ import org.needle4k.injection.InjectionTargetInformation
 object CurrentUserProvider : InjectionProvider<User> {
   val currentUser: User = User()
 
-  override fun verify(information: InjectionTargetInformation<*>) = information.getAnnotation(CurrentUser::class.java) != null
+  override fun verify(injectionTargetInformation: InjectionTargetInformation<*>) = injectionTargetInformation.getAnnotation(CurrentUser::class.java) != null
 
-  override fun <T> getInjectedObject(injectionTargetType: Class<T>) = currentUser as T
+  override fun getInjectedObject(injectionTargetType: Class<*>) = currentUser
 
-  override fun getKey(information: InjectionTargetInformation<*>) = CurrentUser::class.java
+  override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) = CurrentUser::class.java
 }

@@ -3,14 +3,14 @@ package org.needle4k.injection
 /**
  * Provides instances of `T` and verifies the injection target.
  */
-interface InjectionProvider<T : Any> {
+interface InjectionProvider<T> {
   /**
    * Provides an instance of `T`.
    *
    * @param injectionTargetType the type of the injection target.
    * @return instance of `T`
    */
-  fun <T> getInjectedObject(injectionTargetType: Class<T>): T?
+  fun getInjectedObject(injectionTargetType: Class<*>): T?
 
   /**
    * Returns a key object, which identifies the provided object.

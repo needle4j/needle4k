@@ -3,9 +3,10 @@ package org.needle4k.db
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionTargetInformation
 
-internal class TransactionHelperProvider(private val transactionHelper: TransactionHelper) : InjectionProvider<TransactionHelper> {
+internal class TransactionHelperProvider(private val transactionHelper: TransactionHelper) :
+  InjectionProvider<TransactionHelper> {
   @Suppress("UNCHECKED_CAST")
-  override fun <T> getInjectedObject(injectionTargetType: Class<T>): T = transactionHelper as T
+  override fun getInjectedObject(injectionTargetType: Class<*>) = transactionHelper
 
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>): Any = TransactionHelper::class.java
 

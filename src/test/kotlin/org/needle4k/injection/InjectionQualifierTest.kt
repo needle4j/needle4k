@@ -17,7 +17,7 @@ class InjectionQualifierTest {
       return injectionTargetInformation.getAnnotation(CurrentUser::class.java) != null
     }
 
-    override fun <T> getInjectedObject(injectionTargetType: Class<T>): T = currentUser as T
+    override fun getInjectedObject(injectionTargetType: Class<*>) = currentUser
 
     override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) = CurrentUser::class.java
   }

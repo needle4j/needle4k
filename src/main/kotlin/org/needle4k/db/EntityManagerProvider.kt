@@ -8,8 +8,7 @@ internal class EntityManagerProvider(private val entityManager: EntityManager) :
   override fun verify(injectionTargetInformation: InjectionTargetInformation<*>) =
     injectionTargetInformation.injectedObjectType === EntityManager::class.java
 
-  @Suppress("UNCHECKED_CAST")
-  override fun <T> getInjectedObject(injectionTargetType: Class<T>): T = entityManager as T
+  override fun getInjectedObject(injectionTargetType: Class<*>) = entityManager
 
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) = EntityManager::class.java
 }

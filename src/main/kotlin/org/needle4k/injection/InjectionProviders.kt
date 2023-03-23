@@ -35,7 +35,7 @@ object InjectionProviders {
 
   /**
    * InjectionProvider that provides a singleton instance of type T for every
-   * injection point that is annotated with a [Named] qualifier with
+   * injection point that is annotated with a @Named qualifier with
    * value "name".
    *
    * @param name     value of Named annotation
@@ -138,7 +138,7 @@ object InjectionProviders {
     ) = qualifier.isQualifier() && injectionTargetInformation.isAnnotationPresent(qualifier)
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> getInjectedObject(injectionTargetType: Class<T>): T = instance as T
+    override fun getInjectedObject(injectionTargetType: Class<*>) = instance
   }
 
   private class DefaultInstanceInjectionProvider<T : Any>(instance: T) : InstanceInjectionProvider<T>(instance) {
@@ -150,8 +150,7 @@ object InjectionProviders {
   }
 
   private open class QualifiedInstanceInjectionProvider<T : Any>(
-    protected val annotationClass: Class<out Annotation>,
-    instance: T
+    protected val annotationClass: Class<out Annotation>, instance: T
   ) :
     InstanceInjectionProvider<T>(instance) {
 

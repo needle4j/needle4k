@@ -7,12 +7,7 @@ import org.needle4k.annotation.ObjectUnderTest
 import org.needle4k.junit4.NeedleRule
 
 class InjectionPriorityTest {
-  private val map: Map<Any, Any> = HashMap()
-
-  private val injectionProvider: InjectionProvider<Map<Any, Any>> = object : CustomMapInjectionProvider() {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T> getInjectedObject(injectionTargetType: Class<T>): T = map as T
-  }
+  private val injectionProvider= SingletonMapInjectionProvider()
 
   @Rule
   @JvmField
@@ -23,6 +18,6 @@ class InjectionPriorityTest {
 
   @Test
   fun testInjectionProviderPriority() {
-    Assert.assertSame(map, component.map)
+    Assert.assertSame(injectionProvider.map, component.map)
   }
 }

@@ -7,8 +7,7 @@ import javax.persistence.EntityManagerFactory
 internal class EntityManagerFactoryProvider(private val entityManagerFactory: EntityManagerFactory) :
   InjectionProvider<EntityManagerFactory> {
 
-  @Suppress("UNCHECKED_CAST")
-  override fun <T> getInjectedObject(injectionTargetType: Class<T>) = entityManagerFactory as T
+  override fun getInjectedObject(injectionTargetType: Class<*>) = entityManagerFactory
 
   override fun getKey(injectionTargetInformation: InjectionTargetInformation<*>) = EntityManagerFactory::class.java
 

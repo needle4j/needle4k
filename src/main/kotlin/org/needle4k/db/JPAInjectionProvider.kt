@@ -51,7 +51,7 @@ class JPAInjectionProvider(val configuration: JPAInjectorConfiguration) : Inject
     return injectionProvider?.verify(injectionTargetInformation) ?: false
   }
 
-  override fun <T> getInjectedObject(injectionTargetType: Class<T>): T =
+  override fun getInjectedObject(injectionTargetType: Class<*>) =
     getInjectionProvider(injectionTargetType)?.getInjectedObject(injectionTargetType)
       ?: throw IllegalStateException("getInjectedObject: $injectionTargetType")
 
