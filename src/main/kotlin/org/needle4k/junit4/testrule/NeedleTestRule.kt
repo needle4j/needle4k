@@ -71,18 +71,19 @@ class NeedleTestRule @JvmOverloads constructor(
   override fun apply(base: Statement, description: Description): Statement {
     return object : Statement() {
       override fun evaluate() {
-        needleInjector.initTestInstance(testInstance)
-        needleInjector.before(object : NeedleSession {
-          override val needleInjector: NeedleInjector = this@NeedleTestRule.needleInjector
-          override val needleConfiguration: NeedleConfiguration =
-            this@NeedleTestRule.needleInjector.configuration.needleConfiguration
-          override val needleContext: NeedleContext = this@NeedleTestRule.needleInjector.context
+        val session = object : NeedleSession {
+          override val needleInjector: NeedleInjector get() = this@NeedleTestRule.needleInjector
+          override val needleConfiguration: NeedleConfiguration
+            get() = this@NeedleTestRule.needleInjector.configuration.needleConfiguration
+          override val needleContext: NeedleContext get() = this@NeedleTestRule.needleInjector.context
           override val jpaInjectionProvider: JPAInjectionProvider
             get() = needleInjector.configuration.getInjectionProvider(JPAInjectionProvider::class.java)
               ?: throw IllegalStateException("JPA injector not configured")
-          override val jpaInjectorConfiguration: JPAInjectorConfiguration = jpaInjectionProvider.configuration
+          override val jpaInjectorConfiguration: JPAInjectorConfiguration get() = jpaInjectionProvider.configuration
 
-        })
+        }
+        needleInjector.initTestInstance(testInstance, session)
+        needleInjector.before()
         base.evaluate()
         needleInjector.after()
       }

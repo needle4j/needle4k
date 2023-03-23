@@ -32,7 +32,8 @@ interface InjectionProvider<T> {
   fun verify(injectionTargetInformation: InjectionTargetInformation<*>): Boolean
 
   /**
-   * Override this method to get the configuration injected at startup
+   * Override this method to get the configuration injected at startup. You should just save the parameter, since the configuration
+   * process may not be completed at that time.
    */
   fun initialize(needleSession: NeedleSession) {
   }

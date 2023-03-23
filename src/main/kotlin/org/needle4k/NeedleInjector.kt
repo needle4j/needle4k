@@ -60,9 +60,10 @@ class NeedleInjector constructor(
    * @param test an instance of the test
    * @throws Exception thrown if an initialization error occurs.
    */
-  fun initTestInstance(test: Any) {
+  fun initTestInstance(test: Any, needleSession: NeedleSession) {
     LOG.info("Initializing testcase {}...", test)
     context = NeedleContext(test, configuration.needleConfiguration)
+    configuration.initInjectionProviders(needleSession)
 
     processInjections(test)
 
@@ -262,8 +263,7 @@ class NeedleInjector constructor(
     }
   }
 
-  fun before(needleSession: NeedleSession) {
-    configuration.initInjectionProviders(needleSession)
+  fun before() {
   }
 
   fun after() {

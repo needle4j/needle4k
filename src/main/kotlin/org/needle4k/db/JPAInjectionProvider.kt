@@ -1,11 +1,13 @@
 package org.needle4k.db
 
+import org.needle4k.NeedleSession
 import org.needle4k.db.operation.DBOperation
 import org.needle4k.injection.InjectionProvider
 import org.needle4k.injection.InjectionTargetInformation
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.EntityTransaction
+import javax.sql.DataSource
 
 /**
  * Base class for a database test case. Executes optional database operation on
@@ -20,6 +22,7 @@ import javax.persistence.EntityTransaction
  */
 class JPAInjectionProvider(val configuration: JPAInjectorConfiguration) : InjectionProvider<Any> {
   private val injectionProviderMap: Map<Class<*>, InjectionProvider<*>> = mapOf(
+    DataSource::class.java to DataSourceProvider(),
     EntityManager::class.java to EntityManagerProvider(configuration.entityManager),
     EntityManagerFactory::class.java to EntityManagerFactoryProvider(configuration.entityManagerFactory),
     EntityTransaction::class.java to EntityTransactionProvider(configuration.entityManager),
@@ -60,4 +63,8 @@ class JPAInjectionProvider(val configuration: JPAInjectorConfiguration) : Inject
       ?: throw IllegalStateException("getKey: $injectionTargetInformation")
 
   private fun getInjectionProvider(type: Class<*>) = injectionProviderMap[type]
+
+  override fun initialize(needleSession: NeedleSession) {
+    injectionProviderMap.values.forEach { it.initialize(needleSession) }
+  }
 }

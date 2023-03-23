@@ -18,7 +18,7 @@ abstract class AbstractNeedleSession(
   val entityManager get() = jpaInjectorConfiguration.entityManager
   val entityManagerFactory get() = jpaInjectorConfiguration.entityManagerFactory
 
-  private var before: () -> Unit = { needleInjector.before(this) }
+  private var before: () -> Unit = { needleInjector.before() }
   private var after: () -> Unit = { needleInjector.after() }
 
   init {
@@ -38,7 +38,7 @@ abstract class AbstractNeedleSession(
     needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
 
     before = {
-      needleInjector.before(this)
+      needleInjector.before()
       jpaInjectionProvider.before()
     }
 
@@ -49,7 +49,7 @@ abstract class AbstractNeedleSession(
   }
 
   protected fun runBeforeTest(testInstance: Any) {
-    needleInjector.initTestInstance(testInstance)
+    needleInjector.initTestInstance(testInstance, this)
 
     before()
   }
