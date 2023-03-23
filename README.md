@@ -21,7 +21,7 @@ There is a [quickstart project](https://github.com/needle4j/needle4k-quickstart)
 * Extensible by providing custom injection providers
 * Database testing using [Hibernate](http://www.hibernate.org)
 * Optionally clear or setup database before/after each test
-* EntityManager creation and injection
+* Automatic injection of EntityManager, EntityManagerFactory, EntityTransaction, and DataSource
 * As well Java EE as Jakarta EE are supported
 * Transaction and reflection utilities
 * needle4k can be used with [JUnit4](https://junit.org/junit4/), [JUnit5](https://junit.org/junit5/) or [TestNG](http://testng.org/).
