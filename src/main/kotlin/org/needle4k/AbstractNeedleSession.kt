@@ -7,15 +7,18 @@ import org.needle4k.injection.LazyInjectionProvider
 import org.needle4k.reflection.ReflectionUtil
 
 @Suppress("MemberVisibilityCanBePrivate", "LeakingThis")
-abstract class AbstractNeedleSession(val needleInjector: NeedleInjector, vararg injectionProviders: InjectionProvider<*>) {
-  val needleConfiguration get() = needleInjector.configuration.needleConfiguration
-  val needleContext get() = needleInjector.context
-  val jpaInjectionProvider by lazy { JPAInjectionProvider(JPAInjectorConfiguration(needleConfiguration)) }
-  val jpaInjectorConfiguration get() = jpaInjectionProvider.configuration
+abstract class AbstractNeedleSession(
+  override val needleInjector: NeedleInjector,
+  vararg injectionProviders: InjectionProvider<*>
+) : NeedleSession {
+  override val needleConfiguration get() = needleInjector.configuration.needleConfiguration
+  override val needleContext get() = needleInjector.context
+  override val jpaInjectionProvider by lazy { JPAInjectionProvider(JPAInjectorConfiguration(needleConfiguration)) }
+  override val jpaInjectorConfiguration get() = jpaInjectionProvider.configuration
   val entityManager get() = jpaInjectorConfiguration.entityManager
   val entityManagerFactory get() = jpaInjectorConfiguration.entityManagerFactory
 
-  private var before: () -> Unit = { needleInjector.before() }
+  private var before: () -> Unit = { needleInjector.before(this) }
   private var after: () -> Unit = { needleInjector.after() }
 
   init {
@@ -35,7 +38,7 @@ abstract class AbstractNeedleSession(val needleInjector: NeedleInjector, vararg 
     needleInjector.addInjectionProvider(LazyInjectionProvider(JPAInjectorConfiguration::class.java) { jpaInjectorConfiguration })
 
     before = {
-      needleInjector.before()
+      needleInjector.before(this)
       jpaInjectionProvider.before()
     }
 

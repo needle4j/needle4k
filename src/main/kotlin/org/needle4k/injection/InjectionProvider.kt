@@ -1,5 +1,7 @@
 package org.needle4k.injection
 
+import org.needle4k.NeedleSession
+
 /**
  * Provides instances of `T` and verifies the injection target.
  */
@@ -28,4 +30,10 @@ interface InjectionProvider<T> {
    * information, otherwise false.
    */
   fun verify(injectionTargetInformation: InjectionTargetInformation<*>): Boolean
+
+  /**
+   * Override this method to get the configuration injected at startup
+   */
+  fun initialize(needleSession: NeedleSession) {
+  }
 }

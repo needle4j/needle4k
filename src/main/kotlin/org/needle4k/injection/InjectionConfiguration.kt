@@ -1,5 +1,6 @@
 package org.needle4k.injection
 
+import org.needle4k.NeedleSession
 import org.needle4k.configuration.NeedleConfiguration
 import org.needle4k.mock.MockAnnotationProcessor
 import org.needle4k.mock.MockProvider
@@ -154,6 +155,10 @@ class InjectionConfiguration(val needleConfiguration: NeedleConfiguration) {
       ?: throw IllegalStateException("Could not load mock provider class: '$className'")
 
     return ReflectionUtil.createInstance(mockProviderClass)
+  }
+
+  fun initInjectionProviders(needleSession: NeedleSession) {
+    allInjectionProviders.forEach { it.initialize(needleSession) }
   }
 
   companion object {

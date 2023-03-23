@@ -32,3 +32,4 @@ mock.provider=org.needle4k.mock.EasyMockProvider
     <scope>test</scope>
 </dependency>
 ``` 
+* Custom injection providers may override the _initialize(NeedleSession)_ method, in order to get the configuration injected

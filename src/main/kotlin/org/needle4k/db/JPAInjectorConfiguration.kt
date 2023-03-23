@@ -1,6 +1,6 @@
 package org.needle4k.db
 
-import org.hibernate.Session
+import org.hibernate.internal.SessionImpl
 import org.hibernate.jdbc.ReturningWork
 import org.hibernate.jdbc.Work
 import org.needle4k.configuration.NeedleConfiguration
@@ -18,8 +18,7 @@ class JPAInjectorConfiguration(val needleConfiguration: NeedleConfiguration) {
   val dbOperation: DBOperation by lazy { createDBOperation(lookupDBOperationClass(needleConfiguration.dbOperationClassName)) }
   val entityManager: EntityManager by lazy { entityManagerFactory.createEntityManager() }
   val transactionHelper: TransactionHelper by lazy { TransactionHelper(entityManager) }
-
-  private val hibernateSession: Session get() = entityManager.delegate as Session
+  val hibernateSession: SessionImpl get() = entityManager.unwrap(SessionImpl::class.java)
 
   fun execute(runnable: Work) {
     hibernateSession.doWork {

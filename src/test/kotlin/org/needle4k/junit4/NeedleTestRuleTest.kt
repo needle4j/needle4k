@@ -28,7 +28,7 @@ class NeedleTestRuleTest {
 
   @Rule
   @JvmField
-  val needle = NeedleTestRule(this)
+  val needle = NeedleTestRule(this).withJPAInjection()
 
   @Test(expected = UnsupportedOperationException::class)
   fun shouldCreateClassAndExecute() {

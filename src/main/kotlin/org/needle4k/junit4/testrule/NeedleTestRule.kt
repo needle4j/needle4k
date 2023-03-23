@@ -3,9 +3,13 @@ package org.needle4k.junit4.testrule
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
+import org.needle4k.NeedleContext
 import org.needle4k.NeedleInjector
+import org.needle4k.NeedleSession
 import org.needle4k.configuration.DefaultNeedleConfiguration
 import org.needle4k.configuration.NeedleConfiguration
+import org.needle4k.db.JPAInjectionProvider
+import org.needle4k.db.JPAInjectorConfiguration
 import org.needle4k.injection.InjectionConfiguration
 import org.needle4k.injection.InjectionProvider
 
@@ -57,12 +61,28 @@ class NeedleTestRule @JvmOverloads constructor(
   vararg injectionProviders: InjectionProvider<*>
 ) : TestRule {
   private val needleInjector = NeedleInjector(InjectionConfiguration(needleConfiguration), *injectionProviders)
+  val jpaInjectionProvider by lazy { JPAInjectionProvider(JPAInjectorConfiguration(needleConfiguration)) }
+
+  fun withJPAInjection(): NeedleTestRule {
+    needleInjector.addInjectionProvider(jpaInjectionProvider)
+    return this
+  }
 
   override fun apply(base: Statement, description: Description): Statement {
     return object : Statement() {
       override fun evaluate() {
         needleInjector.initTestInstance(testInstance)
-        needleInjector.before()
+        needleInjector.before(object : NeedleSession {
+          override val needleInjector: NeedleInjector = this@NeedleTestRule.needleInjector
+          override val needleConfiguration: NeedleConfiguration =
+            this@NeedleTestRule.needleInjector.configuration.needleConfiguration
+          override val needleContext: NeedleContext = this@NeedleTestRule.needleInjector.context
+          override val jpaInjectionProvider: JPAInjectionProvider
+            get() = needleInjector.configuration.getInjectionProvider(JPAInjectionProvider::class.java)
+              ?: throw IllegalStateException("JPA injector not configured")
+          override val jpaInjectorConfiguration: JPAInjectorConfiguration = jpaInjectionProvider.configuration
+
+        })
         base.evaluate()
         needleInjector.after()
       }

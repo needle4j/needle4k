@@ -262,7 +262,8 @@ class NeedleInjector constructor(
     }
   }
 
-  fun before() {
+  fun before(needleSession: NeedleSession) {
+    configuration.initInjectionProviders(needleSession)
   }
 
   fun after() {
