@@ -2,17 +2,200 @@
 <!--suppress MavenPackageUpdate -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <parent>
-        <groupId>org.needle4k</groupId>
-        <artifactId>needle4k-parent</artifactId>
-        <version>4.0.1-SNAPSHOT</version>
-        <relativePath>../needle4k-parent/pom.xml</relativePath>
-    </parent>
-
+    <groupId>org.needle4k</groupId>
     <artifactId>needle4k</artifactId>
+    <version>4.0.1-SNAPSHOT</version>
+
     <modelVersion>4.0.0</modelVersion>
+    <url>https://github.com/needle4j/needle4k</url>
+    <inceptionYear>2023</inceptionYear>
+
+    <description>
+        needle4k is a light-weight framework for testing isolated Jakarta EE components outside the container.
+        It reduces the test setup code by analysing injected dependencies and automatic creation of mock objects.
+
+        needle4k is the Kotlin based successor of the needle4j framework.
+    </description>
+
+    <developers>
+        <developer>
+            <id>mdahm</id>
+            <name>Markus Dahm</name>
+            <email>markus (dot) dahm (at) akquinet.de</email>
+            <organization>akquinet AG</organization>
+        </developer>
+
+        <developer>
+            <id>cerker</id>
+            <name>Carsten Erker</name>
+            <email>carsten (dot) erker (at) akquinet.de</email>
+            <organization>akquinet AG</organization>
+        </developer>
+
+        <developer>
+            <id>hwilming</id>
+            <name>Heinz Wilming</name>
+            <email>heinz (dot) wilming (at) akquinet.de</email>
+            <organization>akquinet AG</organization>
+        </developer>
+
+        <developer>
+            <id>jangalinski</id>
+            <name>Jan Galinski</name>
+            <email>jan (dot) galinski (at) holisticon.de</email>
+            <organization>Holisticon AG</organization>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.scm.id>github</project.scm.id>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <kotlin.version>1.8.10</kotlin.version>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+
+        <slf4j.version>2.0.6</slf4j.version>
+
+        <!-- Also works for Hibernate 6 -->
+        <hibernate.version>5.6.15.Final</hibernate.version>
+
+        <junit4.version>4.13.2</junit4.version>
+        <junit5.version>5.9.2</junit5.version>
+        <testng.version>7.7.1</testng.version>
+        <testng.junitsupport.version>1.0.4</testng.junitsupport.version>
+        <easymock.version>5.1.0</easymock.version>
+        <mockito.version>5.2.0</mockito.version>
+        <mockito.kotlin.version>4.1.0</mockito.kotlin.version>
+        <assertj.version>3.24.2</assertj.version>
+        <hsqldb.version>2.7.1</hsqldb.version>
+        <h2.version>2.1.214</h2.version>
+        <derby.version>10.16.1.1</derby.version>
+    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- Directly supported testing frameworks -->
+        <!-- JUnit 5 -->
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit5.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- JUnit 4 -->
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit5.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- TestNG -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.support</groupId>
+            <artifactId>testng-engine</artifactId>
+            <version>${testng.junitsupport.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Directly supported Mock frameworks -->
+
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>${easymock.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Supported In-Memory DBs -->
+
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- For internal tests -->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito.kotlin</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>${mockito.kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- JPA/Hibernate -->
 
         <dependency>
@@ -56,6 +239,153 @@
     </dependencies>
 
     <build>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>kotlin-maven-plugin</artifactId>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <version>${kotlin.version}</version>
+
+                    <configuration>
+                        <compilerPlugins>
+                            <plugin>jpa</plugin>
+                            <plugin>no-arg</plugin>
+                            <plugin>all-open</plugin>
+                        </compilerPlugins>
+
+                        <jvmTarget>${maven.compiler.target}</jvmTarget>
+                        <!-- https://blog.jetbrains.com/kotlin/2020/07/kotlin-1-4-m3-generating-default-methods-in-interfaces/ -->
+                        <args>-Xjvm-default=all</args>
+
+                        <pluginOptions>
+                            <option>all-open:annotation=javax.ejb.LocalBean</option>
+                            <option>all-open:annotation=javax.ejb.Stateless</option>
+                            <option>all-open:annotation=javax.interceptor.Interceptor</option>
+                            <option>all-open:annotation=javax.ejb.MessageDriven</option>
+                            <option>all-open:annotation=javax.ejb.Singleton</option>
+                            <option>all-open:annotation=javax.ejb.Startup</option>
+                            <option>all-open:annotation=javax.ws.rs.Path</option>
+                            <option>all-open:annotation=javax.ws.rs.ext.Provider</option>
+                            <option>all-open:annotation=javax.ws.rs.container.PreMatching</option>
+                            <option>all-open:annotation=javax.ws.rs.ApplicationPath</option>
+                            <option>all-open:annotation=javax.enterprise.context.ApplicationScoped</option>
+                            <option>all-open:annotation=javax.enterprise.context.RequestScoped</option>
+                            <option>all-open:annotation=javax.enterprise.context.SessionScoped</option>
+                            <option>all-open:annotation=javax.enterprise.inject.Default</option>
+                            <option>all-open:annotation=javax.enterprise.inject.Model</option>
+                            <option>all-open:annotation=javax.inject.Scope</option>
+                            <option>all-open:annotation=javax.inject.Singleton</option>
+                            <option>all-open:annotation=javax.inject.Named</option>
+                            <option>all-open:annotation=javax.inject.Qualifier</option>
+                            <option>all-open:annotation=javax.persistence.Entity</option>
+                            <option>all-open:annotation=javax.persistence.Embeddable</option>
+
+                            <option>all-open:annotation=jakarta.ejb.LocalBean</option>
+                            <option>all-open:annotation=jakarta.ejb.Stateless</option>
+                            <option>all-open:annotation=jakarta.interceptor.Interceptor</option>
+                            <option>all-open:annotation=jakarta.ejb.MessageDriven</option>
+                            <option>all-open:annotation=jakarta.ejb.Singleton</option>
+                            <option>all-open:annotation=jakarta.ejb.Startup</option>
+                            <option>all-open:annotation=jakarta.ws.rs.Path</option>
+                            <option>all-open:annotation=jakarta.ws.rs.ext.Provider</option>
+                            <option>all-open:annotation=jakarta.ws.rs.container.PreMatching</option>
+                            <option>all-open:annotation=jakarta.ws.rs.ApplicationPath</option>
+                            <option>all-open:annotation=jakarta.enterprise.context.ApplicationScoped</option>
+                            <option>all-open:annotation=jakarta.enterprise.context.RequestScoped</option>
+                            <option>all-open:annotation=jakarta.enterprise.context.SessionScoped</option>
+                            <option>all-open:annotation=jakarta.enterprise.inject.Default</option>
+                            <option>all-open:annotation=jakarta.enterprise.inject.Model</option>
+                            <option>all-open:annotation=jakarta.inject.Scope</option>
+                            <option>all-open:annotation=jakarta.inject.Singleton</option>
+                            <option>all-open:annotation=jakarta.inject.Named</option>
+                            <option>all-open:annotation=jakarta.inject.Qualifier</option>
+                            <option>all-open:annotation=jakarta.persistence.Entity</option>
+                            <option>all-open:annotation=jakarta.persistence.Embeddable</option>
+
+                            <option>all-open:annotation=org.springframework.context.annotation.Bean</option>
+                            <option>all-open:annotation=org.springframework.stereotype.Service</option>
+                            <option>all-open:annotation=org.springframework.stereotype.Repository</option>
+                            <option>all-open:annotation=org.springframework.stereotype.Controller</option>
+                        </pluginOptions>
+                    </configuration>
+
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-allopen</artifactId>
+                            <version>${kotlin.version}</version>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-noarg</artifactId>
+                            <version>${kotlin.version}</version>
+                        </dependency>
+                    </dependencies>
+
+                    <executions>
+                        <execution>
+                            <id>compile</id>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+
+                        <execution>
+                            <id>test-compile</id>
+                            <goals>
+                                <goal>test-compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.3.0</version>
+
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>test-jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.2.1</version>
+
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                                <goal>test-jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M9</version>
+
+                    <configuration>
+                        <reuseForks>true</reuseForks>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -73,4 +403,101 @@
             </plugin>
         </plugins>
     </build>
+
+    <licenses>
+        <license>
+            <name>LGPL</name>
+            <url>https://www.gnu.org/licenses/lgpl-2.1.txt</url>
+        </license>
+    </licenses>
+
+    <!--
+        https://central.sonatype.org/publish/publish-maven/
+    -->
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.3.0</version>
+
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>3.0.0-M7</version>
+
+                        <configuration>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <useReleaseProfile>false</useReleaseProfile>
+                            <releaseProfiles>release</releaseProfiles>
+                            <goals>deploy</goals>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.13</version>
+                        <extensions>true</extensions>
+
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+
+                    <!-- https://central.sonatype.org/publish/publish-maven/#gpg-signed-components -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.0.1</version>
+
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
