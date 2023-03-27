@@ -14,12 +14,22 @@ If you are using [Maven](http://maven.apache.org/) as your build tool, add the f
 pom.xml file to get started with **needle4k**:
 
 ```xml
-
 <dependency>
     <groupId>org.needle4k</groupId>
     <artifactId>needle4k</artifactId>
     <scope>test</scope>
     <version>4.0.1</version>
+</dependency>
+```
+
+And, if you're not already using Kotlin:
+
+```xml
+<dependency>
+    <groupId>org.jetbrains.kotlin</groupId>
+    <artifactId>kotlin-stdlib</artifactId>
+    <scope>test</scope>
+    <version>1.8.10</version>
 </dependency>
 ```
 

@@ -55,7 +55,20 @@ Use this dependency if you are using Jakarta EE &geq; 9:
 </dependency>
 ``` 
 
-(plus JUnit, Mockito, AssertJ, and other testing frameworks...)
+## And, if you're not already using Kotlin:
+
+```xml
+<dependency>
+    <groupId>org.jetbrains.kotlin</groupId>
+    <artifactId>kotlin-stdlib</artifactId>
+    <scope>test</scope>
+    <version>1.8.10</version>
+</dependency>
+```
+
+## Other dependencies
+
+Add to your liking: JUnit4/5, Mockito, AssertJ, or any other testing framework
 
 ## Gradle dependency
 
