@@ -42,21 +42,13 @@ You are not restricted to use a specific versions of EJB, JPA, JUnit, Mockito or
 dependencies for Hibernate as the JPA provider and Mockito as the mock provider. However, this should have been configured
 in your project anyway.
 
-Typically, dependencies look like
+Typically, the dependency configuration looks like this:
 
 ```xml
 <dependency>
     <groupId>org.junit.jupiter</groupId>
     <artifactId>junit-jupiter-engine</artifactId>
     <version>${junit5.version}</version>
-    <scope>test</scope>
-</dependency>
-``` 
-```xml
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-simple</artifactId>
-    <version>${slf4j.version}</version>
     <scope>test</scope>
 </dependency>
 ``` 
@@ -142,9 +134,8 @@ import static org.needle4k.configuration.ConfigurationLoaderKt.MOCK_PROVIDER_KEY
 public class EasyMockProviderTest
 {
   @Rule
-  public final NeedleRule needleRule = new NeedleRule()
-  {
-    {
+  public final NeedleRule needleRule = new NeedleRule() {
+    protected void configure() {
       final Map<String, String> configurationProperties = getNeedleConfiguration().getConfigurationProperties();
 
       configurationProperties.put(MOCK_PROVIDER_KEY, EasyMockProvider.class.getName());
