@@ -14,7 +14,7 @@
         needle4k is a light-weight framework for testing isolated Jakarta EE components outside the container.
         It reduces the test setup code by analysing injected dependencies and automatic creation of mock objects.
 
-        needle4k is the Kotlin based successor of the needle4j framework.
+        needle4k is the Kotlin based successor of the well-known needle4j framework.
     </description>
 
     <developers>
