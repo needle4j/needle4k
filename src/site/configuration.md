@@ -46,6 +46,22 @@ Typically, dependencies look like
 
 ```xml
 <dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-engine</artifactId>
+    <version>${junit5.version}</version>
+    <scope>test</scope>
+</dependency>
+``` 
+```xml
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-simple</artifactId>
+    <version>${slf4j.version}</version>
+    <scope>test</scope>
+</dependency>
+``` 
+```xml
+<dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-core</artifactId>
     <version>${hibernate.version}</version>
