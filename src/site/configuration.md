@@ -22,17 +22,6 @@ pom.xml file to get started with **needle4k**:
 </dependency>
 ```
 
-And, if you're not already using Kotlin:
-
-```xml
-<dependency>
-    <groupId>org.jetbrains.kotlin</groupId>
-    <artifactId>kotlin-stdlib</artifactId>
-    <scope>test</scope>
-    <version>1.8.10</version>
-</dependency>
-```
-
 Check for the most current version at the [maven central repo](http://mvnrepository.com/artifact/org.needle4k/needle4k).
 
 ### Transitive dependencies
