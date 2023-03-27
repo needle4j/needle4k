@@ -45,23 +45,27 @@ in your project anyway.
 Typically, dependencies look like
 
 ```xml
-
 <dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-core</artifactId>
     <version>${hibernate.version}</version>
+    <scope>test</scope>
 </dependency>
-
+``` 
+```xml
 <dependency>
     <groupId>org.mockito</groupId>
     <artifactId>mockito-core</artifactId>
     <version>${mockito.version}</version>
+    <scope>test</scope>
 </dependency>
-
+```
+```xml
 <dependency>
-    <groupId>your.data.base</groupId>
-    <artifactId>jdbc.drivers</artifactId>
-    <version>${database.version}</version>
+    <groupId>org.hsqldb</groupId>
+    <artifactId>hsqldb</artifactId>
+    <version>${hsqldb.version}</version>
+    <scope>test</scope>
 </dependency>
 ```
 
